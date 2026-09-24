@@ -79,6 +79,16 @@ def split_design_validation(seed: int = SEED_SPLIT,
     return design, validation
 
 
+# Extension DECLAREE "v5b": b devient une 8e variable de decision.
+# La proposition 1 fixe b = 1 exactement; liberer b reconnait ouvertement que
+# la ponderation de consigne est un degre de liberte du CORRECTEUR et non de la
+# synthese, ce qui AFFAIBLIT d'autant la part issue de la synthese. C'est
+# l'analogue exact de l'option "kp en 8e variable" du par.3.1, applique au
+# levier que les donnees designent effectivement.
+V5B_LB = np.concatenate([V5_LB, [0.0]])
+V5B_UB = np.concatenate([V5_UB, [1.0]])
+
+
 @dataclass
 class Problem:
     """v5 -> synthese -> ancrage -> mission(s) -> Record.
@@ -92,9 +102,11 @@ class Problem:
     vref_synthese: float = 24.0
     audit: Optional[SaturationAudit] = None
     clip_anchor: bool = True
+    free_b: bool = False
 
     def __call__(self, x: np.ndarray) -> Record:
-        syn = synthesize(x, vref=self.vref_synthese)
+        x = np.asarray(x, float)
+        syn = synthesize(x[:7], vref=self.vref_synthese)
         if not syn.ok:
             return Record(x=np.asarray(x, float), J=1e6,
                           g=np.full(6, 1e6), margin=-1e6,
@@ -103,6 +115,11 @@ class Problem:
                           extra={"rejet": syn.reason})
 
         theta, sat = project(syn, audit=self.audit, clip=self.clip_anchor)
+        if self.free_b:
+            if x.shape[0] != 8:
+                raise ValueError("v5b attend 8 composantes (v5 + b)")
+            theta = theta.copy()
+            theta[6] = float(np.clip(x[7], 0.0, 1.0))
         ctrl = Controller.from_theta(theta, Kb=syn.Kb)
 
         worst_J = -np.inf

@@ -1,0 +1,197 @@
+% ---------------------------------------------------------------------------
+% Methode (francais). Source faisant autorite; les chiffres viennent de
+% chiffres_fr.tex, genere depuis les JSON de resultats.
+% ---------------------------------------------------------------------------
+\section{Système, mission et invariants}
+\label{sec:systeme}
+
+Le convertisseur est un abaisseur (Buck) asynchrone non idéal, \emph{physiquement
+d'ordre entier}, alimenté par une source fixe $V_\mathrm{in}=48$~V, avec
+$L=100~\mu$H, $C=100~\mu$F, $R=10~\Omega$, $r_L=0{,}1~\Omega$, $r_C=0{,}05~\Omega$,
+$R_\mathrm{on}=0{,}05~\Omega$ et une diode de roue libre de loi affine
+$v_D=V_f+r_d\,i_D$, $V_f=0{,}42$~V, $r_d=0{,}020~\Omega$. La fractionnalité
+appartient exclusivement au correcteur.
+
+La mission imposée est $24\to1\to46$~V, avec transitions à $0{,}108$ et
+$0{,}216$~s et fin à $0{,}324$~s, une perturbation de charge de $+0{,}5$~A entre
+$0{,}054$ et $0{,}090$~s, et des conditions initiales $(i_L,v_C)=(2{,}4~\mathrm{A},
+24~\mathrm{V})$ en toutes circonstances. Le correcteur est échantillonné à
+$T_s=10~\mu$s avec un retard d'un échantillon ; la MLI est à $50$~kHz et le
+rapport cyclique est borné à $[0{,}02;0{,}98]$. L'anticipation nominale
+\begin{equation}
+d_\mathrm{ff}=\frac{(R+r_L+r_d)\,v_\mathrm{ref}}{R\,V_\mathrm{in}-(R_\mathrm{on}-r_d)\,v_\mathrm{ref}}
+\label{eq:dff}
+\end{equation}
+est conservée sans terme en $V_f$, variables nominales figées pendant les
+perturbations.
+
+\paragraph{Coût et contraintes.}
+\begin{equation}
+J=\frac{1}{T}\!\int_0^T\!\frac{|r-v_o|}{\max(r,1)}\,dt
++0{,}01\,\frac{\int_0^T i_L^2\,dt}{T\cdot 20^2}
++0{,}001\,\frac{\overline{|\Delta d|}}{0{,}96},\qquad T=0{,}324~\mathrm{s},
+\end{equation}
+sous six contraintes $g_i\le0$ :
+$g_1=I_\mathrm{max}/20-1$,
+$g_2=(V_\mathrm{max}-46)/1{,}5-1$,
+$g_3=|e_{24}|/0{,}05-1$,
+$g_4=|e_{1}|/0{,}03-1$,
+$g_5=|e_{46}|/0{,}10-1$,
+$g_6=(0{,}8-V_\mathrm{min})/0{,}8$.
+Les extrema sont relevés sur les sorties brutes du solveur et les erreurs
+$e_\bullet$ sont des moyennes sur les fenêtres stationnaires
+$[0{,}0936;0{,}1044]$, $[0{,}198;0{,}2124]$ et $[0{,}306;0{,}3204]$~s. La
+\emph{marge} d'un candidat est $m=-\max_i g_i$, et sur un ensemble de cas
+$m=\min_k(-\max_i g_{i,k})$ : un minimum de maxima, donc une fonction
+non différentiable.
+
+\section{Évaluateur commuté}
+\label{sec:evaluateur}
+
+\paragraph{Pourquoi un modèle commuté.}
+L'espace de travail du modèle Simulink de référence indique que le palier de
+$1$~V se situe à $3~\%$ de la frontière entre conduction continue et
+discontinue, et que le saut $24\to1$~V impose environ $3{,}2$~ms de conduction
+discontinue. Un évaluateur moyenné en conduction continue serait donc faux
+précisément là où s'applique $g_4$. Nous simulons le convertisseur commuté
+avec trois états de conduction : interrupteur passant, diode passante, et
+diode bloquée ($i_L=0$), ce dernier produisant la conduction discontinue sans
+modèle séparé.
+
+\paragraph{Fronts de MLI.}
+Chaque pas d'intégration (Runge--Kutta d'ordre~4) est découpé exactement sur
+les fronts de la porteuse. Sans ce découpage, un pas de $1~\mu$s sur une
+période de $20~\mu$s limiterait la résolution du rapport cyclique à $5~\%$,
+ce qui rendrait les bornes $[0{,}02;0{,}98]$ fictives. L'écart relatif sur $J$
+entre les pas de recherche ($1~\mu$s) et de confirmation ($0{,}2~\mu$s) vaut
+\ChiffreEcartPas{} sur une loi de commande de référence.
+
+\paragraph{Réalisation fractionnaire.}
+L'opérateur $s^\gamma$, $\gamma\in[0;1]$, est approché par Oustaloup de
+demi-ordre~3 (7 cellules) sur $[1;10^5]$~rad/s, chaque cellule
+$(s+z)/(s+p)$ étant discrétisée exactement par bloqueur d'ordre zéro.
+L'intégrale est réalisée comme $s^{-\lambda}=s^{-1}\cdot s^{1-\lambda}$ : un
+intégrateur exact assure l'erreur statique nulle, et la cellule d'Oustaloup
+porte la seule partie fractionnaire. La dérivée utilise la même réalisation,
+y compris pour $\mu=1$, où la formule d'Oustaloup donne
+$\omega_h(s+\omega_b)/(s+\omega_h)$, une dérivée à bande limitée.
+
+\section{Synthèse FO-LQI et projection vers FO-PIDF}
+\label{sec:projection}
+
+Le modèle petit-signal est normalisé par $I=5$~A, $V=24$~V, $d=0{,}48$ et
+$T_0=1$~ms, puis augmenté d'un état de mémoire. La commande LQR
+($R=1$) donne $K=[K_i^x,K_v^x,K_z]$. Pour le plant linéaire nominal, sans
+perturbation et hors saturation, le retour d'état se réduit algébriquement à
+\begin{equation}
+C_\mathrm{FOLQI}(s)=K_v^x+\frac{a}{R}
++C\,(a-r_CK_v^x)\,\frac{N s}{s+N}
++\frac{k_i}{s^\alpha},\qquad
+a=K_i^x\frac{V}{I},\quad N=\frac{1}{r_CC},\quad k_i=-\frac{K_z}{T_0^{\alpha}},
+\label{eq:projection}
+\end{equation}
+d'où l'ancrage $k_p=K_v^x+a/R$, $k_d=C(a-r_CK_v^x)$,
+$\omega_f=\mathrm{clip}(N;20;2\cdot10^4)$, $b=1$, $c=0$. Le facteur
+$T_0^{\alpha}$ est la voie par laquelle l'ordre parent $\alpha$ agit sur la
+synthèse : l'état de mémoire est une intégrale d'ordre $\alpha$ en temps
+normalisé. L'ordre intégral de la projection est ensuite remplacé par
+$\lambda$, et l'ordre dérivé est $\mu$.
+
+Dans le cas entier ($\alpha=\lambda=\mu=1$, pôle exact), la
+relation~\eqref{eq:projection} reproduit la proposition~1 de l'étude
+antérieure avec une erreur relative de \ChiffreErreurPropUn{} sur
+$[1;10^6]$~rad/s. \textbf{C'est le seul cas exact.} La projection du pôle
+$N=2\cdot10^5$~rad/s dans la bande $[20;2\cdot10^4]$~rad/s introduit à elle
+seule une erreur relative de \ChiffreErreurProjPole{} en haut de bande.
+L'identité FO-LQI $\to$ FO-PIDF n'est donc ni générale ni exacte ; nous la
+traitons comme un ancrage, jamais comme une équivalence ni comme une preuve
+d'optimalité fractionnaire.
+
+\section{Audit de saturation des bornes}
+\label{sec:audit}
+
+Une campagne antérieure a consommé plus de 1800 évaluations sans jamais
+atteindre la faisabilité robuste, et son diagnostic mettait en cause
+l'écrêtage de $\log_{10}k_p$ sur la borne $-4$, atteinte dans $79{,}0~\%$ des
+candidats. Nous traitons donc chaque borne comme un objet de mesure : pour
+chaque composante de $\theta$, nous rapportons la fraction des projections
+qui touchent chaque borne, sur \ChiffreAuditN{} tirages Sobol de la boîte de
+décision. Nous distinguons deux natures de saturation. Une saturation
+\emph{structurelle} touche une composante constante de la synthèse : la borne
+ne retire alors aucun degré de liberté, elle rend seulement visible une
+identité. Une saturation \emph{pathologique} touche une composante qui varie
+et vient buter sur la borne : celle-ci tronque effectivement la recherche.
+
+\section{Recherche étagée et six métaheuristiques}
+\label{sec:recherche}
+
+\paragraph{Vecteur de décision.}
+Le vecteur v5 porte sur la \emph{synthèse} et non sur le correcteur final :
+$x=[\log q_i,\log q_v,\log q_\mathrm{mem},\alpha,\mu,\log_{10}\tau_\mathrm{aw},\lambda]$,
+avec $\lambda$ en septième position et $\mu$ en cinquième.
+
+\paragraph{Méthodes.}
+PSO, GA, ABC et trois variantes de projet --- pAEABC, pIGWO et pIGWO-DLH ---
+reprennent les opérateurs de l'étude antérieure. Le préfixe « p » signale que
+l'identité opérateur par opérateur avec les publications d'origine n'est pas
+établie. Toutes reçoivent la même boîte, la même population initiale pour une
+graine donnée (population 10), le même comparateur de Deb et le même budget
+compté en \emph{appels d'évaluateur} ; pIGWO-DLH consommant deux appels par
+comparaison, elle effectue moins d'itérations à budget égal, ce qui est voulu.
+
+\paragraph{Comparateur.}
+Faisable précède infaisable ; entre infaisables, la plus faible violation
+l'emporte ; entre faisables, nous classons par \emph{marge décroissante} et non
+par $J$ croissant. Le classement par $J$ produit en effet des candidats collés
+à la frontière (marge nominale médiane $0{,}0066$ dans l'étude antérieure,
+corrélation marge/violation robuste $-0{,}821$), soit les pires points de
+départ pour la robustesse. Le critère final est lexicographique : faisabilité
+sur tous les cas de conception, puis marge minimale maximale, puis pire $J$ à
+marge égale ($<10^{-4}$).
+
+\paragraph{Étages.}
+L'étage~1 cherche la faisabilité nominale sur un seul scénario, avec
+\ChiffreBudgetUn{} appels ; une graine qui produit moins de
+\ChiffreMinFaisables{} points faisables distincts est déclarée
+\emph{stérile} et rapportée comme telle. L'étage~2 cherche la robustesse sur
+le jeu de conception avec \ChiffreBudgetDeux{} appels, amorcé uniquement sur
+les points faisables de l'étage~1 de la \emph{même} graine. L'étage~3 rejoue
+tout candidat retenu au pas de $0{,}2~\mu$s : aucun candidat n'est déclaré
+faisable sans ce rejeu.
+
+\section{Protocole de validation}
+\label{sec:validation}
+
+\paragraph{Ensemble d'incertitude (choix déclaré).}
+Le cadrage évoque dix-sept cas robustes et seize coins sans les définir. Nous
+retenons $L$, $C$ et $R$ à $\pm20~\%$ et $r_C$ à $\pm50~\%$, soit $2^4=16$
+coins plus le nominal. $r_C$ est choisi parce qu'il fixe à lui seul le pôle
+projeté $\omega_f=1/(r_CC)$, donc l'erreur de projection. $V_\mathrm{in}$ reste
+fixe et la mission n'est jamais modifiée.
+
+\paragraph{Trois jeux disjoints.}
+Les seize coins sont partagés entre conception et validation par tirage au
+sort (graine publiée \ChiffreGraineSplit), jamais après avoir observé quels
+cas échouent. Le jeu de test est formé de tirages uniformes dans
+l'hypercube, graine \ChiffreGraineTest{} scellée dans le protocole avant toute
+évaluation, et joué une seule fois ; un fichier sentinelle interdit de le
+rejouer. Un jeu consulté pour décider redevient un jeu de conception et perd
+toute valeur probante.
+
+\paragraph{Taille du test.}
+Un succès sur $n$ tirages sans échec ne certifie rien au-delà de l'intervalle
+de Wilson à $95~\%$. Avec $50/50$, la borne basse vaut $92{,}9~\%$. Le cadrage
+indiquait qu'« environ 300 » tirages suffisent pour une borne basse de
+$99~\%$ ; le calcul exact donne $98{,}74~\%$ pour $300/300$ et exige
+$381$ tirages. Nous en retenons \ChiffreNTest.
+
+\section{Statistiques prédéclarées}
+\label{sec:stats}
+
+L'unité statistique est la graine : trente graines communes, méthodes
+appariées. Nous appliquons le test omnibus de Friedman (avec la correction
+d'Iman--Davenport), puis des tests de Wilcoxon signés appariés par paires,
+corrigés par la méthode de Holm, et nous rapportons la corrélation
+rang-bisériale appariée comme taille d'effet. Les proportions de réussite sont
+accompagnées de leur intervalle de Wilson à $95~\%$. Toutes les graines sont
+rapportées, stériles comprises ; aucun seuil n'est ajusté après observation.
