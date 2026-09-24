@@ -25,6 +25,7 @@ from isafo.params import NUM
 from isafo.problem import (corner_plants, random_plants, split_design_validation,
                            SEED_SPLIT, SEED_TEST)
 from isafo.stats import wilson
+from isafo.diagnostics import oscillation_index
 
 LAB = ["g1", "g2", "g3", "g4", "g5", "g6"]
 
@@ -76,7 +77,9 @@ def main():
                                          "actives": ad},
                "validation_replay_fin": {"k": kv, "n": nv, "marge_min": min(mv),
                                          "actives": av,
-                                         "wilson95": list(wilson(kv, nv))}}
+                                         "wilson95": list(wilson(kv, nv))},
+               # POST HOC (journal E10) : rapporte, jamais utilise pour choisir
+               "diagnostic_oscillation_post_hoc": oscillation_index(ctrl)}
         out["candidats"].append(rec)
         ok = "OK " if kd_ == nd_ else "KO "
         print(f"  {ok}{c['methode']:9s} {c['graine']}  conception {kd_}/{nd_} "

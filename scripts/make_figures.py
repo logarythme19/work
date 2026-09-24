@@ -113,12 +113,12 @@ def fig_b_lever(outdir):
         x = np.arange(len(m)) + (k - 0.5) * 0.28
         ax.bar(x, m, width=0.26, color=col, label=lab)
     ax.axhline(0, color=INK, lw=0.9)
-    ax.text(len(meths) - 0.5, 0, "  frontiere de faisabilite", va="bottom",
-            ha="right", fontsize=7, color=INK2)
+    ax.text(-0.45, 0.02, "frontiere de faisabilite (m = 0)", va="bottom",
+            ha="left", fontsize=7, color=INK2)
     ax.set_xticks(range(len(meths)), meths)
     ax.set_ylabel("meilleure marge nominale m")
     ax.set_title("Levier de ponderation de consigne b — recherche conjointe, 1500 appels")
-    ax.legend(loc="lower left", fontsize=7)
+    ax.legend(loc="lower right", fontsize=7)
     save(fig, "fig_levier_b", outdir)
 
 
