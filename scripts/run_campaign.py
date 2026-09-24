@@ -24,7 +24,8 @@ from isafo.deb import best_of
 from isafo.folqi import V5_LB, V5_UB
 from isafo.params import NUM
 from isafo.problem import (Problem, corner_plants, split_design_validation,
-                           SEED_BASE, SEED_SPLIT, V5B_LB, V5B_UB)
+                           SEED_BASE, SEED_SPLIT, V5B_LB, V5B_UB,
+                           V5KP_LB, V5KP_UB)
 
 BUDGET1, BUDGET2, MIN_FEASIBLE = 700, 300, 20
 
@@ -38,9 +39,12 @@ def one_cell(method: str, seed: int, budget1: int, budget2: int,
     """Une cellule (methode, graine): etage 1 puis etage 2."""
     t0 = time.time()
     free_b = (arm == "v5b")
-    LB, UB = (V5B_LB, V5B_UB) if free_b else (V5_LB, V5_UB)
+    free_kp = (arm == "v5kp")
+    LB, UB = {"v5": (V5_LB, V5_UB), "v5b": (V5B_LB, V5B_UB),
+              "v5kp": (V5KP_LB, V5KP_UB)}[arm]
     audit1 = SaturationAudit()
-    prob1 = Problem(cases=[corner_plants()[0]], audit=audit1, free_b=free_b)
+    prob1 = Problem(cases=[corner_plants()[0]], audit=audit1, free_b=free_b,
+                    free_kp=free_kp)
 
     h1 = run(method, prob1, budget1, seed, LB, UB,
              n_pop=DEFAULT_POP, mode="margin", stage="etage1")
@@ -71,7 +75,7 @@ def one_cell(method: str, seed: int, budget1: int, budget2: int,
 
     audit2 = SaturationAudit()
     prob2 = Problem(cases=[corner_plants()[i] for i in design], audit=audit2,
-                    free_b=free_b)
+                    free_b=free_b, free_kp=free_kp)
     h2 = run(method, prob2, budget2, seed + 1, LB, UB,
              n_pop=DEFAULT_POP, seeds=seeds2, mode="margin", stage="etage2")
 
@@ -108,7 +112,7 @@ def main():
     ap.add_argument("--budget1", type=int, default=BUDGET1)
     ap.add_argument("--budget2", type=int, default=BUDGET2)
     ap.add_argument("--workers", type=int, default=4)
-    ap.add_argument("--arm", choices=("v5", "v5b"), default="v5")
+    ap.add_argument("--arm", choices=("v5", "v5b", "v5kp"), default="v5")
     ap.add_argument("-o", "--out", default=None)
     args = ap.parse_args()
 

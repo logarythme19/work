@@ -23,13 +23,14 @@ SOURCES = [
     "isafo/params.py", "isafo/oustaloup.py", "isafo/_kernel.py",
     "isafo/evaluate.py", "isafo/folqi.py", "isafo/anchor.py",
     "isafo/deb.py", "isafo/algos.py", "isafo/problem.py",
+    "scripts/run_campaign.py", "isafo/stats.py",
 ]
 
 N_SEEDS = 30
 BUDGET_STAGE1 = 700      # par.3.3: 600 a 800 appels
 BUDGET_STAGE2 = 300      # par.3.3: 300 appels minimum
 MIN_FEASIBLE_STAGE1 = 20 # critere de passage; sinon graine declaree STERILE
-N_TEST_DRAWS = 300       # par.5: ~300 tirages pour porter la borne a 99 %
+N_TEST_DRAWS = 400       # amendement A1: 381 sont necessaires (Wilson exact)
 
 
 def sha256(path):
@@ -176,10 +177,47 @@ def main():
         src[rel] = sha256(p) if os.path.exists(p) else None
     proto["empreintes_sources"] = src
 
+    v6 = os.path.join(root, "protocol", "protocol_v6.json")
+    proto["version"] = "6.1"
+    proto["amende_depuis"] = {
+        "fichier": "protocol/protocol_v6.json",
+        "empreinte": json.load(open(v6))["empreinte_protocole"] if os.path.exists(v6) else None,
+    }
+    proto["statut_des_calculs_anterieurs"] = (
+        "Avant cet amendement, seuls des calculs EXPLORATOIRES ont ete faits "
+        "(audit de saturation, depistages Sobol, sonde du levier b sur les "
+        "graines 1 a 6). Aucune graine de campagne (2026092410 a 2026092439) "
+        "n'a ete evaluee, et le jeu de test scelle n'a jamais ete touche.")
+    proto["amendements"] = [
+        {"id": "A1", "objet": "taille du jeu de test : 300 -> 400",
+         "raison": ("Le cadrage indique qu'environ 300 tirages sans echec portent "
+                    "la borne de Wilson a 99 %. Le calcul exact donne 98,74 % pour "
+                    "300/300 ; il en faut 381. On retient 400 (99,05 %).")},
+        {"id": "A2", "objet": "ajout du bras v5b : b en 8e variable de decision",
+         "raison": ("Sonde exploratoire (recherche conjointe sur tout theta, "
+                    "1500 appels x 6 methodes) : b libre donne une marge "
+                    "nominale de +0,191 contre +0,016 avec b = 1, soit 12 fois "
+                    "plus, apres replay fin. b = 1 n'est PAS infaisable : c'est un "
+                    "levier de marge, pas une barriere. Liberer b affaiblit la part "
+                    "issue de la synthese ; c'est declare comme extension, le bras "
+                    "v5 conforme au cadrage reste le bras principal.")},
+        {"id": "A3", "objet": "l'ablation kp (option A du par.3.1) devient le bras v5kp",
+         "raison": ("Annoncee dans v6 sans implementation ; implementee a "
+                    "l'identique de v5b, sur les bornes d'ancrage du par.2. "
+                    "Priorite la plus basse des trois bras.")},
+        {"id": "A4", "objet": "mise a jour des empreintes sources",
+         "raison": ("problem.py et run_campaign.py modifies pour A2 et A3 ; "
+                    "aucun changement du modele, de la mission, du cout, des "
+                    "contraintes ni des seuils.")},
+    ]
+    proto["bras"] = {"v5": "principal, conforme au cadrage",
+                     "v5b": "extension declaree (A2)",
+                     "v5kp": "ablation declaree (A3)"}
+
     body = json.dumps(proto, indent=2, ensure_ascii=False, sort_keys=True)
     proto["empreinte_protocole"] = hashlib.sha256(body.encode()).hexdigest()
 
-    out = os.path.join(root, "protocol", "protocol_v6.json")
+    out = os.path.join(root, "protocol", "protocol_v6_1.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(proto, f, indent=2, ensure_ascii=False, sort_keys=True)

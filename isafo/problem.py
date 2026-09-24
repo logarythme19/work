@@ -88,6 +88,11 @@ def split_design_validation(seed: int = SEED_SPLIT,
 V5B_LB = np.concatenate([V5_LB, [0.0]])
 V5B_UB = np.concatenate([V5_UB, [1.0]])
 
+# Ablation declaree des le protocole v6 (option A du par.3.1): log10(kp) libere
+# en 8e composante, sur les bornes d'ancrage du par.2.
+V5KP_LB = np.concatenate([V5_LB, [-4.0]])
+V5KP_UB = np.concatenate([V5_UB, [2.0]])
+
 
 @dataclass
 class Problem:
@@ -103,6 +108,7 @@ class Problem:
     audit: Optional[SaturationAudit] = None
     clip_anchor: bool = True
     free_b: bool = False
+    free_kp: bool = False
 
     def __call__(self, x: np.ndarray) -> Record:
         x = np.asarray(x, float)
@@ -120,6 +126,11 @@ class Problem:
                 raise ValueError("v5b attend 8 composantes (v5 + b)")
             theta = theta.copy()
             theta[6] = float(np.clip(x[7], 0.0, 1.0))
+        if self.free_kp:
+            if x.shape[0] != 8:
+                raise ValueError("v5kp attend 8 composantes (v5 + log10 kp)")
+            theta = theta.copy()
+            theta[0] = float(np.clip(x[7], -4.0, 2.0))
         ctrl = Controller.from_theta(theta, Kb=syn.Kb)
 
         worst_J = -np.inf
