@@ -31,3 +31,7 @@ bras v5: 180 cellules a calculer sur 4 coeurs
 [  30/180] PSO       2026092415  et1: STERILE         et2: marge=-3.34569 J=0.3820  (164s, ecoule 22.7min)
 [  31/180] IGWO_DLH  2026092414  et1: STERILE         et2: marge=-0.65456 J=0.1102  (171s, ecoule 22.8min)
 [  32/180] GA        2026092415  et1: STERILE         et2: marge=-4.39003 J=0.5901  (168s, ecoule 22.8min)
+[  33/180] ABC       2026092415  et1: STERILE         et2: marge=-1.15229 J=0.0970  (170s, ecoule 25.5min)
+[  34/180] AEABC     2026092415  et1: STERILE         et2: marge=-1.11067 J=0.1757  (170s, ecoule 25.6min)
+[  35/180] IGWO      2026092415  et1: STERILE         et2: marge=-0.58585 J=0.1087  (171s, ecoule 25.6min)
+[  36/180] IGWO_DLH  2026092415  et1: STERILE         et2: marge=-0.84528 J=0.1068  (170s, ecoule 25.6min)
