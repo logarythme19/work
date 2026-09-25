@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  font=\footnotesize, node distance=4mm and 5mm,
+  box/.style={draw=black!60, rounded corners=2pt, align=center, inner sep=3pt, minimum height=9mm, fill=white},
+  hl/.style={box, fill=blue!6},
+  sw/.style={box, fill=orange!8},
+  arr/.style={-{Stealth[length=2mm]}, thick, black!70},
+  darr/.style={arr, dashed}]
+\node[box, text width=28mm] (plant) {Non-ideal Buck\\ Eqs.~\eqref{eq:node}--\eqref{eq:dff}, $G_{vd}(s)$};
+\node[hl, right=of plant, text width=30mm] (lqi) {LQI weights $\xi$\\ Bryson $Q,R_d$ $\to$ CARE \eqref{eq:care}};
+\node[hl, right=of lqi, text width=30mm] (map) {Exact map \eqref{eq:map}\\ $K\to(K_p,K_i,K_d,N_C,1,0,K_b)$};
+\node[box, right=of map, text width=30mm] (avg) {Averaged evaluator\\ 6 scenarios, $J_s$, $g_1..g_{36}$};
+\node[sw, below=of avg, text width=30mm] (scr) {Switched screen\\ 24$\to$1$\to$46$\to$24 V, 34 ms: $g_{37}..g_{39}$};
+\node[box, left=of scr, text width=30mm] (deb) {Deb record\\ feasible-first, no penalty};
+\node[hl, left=of deb, text width=30mm] (opt) {7 algorithms, 30 seeds\\ 240 global + 60 refineBO};
+\node[box, left=of opt, text width=28mm] (cert) {Certificates\\ LQR margins, D-region LMI, Prop.~\ref{prop:struct}};
+\node[box, below=of deb, text width=30mm] (freeze) {Freeze $\theta^\star$\\ (no switched mission data seen)};
+\node[sw, right=of freeze, text width=30mm] (val) {Switched mission 324 ms\\ energy balance, specs, comparators};
+\draw[arr] (plant) -- (lqi);
+\draw[arr] (lqi) -- (map);
+\draw[arr] (map) -- (avg);
+\draw[arr] (avg) -- (scr);
+\draw[arr] (scr) -- (deb);
+\draw[arr] (deb) -- (opt);
+\draw[arr] (opt.north) |- ++(0,3mm) -| (lqi.south);
+\draw[arr] (lqi.south west) ++(2mm,0) |- (cert.north);
+\draw[arr] (opt.south) |- (freeze.west);
+\draw[darr] (freeze) -- (val);
+\end{tikzpicture}

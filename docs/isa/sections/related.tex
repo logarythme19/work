@@ -1,0 +1,77 @@
+\section{Related work and positioning}\label{sec:related}
+
+\paragraph{Model-based converter control}
+State-space averaging supplies the standard low-cost converter model
+\citep{Middlebrook1976,Erickson2020}; non-ideal averaged plants with inductor
+and capacitor ESR, switch resistance and diode drop have been used to tune
+implementable low-order controllers with hardware validation
+\citep{Siddhartha2018}, and robust nonlinear or observer-based laws extend
+disturbance rejection \citep{Abdelmalek2020,Sitbon2020,Bouchama2020}.
+Convex methods---MPC solved as a quadratic program \citep{Liu2018}, LMI regional
+pole placement \citep{Chilali1996}---give certificates relative to their model
+class but do not make fixed-structure PIDF tuning convex once saturation,
+discontinuous conduction and event-wise requirements are included.
+
+\paragraph{LQ design and PID structure}
+The LQR return-difference inequality guarantees an infinite upward gain margin,
+a gain reduction margin of one half and \SI{60}{\degree} of phase margin for the
+full-state loop \citep{Kalman1964,Safonov1977,Anderson1990}; the guarantee is not
+inherited by observer-based implementations \citep{Doyle1978}, and loop-transfer
+recovery trades it against observer bandwidth \citep{Doyle1979}. Bryson's rule
+converts admissible excursions into diagonal weights \citep{Bryson1975}.
+Setpoint weighting and back-calculation anti-windup are the standard means of
+shaping the command response of a PID and of handling actuator saturation
+\citep{Astrom1989,Astrom2006,Bianchi2008}. The connection exploited here---that
+the full-state LQI law of a second-order plant with an output-network zero is
+a filtered PID of the measured output---is known in nominal transfer-function
+form; what is new is its trajectory-level validity and the use of the Riccati
+weights, not the gains, as the search space.
+
+\paragraph{Metaheuristic tuning}
+PSO \citep{Kennedy1995}, genetic algorithms, ABC \citep{Karaboga2008} and GWO
+\citep{Mirjalili2014} with improved variants
+\citep{Hou2022,NadimiShahraki2021,Alsamia2024} are widely used to tune converter
+controllers \citep{Izci2022,Nanyan2024,ValenciaRivera2024}; surrogate-based
+Bayesian optimization is attractive when evaluations are expensive
+\citep{Snoek2012,Coutinho2023}. Constraint handling by Deb's feasibility rules
+avoids penalty weights \citep{Deb2000}, and matched-seed non-parametric
+statistics are the accepted way to compare stochastic solvers
+\citep{Demsar2006}. A weighted scalar index does not produce a Pareto front
+\citep{RodriguezMolina2020}; we therefore report a constrained scalar problem
+and do not claim a multi-objective characterization.
+
+\paragraph{Switching effects in digital control}
+In digitally controlled PWM converters, the sampled switching ripple and the
+duty resolution can sustain limit cycles that an averaged model does not
+predict \citep{Peterchev2003}. This is the mechanism behind the rejection of
+averaged-feasible candidates reported in Section~\ref{sec:res:switched}, and the
+reason why two inequalities of the present problem are measured on the
+switched model.
+
+Table~\ref{tab:gap} positions the study. The gap is not a new metaheuristic but
+the conjunction of (i) a structurally meaningful search space whose every point
+carries an LQ certificate and an exact output-feedback realization, (ii) a
+feasibility set stated in engineering units and partly measured on the
+switched plant, (iii) matched equal-budget comparisons that separate the
+parameterization from the optimizer, and (iv) a closed-energy-balance switched
+validation on the full commanded range.
+
+\begin{table*}[t]
+\centering
+\caption{Positioning with respect to representative Buck control and tuning studies. ``Not reported'' refers to the stated scope of each work only.}
+\label{tab:gap}
+\footnotesize
+\begin{tabular}{@{}p{3.0cm}p{3.3cm}p{3.6cm}p{6.4cm}@{}}
+\toprule
+Study & Plant evidence & Controller / search & Relative to the present question\\
+\midrule
+\citet{Siddhartha2018} & non-ideal Buck, dSPACE & IMC-PID, direct & no repeated solver comparison, no switched energy audit\\
+\citet{Izci2022} & averaged Buck & PID, AEO + Nelder--Mead & gain-space search, no structural certificate, no switched admissibility\\
+\citet{Nanyan2024} & averaged Buck & PID, improved SCA & gain-space search, single fidelity\\
+\citet{Siano2014} & Buck prototype & fuzzy, MO-PSO & no equal-budget solver comparison\\
+\citet{Abdelmalek2020} & Buck, experimental & observer-based nonlinear, PSO & tracking/robustness focus, not a matched co-design\\
+\citet{Coutinho2023} & multiloop process & PID, Bayesian optimization & not a power converter\\
+Present work & audited non-ideal Buck, 1--46 V, switched replica with energy balance & LQI weights $\to$ exact 2-DOF PIDF; 6 global operators + refineBO; 6 families & structural equivalence theorem; 39 inequalities (2 measured on the switched model); switched validation vs.\ PI, PID, PIDF, LQR, LQG, LQI\\
+\bottomrule
+\end{tabular}
+\end{table*}

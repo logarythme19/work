@@ -1,0 +1,196 @@
+\section{Constrained co-design problem and algorithms}\label{sec:problem}
+
+\subsection{Workflow}
+Fig.~\ref{fig:workflow} summarizes the protocol. Offline, a candidate $\xi$ is
+mapped by \eqref{eq:care} and \eqref{eq:map} to a 2-DOF PIDF; the averaged
+evaluator runs six scenarios and the switched screen runs three short steady
+windows; Deb ordering ranks the record. After 240 global and 60 local calls the
+best record of each run is frozen, and only then replayed on the full switched
+mission, which is never visible to the search.
+
+\begin{figure*}[t]
+\centering
+\input{figures/fig_workflow}
+\caption{Formula-first CMO--LQI--PIDF workflow. Solid arrows: evaluation inside the search; dashed arrow: acceptance replay after the freeze. The switched screen is the only switched information used during the search.}
+\label{fig:workflow}
+\end{figure*}
+
+\subsection{Scenarios and objective}
+The averaged evaluator integrates \eqref{eq:avg} with the hybrid guard $i_L\ge0$
+(RK4, \SI{2}{\micro s}) under the sampled control layer of
+Section~\ref{sec:theory}. Six scenarios are declared (Table~\ref{tab:scen}); each
+starts from the analytical equilibrium preceding its first event. For scenario
+$s$ the seven criteria are the loss intensity $E_{loss}/E_u$, IAE, ISE, global
+ITAE, event-reset ITAE, RMSE and MAE, each divided by its value for the
+normalization record $\xi_0$. The scalar objective is the mean of the $6\times7$
+ratios,
+\begin{equation}
+J_s(\xi)=\frac{1}{42}\sum_{s=1}^{6}\mathbf 1^\top r_s(\xi),\qquad J_s(\xi_0)=1 .
+\label{eq:J}
+\end{equation}
+MAE is IAE divided by the horizon and RMSE is the square root of ISE divided by
+it, so two of the seven entries are redundant; the induced weights (2/7 on the
+IAE family, 2/7 on the ISE family, 1/7 on each other criterion) are declared
+rather than left implicit. The objective ranks feasible candidates only.
+
+\begin{table}[t]
+\centering
+\caption{Averaged scenarios (the source is \SI{48}{V} in all of them).}
+\label{tab:scen}
+\footnotesize
+\begin{tabular}{@{}llll@{}}
+\toprule
+ID & $T$ (ms) & reference & load pulse (+0.5 A)\\
+\midrule
+S0 & 90 & 24$\to$1$\to$46 V at 30, 60 ms & 15--25 ms\\
+S1a & 40 & 24$\to$1 V at 10 ms & --\\
+S1b & 40 & 1$\to$46 V at 10 ms & --\\
+S1c & 40 & 46$\to$24 V at 10 ms & --\\
+S2a & 40 & 24 V & 10--20 ms\\
+S2b & 40 & 46 V & 10--20 ms\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Thirty-nine inequalities in engineering units}
+For each scenario six inequalities $g_{s,j}\le0$ are evaluated separately:
+\begin{equation}
+\begin{aligned}
+g_{s,1}&=\frac{\max_t\,\sigma_k\big(v_o-r_k\big)}{\SI{1.5}{V}}-1 &&\text{overshoot beyond each new level},\\
+g_{s,2}&=\frac{\max_{t\in\mathcal T_p}|r-v_o|}{\SI{0.5}{V}}-1 &&\text{load-pulse deviation},\\
+g_{s,3}&=\frac{\max_t i_L+\Delta I_{L,pp}^{\max}/2}{\SI{23}{A}}-1 &&\text{device current},\\
+g_{s,4}&=\frac{\max_k|\bar e_k|}{\SI{25}{mV}}-1 &&\text{steady error},\\
+g_{s,5}&=\frac{|E_u/E_{u,0}-1|}{0.005}-1 &&\text{same useful task},\\
+g_{s,6}&=\frac{\rho_{\ell,s}-1}{0.005}-1,\;\; \rho_{\ell,s}=\frac{E_{loss}/E_u}{(E_{loss}/E_u)_{\xi_0}} &&\text{loss intensity},
+\end{aligned}
+\label{eq:g}
+\end{equation}
+where $\sigma_k$ is the sign of the $k$-th reference step, $\mathcal T_p$ runs from
+the onset of the load pulse to the next event, $\bar e_k$ is the mean error over
+the last \SI{2}{ms} of each constant segment and \SI{23}{A} is the IRF540N
+continuous drain rating at \SI{100}{\celsius}. The averaged peak current is
+augmented by the worst half ripple $\Delta I_{L,pp}^{\max}/2=\SI{1.17}{A}$
+(Table~\ref{tab:tf}). A family that does not apply to a scenario (no step, no
+load pulse) is set to $-1$. These 36 inequalities are completed by three measured ones,
+\begin{equation}
+g_{37}=\frac{\max_{k}\,\mathrm{pp}(d)}{0.20}-1,\quad
+g_{38}=\frac{\max_{k}|\bar e_{sw,k}|}{\SI{25}{mV}}-1,\quad
+g_{39}=\frac{\max_t i_{L,sw}}{\SI{23}{A}}-1,
+\label{eq:gsw}
+\end{equation}
+obtained from one run of the switched replica over the transition sequence
+24$\to$1$\to$46$\to$24~V (steps at 2, 14 and \SI{24}{ms}, \SI{34}{ms} in total,
+\SI{1}{\micro s} RK4 with exact PWM edges). The duty peak-to-peak and the mean
+error are measured over the last \SI{4}{ms} of each level. A candidate is
+feasible when $\sum_j\max(g_j,0)\le10^{-4}$; the screen costs about \SI{15}{ms}
+per candidate against \SI{14}{ms} for the six averaged scenarios.
+
+\paragraph{Why the screen contains large transitions}
+The protocol was frozen after two pilot campaigns that are reported, not
+hidden. Pilot~1 used the analytical ripple bound of the earlier version of this
+study, $\rho_{rip}=\max_V|C_{fb}(z{=}{-1})|\Delta V_{o,pp}(V)/2\le0.20$, where
+$C_{fb}$ is the discrete feedback path evaluated at the controller Nyquist
+frequency, which coincides with the carrier frequency because $T_s=1/(2f_s)$.
+Every branch winner it produced satisfied the bound ($\rho_{rip}\approx0.07$--$0.19$)
+and yet, on the switched model, several sustained a limit cycle with duty swings
+of 0.7--0.9 at \SI{24}{V} and offsets of 0.3--\SI{1.8}{V}. Pilot~2 replaced the
+bound by steady \SI{10}{ms} switched windows started \emph{from equilibrium} at
+1, 24 and \SI{46}{V}. Its best design (178 of 180 runs feasible) passed that
+screen, but on the reference mission it entered, after the large
+24$\to$1~V transition, a different limit cycle in which one sample in four
+clips at $d_{\min}$, leaving a \SI{-42}{mV} offset at \SI{1}{V}. The loop thus
+holds \emph{coexisting} switching limit cycles, and the one reached depends on
+the transient that precedes it; this is why the final screen is a transition
+sequence. $\rho_{rip}$ is kept as a reported diagnostic only.
+
+Feasibility is stated in absolute units, not as non-inferiority against
+$\xi_0$. With ratio gates, 24 of 36 constraints are active at $\xi_0$ and a
+gentler normalization record leaves no candidate that dominates it; with
+absolute gates every controller family of Section~\ref{sec:families} is judged
+against the same specification, and $\xi_0$ itself is infeasible because it
+overshoots by \SI{6.2}{V} on the 1$\to$46~V step.
+
+\subsection{Algorithms and budgets}\label{sec:algos}
+Constraint handling uses Deb's rules \citep{Deb2000}: feasible beats
+infeasible, feasible records are ranked by $J_s$, infeasible ones by aggregate
+violation; no penalty weight is tuned. All methods work in the normalized box
+$u\in[0,1]^n$, receive the matched seed $2026091200+k$, $k=1,\dots,30$, and the same
+initial population of 12: $\xi_0$ first, six further individuals within a
+normalized radius 0.05 of it, five uniform. One counted call is one complete
+evaluation (six averaged scenarios, the switched screen, 39 inequalities).
+Table~\ref{tab:algos} lists the operators.
+
+\begin{table*}[t]
+\centering
+\caption{Algorithms 1--7. Population 12, 240 global calls, then 60 refineBO calls initialized from the same run's history (300 calls per run).}
+\label{tab:algos}
+\footnotesize
+\begin{tabular}{@{}lp{6.0cm}p{4.3cm}p{4.4cm}@{}}
+\toprule
+Alg. & Exploration / update & Exploitation / survival & Fixed parameters\\
+\midrule
+1 PSO \citep{Kennedy1995} & velocity with independent cognitive and social draws & personal and global Deb incumbents & $w=0.9-0.5\tau$, $c_1=c_2=1.7$, $|v|\le0.2$\\
+2 GA & binary Deb tournaments, SBX crossover & polynomial mutation, elitist $(\mu+\lambda)$ & $\eta_c=15$, $\eta_m=20$, $p_m=1/n$\\
+3 ABC \citep{Karaboga2008} & one-coordinate differential move (employed, onlooker) & greedy Deb replacement, scout & limit $\max(5,\mathrm{round}(0.5\,n_pn))$\\
+4 pAEABC & ABC move scaled by diversity $s_k=\mathrm{clip}(0.5+0.15/D_k,0.5,2)$, extra coordinate kick w.p.\ $0.25(1-\tau)$ & as ABC & inspired by \citet{Alsamia2024}\\
+5 pIGWO & three-leader GWO with $a=2(1-\tau^2)$, Gaussian kick w.p.\ $0.15(1-\tau)+0.02$ & elitist pooling & inspired by \citet{Hou2022}\\
+6 pIGWO--DLH & linear $a=2-2k/K$ GWO trial and an independently evaluated radial local-hunt trial & better trial replaces the wolf (non-elitist) & $R_i=\|x_i-x_\alpha\|/2$; inspired by \citet{NadimiShahraki2021}\\
+7 refineBO & shared-kernel Matérn-5/2 GPs on $J_s$ and $g_1,\dots,g_{39}$; pool of 1000 around the 10 Deb-best records, radius $0.04\to0.003$ & $\alpha=P_f(\mathrm{EI}+0.02\sigma_J)+10^{-4}P_f$, $P_f=\prod_j\Phi(-\mu_j/\sigma_j)$; restoration mode if no feasible incumbent & 60 calls\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The prefix ``p'' marks project variants that are inspired by, but not claimed to
+be operator-identical with, the cited algorithms. $\tau$ is the fraction of the
+budget consumed. The product $P_f$ of marginal feasibility probabilities is an
+independence approximation used for ordering only; every accepted point is
+checked by the exact evaluator. Wall time is logged but never interpreted as an
+energy or performance quantity.
+
+\subsection{Controller families and fixed-rule comparators}\label{sec:families}
+To separate the value of the parameterization from that of the optimizer, the
+identical protocol (evaluator, 39 inequalities, 7 algorithms, 30 seeds,
+300 calls) is run on six families:
+\begin{itemize}
+\item \textbf{CMO--LQI--PIDF}: $\xi$ of \eqref{eq:xi} $\to$ \eqref{eq:care}
+  $\to$ \eqref{eq:map}; 4 variables, reads $v_o$ only;
+\item \textbf{CMO--LQI--SF}: the same $\xi$ and the same continuous gain, applied
+  as full-state LQI with measured $i_L$ and $i_C$ (the twin of
+  Proposition~\ref{prop:struct});
+\item \textbf{PIDF-direct}: the same 2-DOF structure ($b=1$, $c=0$, $N=N_C$) with
+  $(\log K_p,\log K_i,\log K_d,\log K_b)$ searched directly over the gain ranges
+  spanned by the LQI box;
+\item \textbf{PIDF7-direct}: $K_p,K_i,K_d,N,b,c,K_b$ all free (7 variables);
+\item \textbf{PID-direct}: backward-difference derivative on $-v_o$, $b=1$,
+  $(K_p,K_i,K_d,K_b)$ free;
+\item \textbf{PI-direct}: $(K_p,K_i,K_b)$ free.
+\end{itemize}
+
+\paragraph{Fixed-rule comparators}\label{sec:comparators}
+Six classical designs share the control layer and are synthesized at \SI{24}{V},
+$T_s=\SI{10}{\micro s}$, with the delay $1.5T_s$ (computation plus ZOH) in every
+frequency-domain rule. \emph{PI}: crossover $0.03f_s$, phase margin
+\SI{60}{\degree}, $K_b=K_i/K_p$. \emph{PID}: zeros cancelling the $LC$ pair of
+$\Delta(s)$, crossover set for \SI{60}{\degree} of phase margin including the ESR
+zero, backward-difference derivative on $-v_o$, $b=1$, $c=0$,
+$K_b=1/\sqrt{T_iT_d}$. \emph{PIDF}: the Type-III rule, i.e.\ the PID zeros plus a
+filter pole on the ESR zero $N=N_C$, \SI{60}{\degree} of phase margin.
+\emph{LQR}: discrete Riccati solution on the ZOH model with the Bryson limits of
+$\xi_0$, measured $i_L$ and $v_C=v_o-r_Ci_C$, no integral action. \emph{LQG}: the
+LQR gain with a steady-state Kalman predictor on $v_o$ only (process noise
+0.01 in duty, measurement noise \SI{0.05}{V}). \emph{LQI}: discrete Riccati
+solution of the integral-augmented ZOH model with the same weights, measured
+state, $K_b=\omega_B$. None of them is tuned by the proposed search; they
+represent what the standard rules deliver on this plant.
+
+\subsection{Statistics and validation}
+Methods are compared as matched blocks over the 30 seeds with the Friedman test
+and Holm-adjusted paired Wilcoxon signed-rank tests \citep{Demsar2006}; a run's
+score is $J_s$ if feasible and $10^3$ plus its violation otherwise, which is
+consistent with Deb ordering. Families are compared pairwise on the same
+(method, seed) cells. The retained controller of each family is the best
+feasible record over its 180 runs; it is frozen and replayed on the
+\SI{324}{ms} reference mission of the Simulink model
+(24$\to$1$\to$46~V at 108 and 216~ms, +0.5~A load pulse at 54--90~ms, initial
+state at the \SI{24}{V} equilibrium), with the energy balance of
+\eqref{eq:energy}.

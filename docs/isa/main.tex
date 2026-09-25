@@ -1,0 +1,59 @@
+\documentclass[preprint,12pt]{elsarticle}
+% ISA Transactions (Elsevier). Switch to [final,3p,twocolumn] for a typeset proof.
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[separate-uncertainty=true]{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{lineno}
+\sisetup{detect-all}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\graphicspath{{./}}
+\input{numbers}
+
+\journal{ISA Transactions}
+
+\begin{document}
+\begin{frontmatter}
+\title{Formula-first co-design of a 2-DOF PIDF for a wide-range non-ideal Buck converter: LQI weights as the search space, an exact structural realization, and switched-model validation}
+
+\author{Anonymous author(s)}
+\address{Affiliation withheld for review}
+
+\input{sections/abstract}
+
+\begin{keyword}
+Buck converter \sep LQI control \sep 2-DOF PIDF \sep structural equivalence \sep metaheuristic optimization \sep multi-fidelity constraints \sep switching limit cycles
+\end{keyword}
+\end{frontmatter}
+
+\linenumbers
+
+\input{sections/intro}
+\input{sections/related}
+\input{sections/model}
+\input{sections/theory}
+\input{sections/problem}
+\input{sections/results}
+\input{sections/conclusion}
+
+\appendix
+\input{sections/appendix}
+
+\section*{Data availability}
+All code (Python replica, evaluator, algorithms, analysis, figures), the MATLAB
+S-function and replay script for the reference Simulink model, the per-run
+checkpoints and the generated tables are archived with the manuscript
+repository; a public DOI will be assigned at acceptance.
+
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or
+personal relationships that could have appeared to influence the work reported
+in this paper.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{refs}
+\end{document}

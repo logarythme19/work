@@ -1,0 +1,92 @@
+\section{Introduction}\label{sec:intro}
+
+Digitally controlled DC--DC converters are routinely tuned by metaheuristics:
+particle swarms, genetic algorithms, bee colonies and grey-wolf variants search
+the gains of a PI, PID or filtered PID (PIDF) against a tracking index
+\citep{Izci2022,Nanyan2024,RodriguezMolina2020}. Two weaknesses recur in that
+literature, and both are visible to an industrial reader. First, the searched
+object is a vector of gains with no structural meaning, so a good gain vector
+carries no stability or robustness certificate and the search space is sized by
+guesswork. Second, the evidence is usually produced on the same averaged model
+that drives the search, so switching ripple, duty saturation and discontinuous
+conduction, which decide whether a tuning is admissible on the real power stage,
+never enter the comparison \citep{Middlebrook1976,Erickson2020}.
+
+This paper addresses both points on one concrete, audited plant: a non-ideal
+asynchronous Buck converter supplied from a fixed \SI{48}{V} source and
+commanded over the whole attainable range \SIrange{1}{46}{V}. The design is
+\emph{formula first}. The searched object is not a gain vector but the set of
+Bryson excursions that define a linear--quadratic--integral (LQI) cost; every
+candidate is solved from the algebraic Riccati equation and then realized
+\emph{exactly} as a two-degree-of-freedom PIDF (2-DOF PIDF) that reads the output
+voltage only. Every evaluated point is therefore a genuine LQI law, with the
+classical LQR return-difference guarantees, and at the same time a controller
+that a practitioner can implement in a standard PID block with setpoint weights.
+
+The central theoretical observation is stronger than a transfer-function
+identity. We show that the derivative filter of the realizing PIDF, when its pole
+is placed at the equivalent-series-resistance (ESR) zero $N_C=1/(r_CC)$ and its
+state is initialized consistently, reconstructs the capacitor voltage
+\emph{exactly}, whatever happens in the inductor branch. Consequently the
+output-feedback PIDF and the full-state LQI generate identical trajectories
+under duty saturation, anti-windup activity, discontinuous conduction and any
+mismatch of $L$, $r_L$, $R_{on}$, $r_d$ or $V_f$; only an unmeasured load current,
+a mismatch of the output network $(R,r_C,C)$, or sampling break the equivalence.
+This turns a nominal, small-signal equivalence into a structural statement that
+can be checked on a simulator to machine precision, and it tells the
+practitioner exactly which sensors the PIDF saves and at what price.
+
+The optimization layer compares six equal-budget global operators---PSO, GA,
+ABC and three project variants pAEABC, pIGWO and pIGWO--DLH---each followed by a
+common Gaussian-process refinement stage (refineBO), over 30 matched seeds. The
+seven algorithms are not the contribution by themselves; the question they
+answer is whether the \emph{LQI-weight parameterization} helps them. We
+therefore run the identical protocol on five other controller families that
+share the evaluator, the budget and the specifications: the full-state twin of
+the design (same weights, measured $i_L$), the same 2-DOF PIDF searched directly
+in gain space, a PIDF with free filter pole and setpoint weights, a PID and a PI.
+Six fixed-rule comparators---PI, PID, PIDF (Type-III rule), LQR, LQG and
+LQI---complete the picture, and every frozen controller is replayed on a switched
+replica of the reference Simulink/Simscape model on the complete
+\SI{24}{}$\to$\SI{1}{}$\to$\SI{46}{V} mission, with a closed energy balance.
+
+A previous version of this protocol accepted candidates on an averaged model
+guarded by an analytical switching-ripple bound, and four of six branch winners
+failed on the switched model. We reproduce that failure mode, show that it is
+caused by coexisting switching limit cycles whose selection depends on the
+preceding transient, and replace the analytical bound by three \emph{measured}
+inequalities obtained from a \SI{34}{ms} switched transition sequence inside
+each evaluation, a multi-fidelity constraint that roughly doubles the cost of
+a candidate. Feasibility is also stated in absolute
+engineering units (overshoot, load deviation, device current, steady error)
+instead of ratios to a reference controller, so that every family is judged
+against the same specification.
+
+The contributions are:
+\begin{enumerate}
+\item a formula-first chain from the non-ideal converter equations to the
+  exact output-feedback realization of any LQI law as a 2-DOF PIDF, with all
+  analytical quantities (equilibria, transfer functions, Riccati gain, LQR
+  margins, a common-$P$ D-region certificate over the operating polytope)
+  instantiated and independently re-computed;
+\item a structural equivalence theorem (Proposition~\ref{prop:struct}) showing
+  that the PIDF filter state equals the capacitor voltage along every
+  trajectory of the plant, with a proof, its exact domain of validity and a
+  machine-precision numerical confirmation;
+\item a constrained co-design problem in the space of LQI weights with 39
+  explicit inequalities in engineering units, three of which are measured on the
+  switched model during the search;
+\item a matched, equal-budget comparison of seven algorithms across six
+  controller families, which isolates the value of the LQI parameterization
+  from the value of the optimizer;
+\item a switched-model validation on the reference mission against PI, PID,
+  PIDF, LQR, LQG and LQI, reported with the specifications each controller
+  meets or violates rather than with a single aggregate score.
+\end{enumerate}
+
+Section~\ref{sec:model} derives the model and describes the switched replica.
+Section~\ref{sec:theory} states the LQI synthesis and the equivalence results.
+Section~\ref{sec:problem} defines the co-design problem and the algorithms.
+Section~\ref{sec:results} reports the results and Section~\ref{sec:concl}
+concludes. All code, including a MATLAB S-function that runs the same control
+layer in the reference Simulink model, is released with the paper.

@@ -1,0 +1,48 @@
+\section{Reproducibility record}\label{app:repro}
+\paragraph{Reference model} \texttt{buck\_fo\_lqi\_fixed\_reference\_v6\_1\_46V\_R2022a.slx},
+SHA-256 \texttt{948fbae2679b57ed726a92eeebcae398aaf0ca6b9b3a74216759ca80b390c7fe}.
+All plant, mission and logging parameters of Table~\ref{tab:params} were decoded
+from its model workspace; the snubber is resistive ($R_s=\SI{100}{k\ohm}$,
+$C_s=\infty$) on the MOSFET only, the diode snubber is disabled, and the MOSFET
+body diode has $R_d=\SI{0.01}{\ohm}$, $V_{fd}=0$. The saved model initializes
+$L$ at \SI{1.2}{A} and $C$ at \SI{12}{V}; all replays of this paper start at the
+\SI{24}{V} equilibrium (\SI{2.4}{A}, \SI{24}{V}).
+
+\paragraph{Commands} From the repository root:
+\begin{verbatim}
+python scripts/cmo_formula_first.py   # Sections 3-4, Prop. 2 tests
+python scripts/cmo_campaign.py        # 6 families x 6 methods x 30 seeds
+python scripts/cmo_analyze.py         # statistics, freeze, switched replay
+python scripts/cmo_figures.py; python scripts/cmo_numbers.py
+\end{verbatim}
+In MATLAB (R2022a or later, Simscape Electrical, Control System Toolbox):
+\begin{verbatim}
+cmo_formula_first
+T = run_cmo_validation('buck_..._R2022a.slx', 'results/cmo/controllers.csv');
+\end{verbatim}
+The second call replaces only the controller S-function (\texttt{cmo\_sfun},
+a line-by-line port of \texttt{cmo/ctrl.py}) and never saves the model.
+
+\paragraph{Seeds and budgets} Seeds $2026091201,\dots,2026091230$; population
+12; 240 global and 60 refineBO calls per run; 30 runs per method and family.
+Each checkpoint stores the method, seed, best decision vector, objective, the 39
+inequalities, the global-stage record and the best-so-far curve.
+
+\section{Protocol changes with respect to the earlier version}\label{app:changes}
+\begin{table}[h]
+\centering
+\footnotesize
+\caption{Declared changes and their reasons.}
+\begin{tabular}{@{}p{3.6cm}p{4.4cm}@{}}
+\toprule
+Change & Reason\\
+\midrule
+Feasibility in engineering units instead of ratios to $\xi_0$ & with ratio gates 24 of 36 constraints are active at $\xi_0$, and a gentle record leaves no dominating candidate; absolute gates make all families comparable\\
+Analytical ripple bound $\to$ switched transition screen ($g_{37}$--$g_{39}$) & pilots 1 and 2: the bound and a steady screen both admitted limit-cycling designs (Section~\ref{sec:problem})\\
+Device current limit \SI{23}{A} (IRF540N at \SI{100}{\celsius}) & the earlier retained design used 90\,\% of the \SI{25}{\celsius} rating\\
+refineBO budget stated once: 60 calls & the earlier text gave both 20 and 60\\
+Structural equivalence (Prop.~\ref{prop:struct}) & replaces the claim that saturation, DCM and PWM break the realization\\
+Six added families and six fixed-rule comparators on one specification & separates parameterization from optimizer\\
+\bottomrule
+\end{tabular}
+\end{table}
