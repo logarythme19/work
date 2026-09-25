@@ -140,8 +140,11 @@ def fig_campaign(camp_dir, outdir, tag):
         jit = (np.random.default_rng(i).random(v.size) - 0.5) * 0.25
         ax.plot(i + 0.32 + jit, v, ".", color=INK2, ms=3, alpha=0.7)
     ax.axhline(0, color=INK, lw=0.9)
+    ax.set_yscale("symlog", linthresh=1.0)
+    ax.set_ylim(top=0.3)
+    ax.text(-0.45, 0.05, "faisable (m > 0)", fontsize=7, color=INK2, va="bottom")
     ax.set_xticks(range(len(meths)), meths)
-    ax.set_ylabel("marge robuste (jeu de conception)")
+    ax.set_ylabel("marge robuste m (symlog : lineaire sur [-1,1])")
     ax.set_title(f"Distribution par graine — bras {tag} (unite = graine)")
     save(fig, f"fig_graines_{tag}", outdir)
 
@@ -180,7 +183,7 @@ def main():
                              ("b_fixe_1_proposition_1", "meilleur FO-PIDF, b = 1", "fig_trajectoire_b1")):
             th = rep["bras"][key]["theta_meilleur"]
             fig_trajectory(th[:7], 1.0 / 10 ** th[7], lab, args.out, nm)
-    for tag in ("v5", "v5b"):
+    for tag in ("v5", "v5b", "v5kp"):
         fig_campaign(f"results/campaign_{tag}", args.out, tag)
 
 

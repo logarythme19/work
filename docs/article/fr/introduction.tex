@@ -1,0 +1,39 @@
+\section{Introduction}
+\label{sec:intro}
+
+Les correcteurs d'ordre fractionnaire promettent un réglage plus fin que leurs
+homologues entiers, au prix de degrés de liberté supplémentaires que l'on
+confie volontiers à des métaheuristiques. Pour un convertisseur de puissance,
+cette promesse se heurte à trois réalités de mise en œuvre : l'échantillonnage
+et le retard, la saturation d'actionneur et l'anti-emballement, et
+l'approximation rationnelle des opérateurs fractionnaires.
+
+L'étude part d'un échec documenté. Une campagne FO-LQI $\to$ FO-PIDF sur un
+Buck non idéal de 48~V a consommé plus de 1800 évaluations réparties sur six
+algorithmes sans jamais atteindre la faisabilité robuste. Le diagnostic
+retenu à l'époque mettait en cause l'écrêtage du gain proportionnel projeté
+sur la borne $\log_{10}k_p=-4$, atteinte dans $79~\%$ des candidats.
+
+\paragraph{Question de méthode.}
+Lorsqu'une recherche paramétrique échoue, comment déterminer si l'échec
+vient de l'algorithme, de la paramétrisation, ou du problème lui-même ? Nous
+répondons par un protocole en trois temps : un audit de saturation des bornes
+qui sépare saturations structurelles et pathologiques ; des sondes conjointes
+dans l'espace du correcteur, qui testent l'accessibilité de la région
+faisable indépendamment de la paramétrisation ; une campagne confirmatoire
+préenregistrée qui mesure l'échec avec les statistiques qui conviennent, au
+lieu de le supposer.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item Un audit de saturation des bornes de paramétrisation, qui montre ici
+  que l'écrêtage de $k_p$ n'est pas la cause de l'échec antérieur.
+\item Une chaîne FO-LQI $\to$ FO-PIDF reconstruite et vérifiée : la
+  projection reproduit l'identité exacte en ordre entier et mesure son
+  erreur hors de ce domaine.
+\item Une campagne confirmatoire préenregistrée en trois bras, dont les
+  résultats négatifs sont rapportés intégralement, graines stériles comprises.
+\item L'identification d'un verrou physique indépendant du correcteur (le
+  plancher de tension à rapport cyclique minimal) et d'un angle mort du
+  cahier des charges (les cycles limites invisibles aux contraintes).
+\end{enumerate}

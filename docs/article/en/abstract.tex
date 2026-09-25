@@ -1,0 +1,30 @@
+\begin{abstract}
+\noindent
+A previous FO-LQI $\to$ FO-PIDF optimisation campaign for a non-ideal 48~V
+Buck converter spent more than 1800 evaluations without reaching robust
+feasibility, and attributed this failure to clipping of the proportional gain
+at a parameterisation bound. We propose a \emph{bound-saturation audit} that
+separates structural from pathological saturation, and apply it to a
+reconstructed chain whose projection reproduces the exact identity
+proposition to within \ChiffreErreurPropUn. Over \ChiffreAuditN{} samples of
+the decision box, $\log_{10}k_p$ never reaches its bound: clipping does not
+explain the failure. A preregistered confirmatory campaign (hash-frozen
+protocol, three arms, six metaheuristics, thirty paired seeds, 540 cells) on a
+switched simulator that reproduces discontinuous conduction yields \emph{no}
+robustly feasible controller: 0/30 seeds per method and per arm, Wilson
+interval $[0;\ChiffreWilsonHaut]$. The parameterisation specified by the
+brief does not even reach nominal feasibility; freeing the setpoint weight $b$
+makes it reachable in \ChiffreNomFaisCinqB{} of 180 cells, without
+robustness. A physical diagnosis identifies a controller-independent
+obstruction: at minimum duty ratio, the converter in discontinuous conduction
+settles below the minimum-voltage threshold in \ChiffrePlancherN{} of the
+\ChiffrePlancherTot{} uncertainty cases. We further show that controllers
+feasible with respect to all six constraints can sustain a limit cycle that
+these constraints do not detect. These results concern a simulated model and
+a finite set of cases; they are neither a robustness certificate nor a proof
+of infeasibility.
+\end{abstract}
+
+\noindent\textbf{Keywords:} Buck converter; fractional-order control; FO-LQI;
+FO-PIDF; metaheuristics; parameterisation audit; discontinuous conduction;
+reproducibility.

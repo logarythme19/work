@@ -86,6 +86,37 @@ def main():
                 M[f"ChiffreNFaisB{pre}"] = str(sum(r["marge"] >= 0 for r in a["lancers"]))
                 M[f"ChiffreNLancers{pre}"] = str(len(a["lancers"]))
 
+        # --- campagne confirmatoire, par bras -------------------------------
+        import glob
+        for arm, tag in (("v5", "Cinq"), ("v5b", "CinqB"), ("v5kp", "CinqKp")):
+            rows = [json.load(open(f)) for f in glob.glob(f"results/campaign_{arm}/*.json")
+                    if not os.path.basename(f).startswith("_")]
+            an = load(f"results/campaign_{arm}/_analyse.json")
+            if not rows or not an:
+                continue
+            M[f"ChiffreN{tag}"] = str(len(rows))
+            M[f"ChiffreSteriles{tag}"] = str(sum(r["etage1"]["sterile"] for r in rows))
+            M[f"ChiffreNomFais{tag}"] = str(sum(r["etage1"]["n_faisables"] > 0 for r in rows))
+            M[f"ChiffreRobFais{tag}"] = str(sum(bool(r["etage2"]["faisable"]) for r in rows))
+            M[f"ChiffreMargeEtUn{tag}"] = f"${fmt(max(r['etage1']['meilleure_marge'] for r in rows), 3, lang)}$"
+            M[f"ChiffreMargeEtDeux{tag}"] = f"${fmt(max(r['etage2']['meilleure_marge'] for r in rows), 3, lang)}$"
+            st = an["statistiques_marge"]
+            M[f"ChiffreFriedmanP{tag}"] = sci(st["friedman"]["p"], 1, lang)
+            M[f"ChiffreFriedmanChi{tag}"] = f"${fmt(st['friedman']['chi2'], 1, lang)}$"
+            M[f"ChiffrePaires{tag}"] = str(sum(v["significatif_holm"] for v in st["paires"].values()))
+            med = {m: v["mediane"] for m, v in st["par_methode"].items()}
+            best = max(med, key=med.get)
+            M[f"ChiffreMeilleure{tag}"] = best.replace("_", "-").replace("AEABC", "pAEABC").replace("IGWO", "pIGWO") if best not in ("PSO", "GA", "ABC") else best
+            M[f"ChiffreMedMeilleure{tag}"] = f"${fmt(med[best], 3, lang)}$"
+            lo, hi = an["par_methode"][best]["wilson95_faisable"]
+            M["ChiffreWilsonHaut"] = pct(hi, 1, lang)
+        fl = load("results/plancher_dmin.json")
+        if fl:
+            M["ChiffrePlancherN"] = str(fl["n_cas_plancher_sous_seuil"])
+            M["ChiffrePlancherTot"] = str(len(fl["cas"]))
+            M["ChiffrePlancherNominal"] = f"${fmt(fl['cas']['0']['Vmin_plancher_V'], 3, lang)}$~V"
+            M["ChiffrePlancherMin"] = f"${fmt(min(v['Vmin_plancher_V'] for v in fl['cas'].values()), 3, lang)}$~V"
+
         lines = ["% Genere par scripts/make_numbers.py -- NE PAS EDITER A LA MAIN"]
         for k, v in sorted(M.items()):
             lines.append(f"\\newcommand{{\\{k}}}{{{v}}}")

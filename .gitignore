@@ -4,3 +4,11 @@ __pycache__/
 *.npz
 results/**/raw/
 figures/*.png
+*.aux
+*.log
+!results/logs/*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.synctex.gz

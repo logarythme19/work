@@ -1,0 +1,37 @@
+\section{Introduction}
+\label{sec:intro}
+
+Fractional-order controllers promise finer tuning than their integer-order
+counterparts, at the price of extra degrees of freedom that are readily handed
+to metaheuristics. For a power converter, this promise meets three
+implementation realities: sampling and delay, actuator saturation and
+anti-windup, and the rational approximation of fractional operators.
+
+This study starts from a documented failure. An FO-LQI $\to$ FO-PIDF campaign
+on a non-ideal 48~V Buck converter spent more than 1800 evaluations across six
+algorithms without ever reaching robust feasibility. The diagnosis retained at
+the time blamed clipping of the projected proportional gain at the bound
+$\log_{10}k_p=-4$, reached by $79~\%$ of the candidates.
+
+\paragraph{Methodological question.}
+When a parametric search fails, how can one tell whether the failure comes
+from the algorithm, from the parameterisation, or from the problem itself? We
+answer with a three-step protocol: a bound-saturation audit that separates
+structural from pathological saturation; joint probes in controller space,
+which test whether the feasible region is reachable independently of the
+parameterisation; and a preregistered confirmatory campaign that measures the
+failure with appropriate statistics instead of assuming it.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item A bound-saturation audit of the parameterisation, which shows here that
+  clipping of $k_p$ is not the cause of the earlier failure.
+\item A reconstructed and verified FO-LQI $\to$ FO-PIDF chain: the projection
+  reproduces the exact integer-order identity and measures its error outside
+  that domain.
+\item A preregistered three-arm confirmatory campaign whose negative results
+  are reported in full, sterile seeds included.
+\item The identification of a controller-independent physical obstruction
+  (the voltage floor at minimum duty ratio) and of a blind spot in the
+  specification (limit cycles invisible to the constraints).
+\end{enumerate}

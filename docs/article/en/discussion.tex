@@ -1,0 +1,71 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{What the audit changes in the diagnosis.}
+The earlier failure was attributed to a bound. The audit shows that, for a
+verified projection, the bound is never reached. The actual obstruction lies
+in the \emph{image} of the parameterisation: the FO-LQI synthesis produces
+neither the low values of $k_p$ nor the values $b<1$ required by the feasible
+points found by direct search. A bound is therefore meaningful only relative
+to what the synthesis chain can produce; a saturation rate says nothing
+without the distinction between structural and pathological saturation.
+
+\paragraph{What the campaign establishes.}
+Over 540 preregistered cells, no controller is robustly feasible. This
+negative result is measured, not assumed: sterile seeds are reported, Wilson
+intervals bound the success rate, and the sealed test remained untouched for
+lack of a candidate to test. Freeing $b$ or $k_p$ makes \emph{nominal}
+feasibility reachable, but not robustness: tuning freedom is not enough.
+
+\paragraph{A physical obstruction.}
+The voltage floor at minimum duty ratio is a property of the converter, not of
+the controller. The threshold $V_\mathrm{min}\ge0.8$~V lies above this floor
+in most uncertainty cases, so a control action saturated during the
+$24\to1$~V descent cannot satisfy it. The specification thus implicitly
+requires the controller to leave saturation in time, a requirement that
+depends on anti-windup as much as on gains. Any future comparison should check
+whether this threshold is compatible with $d_\mathrm{min}=0.02$ and the load
+before searching for gains.
+
+\paragraph{A blind spot of the specification.}
+Controllers that are feasible with respect to the six constraints can
+oscillate permanently. For an implementation-oriented journal, this is the
+finding with the heaviest consequences: a mean-value constraint does not
+guarantee the absence of a limit cycle. We do not modify the constraints after
+observation; we recommend adding, in a future preregistered study, a
+constraint on the oscillation amplitude over steady-state windows.
+
+\paragraph{Fractional character.}
+The best points found have $\lambda$ and $\mu$ equal or very close to~1. The
+resulting controller is, in practice, of integer order. Nothing in our results
+attributes a benefit to fractional order; the study lacks the direct-tuning,
+equal-budget comparator that would allow such a judgement.
+
+\section{Limitations and what has not been demonstrated}
+\label{sec:limitations}
+
+\begin{itemize}
+\item \textbf{Model.} All results concern a switched simulator written in
+  Python, not the reference Simulink model. Snubbers are absent, the diode
+  follows a static affine law, and no cross-validation against Simulink has
+  been carried out.
+\item \textbf{Projection.} The FO-LQI $\to$ FO-PIDF identity is exact only
+  in integer order, with the exact pole, on the unsaturated nominal plant; the
+  pole projection alone introduces up to \ChiffreErreurProjPole{} error at the
+  top of the band.
+\item \textbf{Infeasibility not proven.} No cell is robustly feasible, but
+  this does not prove that no robust controller exists: budgets are finite,
+  and the uncertainty set is a declared choice.
+\item \textbf{Uncertainty set.} The uncertain parameters and their ranges
+  were chosen by us, as the brief does not specify them.
+\item \textbf{Sealed test.} It was not played: no robustness claim is
+  therefore made, not even as a proportion.
+\item \textbf{Comparators.} The state-of-the-art references and the
+  direct-tuning, equal-budget comparator are not implemented; no superiority
+  can be attributed to fractional order.
+\item \textbf{Post hoc diagnostics.} The voltage floor and the limit cycles
+  were identified after observation; they motivate a future preregistered
+  study but must not be read as confirmatory results.
+\item \textbf{Metaheuristics.} Significant differences measure proximity to
+  feasibility, not feasibility achieved, and their ranking depends on the arm.
+\end{itemize}

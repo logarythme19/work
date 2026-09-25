@@ -1,0 +1,32 @@
+\begin{abstract}
+\noindent
+Une campagne antérieure d'optimisation FO-LQI $\to$ FO-PIDF pour un
+convertisseur Buck non idéal de 48~V avait consommé plus de 1800
+évaluations sans atteindre la faisabilité robuste, et attribuait cet échec à
+l'écrêtage du gain proportionnel sur une borne de paramétrisation. Nous
+proposons un \emph{audit de saturation des bornes}, qui distingue saturations
+structurelles et pathologiques, et nous l'appliquons à une chaîne
+reconstruite dont la projection reproduit la proposition d'identité exacte à
+\ChiffreErreurPropUn{} près. Sur \ChiffreAuditN{} tirages de la boîte de
+décision, $\log_{10}k_p$ ne touche jamais sa borne : l'écrêtage n'explique
+pas l'échec. Une campagne confirmatoire préenregistrée (protocole figé par
+empreintes, trois bras, six métaheuristiques, trente graines appariées,
+540 cellules) sur un simulateur commuté qui reproduit la conduction
+discontinue ne produit \emph{aucun} correcteur robustement faisable : 0/30
+graines par méthode et par bras, intervalle de Wilson $[0;\ChiffreWilsonHaut]$.
+La paramétrisation conforme au cadrage n'atteint même pas la faisabilité
+nominale ; libérer la pondération de consigne~$b$ la rend accessible dans
+\ChiffreNomFaisCinqB{} cellules sur 180, sans robustesse. Un diagnostic
+physique identifie un verrou indépendant du correcteur : à rapport cyclique
+minimal, le convertisseur en conduction discontinue se stabilise sous le
+seuil de tension minimale dans \ChiffrePlancherN{} des \ChiffrePlancherTot{}
+cas d'incertitude. Nous montrons enfin que des correcteurs faisables au sens
+des six contraintes peuvent entretenir un cycle limite que ces contraintes ne
+voient pas. Ces résultats portent sur un modèle simulé et un ensemble fini de
+cas ; ils ne constituent ni un certificat de robustesse ni une preuve
+d'infaisabilité.
+\end{abstract}
+
+\noindent\textbf{Mots-clés :} convertisseur Buck ; commande d'ordre
+fractionnaire ; FO-LQI ; FO-PIDF ; métaheuristiques ; audit de paramétrisation ;
+conduction discontinue ; reproductibilité.

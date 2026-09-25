@@ -2,7 +2,10 @@
 % Methode (francais). Source faisant autorite; les chiffres viennent de
 % chiffres_fr.tex, genere depuis les JSON de resultats.
 % ---------------------------------------------------------------------------
-\section{Système, mission et invariants}
+\section{Méthode}
+\label{sec:methode}
+
+\subsection{Système, mission et invariants}
 \label{sec:systeme}
 
 Le convertisseur est un abaisseur (Buck) asynchrone non idéal, \emph{physiquement
@@ -45,7 +48,7 @@ $[0{,}0936;0{,}1044]$, $[0{,}198;0{,}2124]$ et $[0{,}306;0{,}3204]$~s. La
 $m=\min_k(-\max_i g_{i,k})$ : un minimum de maxima, donc une fonction
 non différentiable.
 
-\section{Évaluateur commuté}
+\subsection{Évaluateur commuté}
 \label{sec:evaluateur}
 
 \paragraph{Pourquoi un modèle commuté.}
@@ -76,7 +79,7 @@ porte la seule partie fractionnaire. La dérivée utilise la même réalisation,
 y compris pour $\mu=1$, où la formule d'Oustaloup donne
 $\omega_h(s+\omega_b)/(s+\omega_h)$, une dérivée à bande limitée.
 
-\section{Synthèse FO-LQI et projection vers FO-PIDF}
+\subsection{Synthèse FO-LQI et projection vers FO-PIDF}
 \label{sec:projection}
 
 Le modèle petit-signal est normalisé par $I=5$~A, $V=24$~V, $d=0{,}48$ et
@@ -107,7 +110,7 @@ L'identité FO-LQI $\to$ FO-PIDF n'est donc ni générale ni exacte ; nous la
 traitons comme un ancrage, jamais comme une équivalence ni comme une preuve
 d'optimalité fractionnaire.
 
-\section{Audit de saturation des bornes}
+\subsection{Audit de saturation des bornes}
 \label{sec:audit}
 
 Une campagne antérieure a consommé plus de 1800 évaluations sans jamais
@@ -122,7 +125,7 @@ ne retire alors aucun degré de liberté, elle rend seulement visible une
 identité. Une saturation \emph{pathologique} touche une composante qui varie
 et vient buter sur la borne : celle-ci tronque effectivement la recherche.
 
-\section{Recherche étagée et six métaheuristiques}
+\subsection{Recherche étagée et six métaheuristiques}
 \label{sec:recherche}
 
 \paragraph{Vecteur de décision.}
@@ -159,7 +162,7 @@ les points faisables de l'étage~1 de la \emph{même} graine. L'étage~3 rejoue
 tout candidat retenu au pas de $0{,}2~\mu$s : aucun candidat n'est déclaré
 faisable sans ce rejeu.
 
-\section{Protocole de validation}
+\subsection{Protocole de validation}
 \label{sec:validation}
 
 \paragraph{Ensemble d'incertitude (choix déclaré).}
@@ -185,7 +188,7 @@ indiquait qu'« environ 300 » tirages suffisent pour une borne basse de
 $99~\%$ ; le calcul exact donne $98{,}74~\%$ pour $300/300$ et exige
 $381$ tirages. Nous en retenons \ChiffreNTest.
 
-\section{Statistiques prédéclarées}
+\subsection{Statistiques prédéclarées}
 \label{sec:stats}
 
 L'unité statistique est la graine : trente graines communes, méthodes
