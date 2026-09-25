@@ -1,0 +1,214 @@
+{
+  "methode": "AEABC",
+  "graine": 2026092432,
+  "bras": "v5b",
+  "etage1": {
+    "appels": 700,
+    "n_faisables": 42,
+    "n_faisables_distincts": 29,
+    "sterile": false,
+    "meilleure_marge": 0.1694413235112322,
+    "meilleur_J": 0.20179023347594077,
+    "meilleure_violation": 0.0,
+    "x": [
+      -0.10931808824828612,
+      0.8497853154348851,
+      1.5203997263953402,
+      0.7507890544176155,
+      1.0,
+      -2.8709746643729463,
+      1.0,
+      0.0
+    ],
+    "saturation": {
+      "n_calls": 700,
+      "n_rejected": 0,
+      "seuil_alarme": 0.2,
+      "par_composante": {
+        "log10_kp": {
+          "borne_basse": -4.0,
+          "borne_haute": 2.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "log10_ki": {
+          "borne_basse": -4.0,
+          "borne_haute": 6.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "log10_kd": {
+          "borne_basse": -5.0,
+          "borne_haute": -1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "lambda": {
+          "borne_basse": 0.4,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.002857142857142857,
+          "fraction_haute": 0.28,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "mu": {
+          "borne_basse": 0.4,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.07428571428571429,
+          "fraction_haute": 0.3,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "log10_wf": {
+          "borne_basse": 2.6989700043360187,
+          "borne_haute": 4.301029995663981,
+          "fraction_basse": 0.0,
+          "fraction_haute": 1.0,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "b": {
+          "borne_basse": 0.0,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 1.0,
+          "n_non_fini": 0,
+          "alarme": true
+        }
+      },
+      "alarmes": [
+        "lambda: borne HAUTE touchee a 28.0 %",
+        "mu: borne HAUTE touchee a 30.0 %",
+        "log10_wf: borne HAUTE touchee a 100.0 %",
+        "b: borne HAUTE touchee a 100.0 %"
+      ]
+    }
+  },
+  "etage2": {
+    "appels": 300,
+    "n_faisables": 0,
+    "amorce_sur": 10,
+    "meilleure_marge": -0.2686491050625941,
+    "meilleur_J": 0.10488317825228721,
+    "meilleure_violation": 0.5280260825248708,
+    "x": [
+      -0.10931808824828612,
+      0.8497853154348851,
+      3.0,
+      0.7507890544176155,
+      0.988909304768603,
+      -2.3,
+      1.0,
+      0.0
+    ],
+    "theta": [
+      0.7271264730502112,
+      3.7523671632528472,
+      -3.3117567710312943,
+      1.0,
+      0.988909304768603,
+      4.301029995663981,
+      0.0
+    ],
+    "faisable": false,
+    "contrainte_active": 5,
+    "saturation": {
+      "n_calls": 300,
+      "n_rejected": 0,
+      "seuil_alarme": 0.2,
+      "par_composante": {
+        "log10_kp": {
+          "borne_basse": -4.0,
+          "borne_haute": 2.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "log10_ki": {
+          "borne_basse": -4.0,
+          "borne_haute": 6.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "log10_kd": {
+          "borne_basse": -5.0,
+          "borne_haute": -1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.0,
+          "n_non_fini": 0,
+          "alarme": false
+        },
+        "lambda": {
+          "borne_basse": 0.4,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.9966666666666667,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "mu": {
+          "borne_basse": 0.4,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 0.5333333333333333,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "log10_wf": {
+          "borne_basse": 2.6989700043360187,
+          "borne_haute": 4.301029995663981,
+          "fraction_basse": 0.0,
+          "fraction_haute": 1.0,
+          "n_non_fini": 0,
+          "alarme": true
+        },
+        "b": {
+          "borne_basse": 0.0,
+          "borne_haute": 1.0,
+          "fraction_basse": 0.0,
+          "fraction_haute": 1.0,
+          "n_non_fini": 0,
+          "alarme": true
+        }
+      },
+      "alarmes": [
+        "lambda: borne HAUTE touchee a 99.7 %",
+        "mu: borne HAUTE touchee a 53.3 %",
+        "log10_wf: borne HAUTE touchee a 100.0 %",
+        "b: borne HAUTE touchee a 100.0 %"
+      ]
+    },
+    "actives_par_cas": [
+      1,
+      1,
+      5,
+      1,
+      6,
+      1,
+      1,
+      1,
+      6
+    ],
+    "marges_par_cas": [
+      0.14306287666784656,
+      -0.09207878393029145,
+      -0.2686491050625941,
+      0.23739671045337074,
+      -0.051255018097219884,
+      0.005948261405633204,
+      -0.025786363639022536,
+      0.017840253912403403,
+      -0.0561445765952405
+    ]
+  },
+  "secondes": 4663.879286766052
+}

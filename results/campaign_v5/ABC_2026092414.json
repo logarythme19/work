@@ -7,15 +7,15 @@
     "n_faisables": 0,
     "n_faisables_distincts": 0,
     "sterile": true,
-    "meilleure_marge": -0.22549856515822908,
-    "meilleur_J": 0.2732699538550161,
-    "meilleure_violation": 0.22549856515822908,
+    "meilleure_marge": -0.22858893313782502,
+    "meilleur_J": 0.2379210915963174,
+    "meilleure_violation": 0.22858893313782502,
     "x": [
       0.5033531687135296,
-      -1.3246729204943732,
+      -1.7397228201276116,
       -0.004202159506880687,
-      0.7360164573755825,
-      0.9169800685853764,
+      0.7560990686806354,
+      0.9142982681498346,
       -4.3,
       1.0
     ],
@@ -52,14 +52,14 @@
           "borne_basse": 0.4,
           "borne_haute": 1.0,
           "fraction_basse": 0.0014285714285714286,
-          "fraction_haute": 0.24,
+          "fraction_haute": 0.21857142857142858,
           "n_non_fini": 0,
           "alarme": true
         },
         "mu": {
           "borne_basse": 0.4,
           "borne_haute": 1.0,
-          "fraction_basse": 0.054285714285714284,
+          "fraction_basse": 0.06571428571428571,
           "fraction_haute": 0.005714285714285714,
           "n_non_fini": 0,
           "alarme": false
@@ -82,7 +82,7 @@
         }
       },
       "alarmes": [
-        "lambda: borne HAUTE touchee a 24.0 %",
+        "lambda: borne HAUTE touchee a 21.9 %",
         "log10_wf: borne HAUTE touchee a 100.0 %",
         "b: borne HAUTE touchee a 100.0 %"
       ]
@@ -93,8 +93,8 @@
     "n_faisables": 0,
     "amorce_sur": 0,
     "meilleure_marge": -0.7349009898466974,
-    "meilleur_J": 0.11367141573811293,
-    "meilleure_violation": 4.103477039061086,
+    "meilleur_J": 0.11367141573810895,
+    "meilleure_violation": 4.103477039061091,
     "x": [
       -0.791975016873489,
       -0.5314533834843627,
@@ -105,9 +105,9 @@
       1.0
     ],
     "theta": [
-      -0.7001032954547305,
-      2.112385126337115,
-      -3.754753729572124,
+      -0.7001032954547275,
+      2.1123851263371147,
+      -3.754753729572123,
       1.0,
       1.0,
       4.301029995663981,
@@ -155,7 +155,7 @@
         "mu": {
           "borne_basse": 0.4,
           "borne_haute": 1.0,
-          "fraction_basse": 0.02,
+          "fraction_basse": 0.0033333333333333335,
           "fraction_haute": 0.12,
           "n_non_fini": 0,
           "alarme": false
@@ -205,5 +205,5 @@
       -0.35139988789225285
     ]
   },
-  "secondes": 166.80162525177002
+  "secondes": 90.11084699630737
 }
