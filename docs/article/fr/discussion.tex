@@ -50,10 +50,16 @@ juger.
 \label{sec:limites}
 
 \begin{itemize}
-\item \textbf{Modèle.} Tous les résultats portent sur un simulateur commuté
-  écrit en Python, non sur le modèle Simulink de référence. Les snubbers n'y
-  figurent pas, la diode suit une loi affine statique, et aucune validation
-  croisée avec Simulink n'a été faite.
+\item \textbf{Modèle.} La campagne a tourné sur un simulateur commuté écrit
+  en Python. La validation croisée avec Simulink ne porte que sur six
+  candidats et le plant nominal ; le snubber y est supposé ($R_s=10^5~\Omega$,
+  $C_s=\infty$).
+\item \textbf{Défaut corrigé après campagne.} Le feedforward de l'étage~2
+  utilisait les paramètres du plant perturbé au lieu des valeurs nominales
+  figées. Réévalués après correction, les 540 candidats retenus restent
+  infaisables, mais 18 cellules se dégradent de plus de $0{,}05$ : le défaut
+  favorisait les correcteurs, et certaines marges d'étage~2 sont optimistes.
+  La recherche de l'étage~2 n'a pas été relancée.
 \item \textbf{Projection.} L'identité FO-LQI $\to$ FO-PIDF n'est exacte qu'en
   ordre entier, pôle exact, sur le plant nominal non saturé ; la projection du
   pôle introduit à elle seule jusqu'à \ChiffreErreurProjPole{} d'erreur en

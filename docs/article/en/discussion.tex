@@ -45,10 +45,16 @@ equal-budget comparator that would allow such a judgement.
 \label{sec:limitations}
 
 \begin{itemize}
-\item \textbf{Model.} All results concern a switched simulator written in
-  Python, not the reference Simulink model. Snubbers are absent, the diode
-  follows a static affine law, and no cross-validation against Simulink has
-  been carried out.
+\item \textbf{Model.} The campaign ran on a switched simulator written in
+  Python. Cross-validation against Simulink covers only six candidates and
+  the nominal plant; the snubber is assumed there ($R_s=10^5~\Omega$,
+  $C_s=\infty$).
+\item \textbf{Defect corrected after the campaign.} The stage-2 feedforward
+  used the perturbed plant parameters instead of the frozen nominal values.
+  Re-evaluated after correction, the 540 retained candidates remain
+  infeasible, but 18 cells degrade by more than $0.05$: the defect favoured
+  the controllers, and some stage-2 margins are optimistic. The stage-2
+  search has not been rerun.
 \item \textbf{Projection.} The FO-LQI $\to$ FO-PIDF identity is exact only
   in integer order, with the exact pole, on the unsaturated nominal plant; the
   pole projection alone introduces up to \ChiffreErreurProjPole{} error at the
