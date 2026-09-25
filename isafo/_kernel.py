@@ -55,6 +55,7 @@ def simulate(
     ip_amp, ip_t0, ip_t1, iL0, vC0,
     Ts, h, Tsw, duty_min, duty_max, delay_n,
     Vn, Dn,
+    Rn, rLn, rdn, Ronn, Vinn,
     kp, ki, kd, wf, bsp, csp, Kb,
     zi, pi_, phii, betai, gaini,
     zd, pd, phid, betad, gaind,
@@ -74,7 +75,7 @@ def simulate(
     xF = 0.0
     phiF = np.exp(-wf * Ts)
 
-    dff0 = (R + rL + rd) * v0 / (R * Vin - (Ron - rd) * v0)
+    dff0 = (Rn + rLn + rdn) * v0 / (Rn * Vinn - (Ronn - rdn) * v0)
     # Registre a decalage de longueur delay_n: d applique a l'instant k est
     # celui calcule a l'instant k - delay_n.
     dbuf = np.full(max(delay_n, 1), dff0)
@@ -143,7 +144,8 @@ def simulate(
 
         u = kp * eb + xI + kd * dterm
 
-        dff = (R + rL + rd) * r / (R * Vin - (Ron - rd) * r)
+        # Feedforward NOMINAL fige (par.1), jamais les parametres du plant simule.
+        dff = (Rn + rLn + rdn) * r / (Rn * Vinn - (Ronn - rdn) * r)
         d_tilde = dff + Dn * u
         d_sat = min(max(d_tilde, duty_min), duty_max)
 

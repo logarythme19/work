@@ -30,7 +30,8 @@ def trace(ctrl: Controller, h: float = None, plant=None, mission=None,
     xI = 0.0; xF = 0.0
     phiF = np.exp(-ctrl.wf * NUM.Ts)
 
-    dff0 = (P.R + P.rL + P.rd) * M.v0 / (P.R * P.Vin - (P.Ron - P.rd) * M.v0)
+    N0 = PLANT  # feedforward nominal fige (par.1)
+    dff0 = (N0.R + N0.rL + N0.rd) * M.v0 / (N0.R * N0.Vin - (N0.Ron - N0.rd) * M.v0)
     dbuf = np.full(max(NUM.delay_samples, 1), dff0)
 
     T, VO, IL, D, REF, DT = [], [], [], [], [], []
@@ -65,7 +66,7 @@ def trace(ctrl: Controller, h: float = None, plant=None, mission=None,
         dterm = gaind * y
 
         u = ctrl.kp * eb + xI + ctrl.kd * dterm
-        dff = (P.R + P.rL + P.rd) * r / (P.R * P.Vin - (P.Ron - P.rd) * r)
+        dff = (N0.R + N0.rL + N0.rd) * r / (N0.R * N0.Vin - (N0.Ron - N0.rd) * r)
         d_tilde = dff + NUM.D_norm * u
         d_sat = min(max(d_tilde, NUM.duty_min), NUM.duty_max)
         xI += NUM.Ts * (ctrl.ki * q + ctrl.Kb * (d_sat - d_tilde) / NUM.D_norm)
