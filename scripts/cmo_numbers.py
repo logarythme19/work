@@ -127,7 +127,7 @@ def main():
             med = [v['median'] for v in st['methods'].values() if v['median'] is not None]
             vb = min(v['viol_best'] for v in st['methods'].values())
             if fm in ab:
-                a = ab[fm]; cmp_ = f"{a['cmo_better']} / {a['ties']} / {a['other_better']}"; pv = f"{a['p']:.1e}"
+                a = ab[fm]; cmp_ = f"{a['cmo_better']} / {a['ties']} / {a['other_better']}"; pv = f"${sci(a['p'], 1)}$"
             else:
                 cmp_, pv = '--', '--'
             f.write(f"{fm} & {nv[fm]} & {nfe}/180 & {min(Jf):.4f} & {np.median(med):.4f} & {cmp_} & {pv} & {vb:.3f}\\\\\n".replace('None', '--') if Jf else
@@ -173,6 +173,36 @@ def main():
             M[f'Sw{nm}IAE'] = f"{v['IAE']:.4f}"; M[f'Sw{nm}Ipk'] = f"{v['ipk']:.2f}"
             M[f'Sw{nm}OS'] = f"{max(v['os46'], v['us1'], 0):.2f}"; M[f'Sw{nm}Ess'] = f"{1e3 * v['ess_worst']:.1f}"
             M[f'Sw{nm}Eta'] = f"{100 * v['eta']:.3f}"; M[f'Sw{nm}Util'] = f"{v['spec_util']:.2f}"
+
+    # family comparison and inverse optimality
+    io = an.get('inverse_optimality_PIDF_direct'); ab = an.get('ablation_vs_CMO', {}); F = an['families']
+    if io and 'PIDF7-direct' in F:
+        sw = an['switched']
+        feas = lambda k: str(sum(v['feasible'] for v in F[k]['methods'].values()))
+        pct = f"{100 * (1 - io['n_inverse_optimal'] / io['n_feasible']):.0f}"
+        M.update({
+            'IOn': str(io['n_feasible']), 'IOk': str(io['n_inverse_optimal']), 'IOpct': pct,
+            'IObestK': "[%.4f,\\ %.4f,\\ %.1f]" % tuple(io['best']['K']),
+            'AbPIDFp': f"{ab['PIDF-direct']['p']:.2f}", 'AbPIDp': f"{ab['PID-direct']['p']:.2f}",
+            'AbSFp': f"{ab['CMO-LQI-SF']['p']:.3f}", 'AbPIp': sci(ab['PI-direct']['p'], 1),
+            'AbPIDFwin': str(ab['PIDF-direct']['cmo_better']), 'AbPIDwin': str(ab['PID-direct']['cmo_better']),
+            'FeasSF': feas('CMO-LQI-SF'), 'FeasPIDF': feas('PIDF-direct'), 'FeasPIDFs': feas('PIDF7-direct'),
+            'FeasPID': feas('PID-direct'),
+            'BestSF': f"{F['CMO-LQI-SF']['best']['J']:.4f}", 'BestPIDF': f"{F['PIDF-direct']['best']['J']:.4f}",
+            'BestPIDFs': f"{F['PIDF7-direct']['best']['J']:.4f}", 'BestPID': f"{F['PID-direct']['best']['J']:.4f}",
+            'ViolPI': f"{min(v['viol_best'] for v in F['PI-direct']['methods'].values()):.2f}",
+            'SwPIdIAE': f"{sw['PI-direct*']['IAE']:.4f}", 'SwPIDFdEss': f"{1e3 * sw['PIDF-direct*']['ess_worst']:.1f}",
+            'SwPIDFsIAE': f"{sw['PIDF7-direct*']['IAE']:.4f}", 'SwPIDFsEss': f"{1e3 * sw['PIDF7-direct*']['ess_worst']:.1f}",
+            'SwPIDdUtil': f"{sw['PID-direct*']['spec_util']:.2f}", 'SwPIdUtil': f"{sw['PI-direct*']['spec_util']:.2f}",
+            'SwPIDFdIAE': f"{sw['PIDF-direct*']['IAE']:.4f}", 'SwPIDFsUtil': f"{sw['PIDF7-direct*']['spec_util']:.2f}",
+            'FamConclusion': ('Searching the same 2-DOF PIDF directly in gain space reaches the same optimum, which '
+                              'turns out to be LQ-optimal; the LQI parameterization does not accelerate the search on '
+                              'this problem, but it confines it to the manifold on which the optimum lies and gives '
+                              'every candidate its margins and certificate, whereas ' + pct +
+                              '\\,\\% of the feasible direct-search designs are not LQ-optimal for any weight.'),
+        })
+        x = F['PIDF7-direct']['best']['x']
+        M['PIDFsN'], M['PIDFsb'], M['PIDFsc'] = f"{10 ** x[3]:.0f}", f"{x[4]:.2f}", f"{x[5]:.2f}"
 
     extra = os.path.join(RES, 'numbers_extra.json')
     if os.path.exists(extra):

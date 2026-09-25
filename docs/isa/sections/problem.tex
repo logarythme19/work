@@ -3,8 +3,7 @@
 \subsection{Workflow}
 Fig.~\ref{fig:workflow} summarizes the protocol. Offline, a candidate $\xi$ is
 mapped by \eqref{eq:care} and \eqref{eq:map} to a 2-DOF PIDF; the averaged
-evaluator runs six scenarios and the switched screen runs three short steady
-windows; Deb ordering ranks the record. After 240 global and 60 local calls the
+evaluator runs six scenarios and the switched screen runs one \SI{34}{ms} transition sequence; Deb ordering ranks the record. After 240 global and 60 local calls the
 best record of each run is frozen, and only then replayed on the full switched
 mission, which is never visible to the search.
 
@@ -84,7 +83,7 @@ obtained from one run of the switched replica over the transition sequence
 24$\to$1$\to$46$\to$24~V (steps at 2, 14 and \SI{24}{ms}, \SI{34}{ms} in total,
 \SI{1}{\micro s} RK4 with exact PWM edges). The duty peak-to-peak and the mean
 error are measured over the last \SI{4}{ms} of each level. A candidate is
-feasible when $\sum_j\max(g_j,0)\le10^{-4}$; the screen costs about \SI{15}{ms}
+feasible when $\sum_j\max(g_j,0)\le10^{-4}$; the screen costs about \SI{12}{ms}
 per candidate against \SI{14}{ms} for the six averaged scenarios.
 
 \paragraph{Why the screen contains large transitions}

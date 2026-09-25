@@ -7,7 +7,7 @@
 | Structural equivalence LQI ≡ PIDF (Prop. 2) | `cmo/equiv.py` | idem, `fig_equivalence.pdf` |
 | Common-P D-region LMI certificate | `cmo/lmi.py` | idem |
 | Fig. 2 switched replica (snubber, body diode, DCM, exact PWM edges, energy boundary) | `cmo/sim.py` (`sim_sw`) | — |
-| Averaged evaluator + switched transition screen, 39 inequalities | `cmo/evaluate.py` | — |
+| Averaged evaluator + switched transition screen, 33 inequalities | `cmo/evaluate.py` | — |
 | Algorithms 1–7 (PSO, GA, ABC, pAEABC, pIGWO, pIGWO-DLH, refineBO) | `cmo/algos.py` | — |
 | Families and fixed-rule comparators (PI, PID, PIDF, LQR, LQG, LQI) | `cmo/designs.py` | — |
 | Campaign (6 families × 6 methods × 30 seeds × 300 calls) | `scripts/cmo_campaign.py` | `results/cmo/campaign/` |

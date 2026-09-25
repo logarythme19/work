@@ -1,1 +1,22 @@
-\begin{abstract}Placeholder.\end{abstract}
+\begin{abstract}
+A formula-first co-design is proposed for a non-ideal asynchronous Buck
+converter fed at \SI{48}{V} and commanded over \SIrange{1}{46}{V}. The
+search space is the set of Bryson excursions of a linear--quadratic--integral
+(LQI) cost; each candidate is solved from the Riccati equation and realized
+exactly as a two-degree-of-freedom PIDF that measures the output voltage only.
+We prove that the derivative filter, with its pole on the ESR zero,
+reconstructs the capacitor voltage along every trajectory, so the PIDF and the full-state LQI coincide under saturation,
+anti-windup and discontinuous conduction and differ only through an explicit
+output-current feedback, an output-network mismatch and sampling; a
+triangle-hold discretization keeps the sampled PIDF within \EqSampFOH{} of the
+sampled LQI on a \SI{45}{V} step, against \EqSampZOH{} with a zero-order hold.
+Six equal-budget optimizers with Gaussian-process refinement search the weights
+under 33 inequalities in engineering units, three measured on a switched model
+because averaged-feasible designs hold coexisting switching limit cycles. Over
+30 matched seeds all optimizers reach the same optimum, \CMOgainPct\,\% below
+the Bryson design. A direct gain-space search reaches the same LQ-optimal controller, but
+\IOpct\,\% of its feasible designs are not LQ-optimal. On a switched replica of the reference Simulink model, the retained
+controller removes the overshoot of classical designs and stays within the
+device current rating; its only miss is \SwEss{}\,mV of steady error at
+\SI{1}{V} against \SI{25}{mV}, which its full-state twin meets; standard PI, PID, PIDF, LQR, LQG and LQI designs exceed the specification by factors of 6 to 30.
+\end{abstract}

@@ -68,20 +68,22 @@ The contributions are:
   exact output-feedback realization of any LQI law as a 2-DOF PIDF, with all
   analytical quantities (equilibria, transfer functions, Riccati gain, LQR
   margins, a common-$P$ D-region certificate over the operating polytope)
-  instantiated and independently re-computed;
+  instantiated and independently recomputed;
 \item a structural equivalence theorem (Proposition~\ref{prop:struct}) showing
   that the PIDF filter state equals the capacitor voltage along every
-  trajectory of the plant, with a proof, its exact domain of validity and a
-  machine-precision numerical confirmation;
+  trajectory, with its exact domain of validity, a closed-form expression of the
+  gap to the full-state law, and the discretization that preserves it under
+  sampling;
 \item a constrained co-design problem in the space of LQI weights with 33
-  explicit inequalities in engineering units, three of which are measured on the
-  switched model during the search;
+  inequalities in engineering units, three of which are measured on the
+  switched model during the search, and the evidence (two reported pilots) of
+  why an analytical ripple bound or a steady switched screen is not enough;
 \item a matched, equal-budget comparison of seven algorithms across six
-  controller families, which isolates the value of the LQI parameterization
-  from the value of the optimizer;
+  controller families, showing that the LQI coordinates do not speed up the
+  search but confine it, at no cost in optimality, to the LQ-optimal manifold on
+  which the gain-space optimum also lies;
 \item a switched-model validation on the reference mission against PI, PID,
-  PIDF, LQR, LQG and LQI, reported with the specifications each controller
-  meets or violates rather than with a single aggregate score.
+  PIDF, LQR, LQG and LQI, reported specification by specification.
 \end{enumerate}
 
 Section~\ref{sec:model} derives the model and describes the switched replica.

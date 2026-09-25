@@ -126,6 +126,33 @@ def sw_metrics(p):
                 spec_ok=bool(max(spec.values()) <= 1.0))
 
 
+def inverse_optimality(runs):
+    """Fraction of feasible direct-search PIDF designs that are LQ-optimal for some Q.
+
+    For N = N_C, b = 1, c = 0 the map (13) is invertible: K_ix, K_vx from (K_p, K_d)
+    and K_z = -K_i. Kalman's condition |1 + L_K(jw)| >= 1 for all w (single input)
+    decides whether the recovered state feedback is optimal for some Q >= 0.
+    """
+    from cmo.lqi import augmented
+    from cmo.params import PLANT as P
+    Aa, Ba, _ = augmented()
+    w = np.logspace(-2, 8, 6000)
+    Rv = [np.linalg.solve(1j * wk * np.eye(3) - Aa, Ba) for wk in w]
+    M = np.array([[1 / P.R, 1.0], [P.C, -P.C * P.rC]])
+    out = []
+    for r in runs:
+        if not r['feasible']:
+            continue
+        Kp, Ki, Kd = 10.0 ** np.array(r['x'][:3])
+        Kix, Kvx = np.linalg.solve(M, [Kp, Kd])
+        K = np.array([Kix, Kvx, -Ki])
+        m = min(abs(1 + (K[None, :] @ R)[0, 0]) for R in Rv)
+        out.append(dict(J=r['J'], K=K.tolist(), min_rd=float(m)))
+    n_opt = sum(o['min_rd'] >= 1 - 1e-8 for o in out)
+    best = min(out, key=lambda o: o['J']) if out else None
+    return dict(n_feasible=len(out), n_inverse_optimal=int(n_opt), best=best)
+
+
 def main():
     runs = load()
     out = {'families': {}, 'switched': {}}
@@ -149,6 +176,8 @@ def main():
                             median_cmo=float(np.median(A)), median_other=float(np.median(B)),
                             feasible_cmo=int(np.sum(A < 1e3)), feasible_other=int(np.sum(B < 1e3)))
         out['ablation_vs_CMO'] = abl
+    if 'PIDF-direct' in runs:
+        out['inverse_optimality_PIDF_direct'] = inverse_optimality(runs['PIDF-direct'])
     # freeze: best feasible record of each family, plus best of each CMO branch
     ctrls = {}
     for fam, st in out['families'].items():

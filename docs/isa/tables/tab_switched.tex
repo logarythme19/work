@@ -9,7 +9,12 @@
 Controller & IAE (V\,s) & overshoot (V) & $i_{L,pk}$ (A) & $|\bar e|_{\max}$ (mV) & load dev.\ (V) & $\eta$ (\%) & $E_{loss}/E_u$ & sat.\ frac. & $u$ & specs met & sensors\\
 \midrule
 CMO--LQI--PIDF (retained, $v_o$ only) & 0.0364 & \textbf{0.02} & \textbf{22.44} & 25.6 & \textbf{0.137} & 97.978 & 0.01801 & 0.089 & 1.02 & 4/5 & $v_o$\\
-CMO--LQI--SF (twin, measured $i_L$) & 0.0348 & \textbf{0.02} & \textbf{22.70} & \textbf{0.0} & \textbf{0.214} & 97.980 & 0.01799 & 0.010 & 0.99 & 5/5 & $v_o,i_L,i_C$\\
+CMO--LQI--SF (twin, measured $i_L$) & 0.0347 & \textbf{0.02} & \textbf{22.87} & \textbf{0.0} & \textbf{0.214} & 97.978 & 0.01800 & 0.008 & 0.99 & 5/5 & $v_o,i_L,i_C$\\
+PIDF, direct gain search & 0.0363 & \textbf{0.02} & \textbf{22.42} & \textbf{25.0} & \textbf{0.137} & 97.978 & 0.01801 & 0.089 & 1.00 & 5/5 & $v_o$\\
+PIDF7, direct search & 0.0348 & \textbf{0.02} & \textbf{22.11} & \textbf{0.0} & \textbf{0.164} & 97.978 & 0.01800 & 0.011 & 0.96 & 5/5 & $v_o$\\
+PID, direct search & 0.0368 & \textbf{0.02} & \textbf{21.83} & \textbf{23.7} & \textbf{0.138} & 97.980 & 0.01798 & 0.087 & 0.95 & 5/5 & $v_o$\\
+PI, direct search & 0.0943 & \textbf{0.23} & \textbf{6.04} & \textbf{6.8} & \textbf{0.369} & 97.987 & 0.01786 & 0.009 & 0.74 & 5/5 & $v_o$\\
+\midrule
 Bryson LQI--PIDF $\xi_0$ & 0.0340 & 8.05 & 32.50 & \textbf{0.0} & \textbf{0.193} & 97.936 & 0.01845 & 0.012 & 5.37 & 3/5 & $v_o$\\
 PI (loop shaping) & 0.0480 & 26.63 & 40.78 & \textbf{0.1} & \textbf{0.474} & 97.813 & 0.01972 & 0.012 & 17.76 & 3/5 & $v_o$\\
 PID (pole--zero) & 0.0467 & 28.64 & 40.77 & \textbf{11.3} & \textbf{0.128} & 97.802 & 0.01984 & 0.093 & 19.09 & 3/5 & $v_o$\\

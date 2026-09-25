@@ -74,17 +74,16 @@ def fig_equivalence():
 
 def fig_campaign(an):
     fam = an['families']['CMO-LQI-PIDF']
-    fig, ax = plt.subplots(1, 2, figsize=(7.1, 2.5))
+    fig, ax = plt.subplots(1, 2, figsize=(7.1, 2.9))
     for i, m in enumerate(METHODS):
         c = np.array(fam['curves'][m], float)
         c[~np.isfinite(c)] = np.nan
         ax[0].plot(np.arange(1, len(c) + 1), c, color=PAL[i], ls=LS[i], label=m)
     ax[0].axvline(240, color=INK2, lw=0.8, ls=':')
-    ax[0].text(243, ax[0].get_ylim()[1] if False else 0.98, 'refineBO', transform=ax[0].get_xaxis_transform(),
-               va='top', fontsize=7, color=INK2)
+    ax[0].text(243, 0.55, 'refineBO', transform=ax[0].get_xaxis_transform(), va='center', fontsize=7, color=INK2)
     ax[0].set_xlabel('counted evaluator calls')
     ax[0].set_ylabel('median best feasible $J_s$')
-    ax[0].legend(ncol=2)
+    ax[0].legend(ncol=3, loc='upper center', bbox_to_anchor=(0.5, -0.22))
     runs = {}
     import glob
     for f in glob.glob(os.path.join(RES, 'campaign', '*', '*.json')):

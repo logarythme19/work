@@ -1,1 +1,46 @@
 \section{Conclusions}\label{sec:concl}
+
+A formula-first co-design was carried out for a non-ideal asynchronous Buck
+converter supplied at \SI{48}{V} and commanded over \SIrange{1}{46}{V}. Its
+search space is the set of Bryson excursions of an LQI cost, so every evaluated
+point is a Riccati-optimal law with LQR margins and an operating-polytope
+certificate, and every point is implemented exactly as a 2-DOF PIDF that
+measures the output voltage only.
+
+Three results carry the paper.
+
+\emph{Theory.} The realization is structural, not only nominal: the derivative
+filter of the PIDF, with its pole at the ESR zero, reconstructs the capacitor
+voltage along every trajectory of the converter, so the PIDF and the full-state
+LQI coincide under saturation, anti-windup and discontinuous conduction and for
+any inductor-branch or semiconductor parameters. They differ only by an explicit
+feedback on the unmodelled output current, by a mismatch of the output network,
+and by sampling. Under sampling the equivalence survives when the
+filter is discretized as the observer it is: a triangle-hold update keeps the
+sampled PIDF within \EqSampFOH{} of the sampled LQI on a \SI{45}{V} step, where
+the usual zero-order-hold update departs by \EqSampZOH{}.
+
+\emph{Optimization.} Seven algorithms applied to the four LQI weights converge
+to one optimum; they differ in reliability, pIGWO and pAEABC reaching
+feasibility in 28 and 25 of 30 seeds against 13 for GA, and the Gaussian-process
+refinement matters most where the global stage is weakest.
+\FamConclusion
+
+\emph{Validation.} Switched admissibility is not inherited from an averaged
+model: an analytical ripple bound and a steady switched screen both admitted
+designs that limit-cycle on the reference mission, because the loop holds
+coexisting switching limit cycles selected by the preceding transient. A
+\SI{34}{ms} switched transition screen inside the search removes them. On the
+reference mission, the retained CMO--LQI--PIDF removes the overshoot of the
+classical designs and stays within the \SI{23}{A} device rating; its only miss
+is a steady error of \SwEss{}\,mV at \SI{1}{V} against a \SI{25}{mV} limit,
+which its full-state twin meets. PI, PID, PIDF, LQR, LQG and LQI designed by their standard rules
+exceed at least two specifications by factors of 6 to 30.
+
+The contribution is therefore a design procedure an industrial engineer can
+apply with standard tools: choose admissible excursions, solve one Riccati
+equation, realize the gain as a PIDF with setpoint weight one and a derivative
+pole on the ESR zero, discretize the filter as a capacitor-voltage observer, and
+let a small, constrained, multi-fidelity search tune four physically meaningful
+numbers. Hardware validation, component-tolerance robustness and line
+regulation are the next evidence levels.
