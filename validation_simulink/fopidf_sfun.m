@@ -22,23 +22,37 @@ end
 function setup(block)
 block.NumInputPorts  = 5;
 block.NumOutputPorts = 3;
-block.SetPreCompInpPortInfoToDynamic;
-block.SetPreCompOutPortInfoToDynamic;
+% Ports explicites (pas de proprietes dynamiques) : scalaires reels double.
 for k = 1:5
     block.InputPort(k).Dimensions = 1;
+    block.InputPort(k).DatatypeID = 0;
+    block.InputPort(k).Complexity = 'Real';
+    block.InputPort(k).SamplingMode = 'Sample';
     block.InputPort(k).DirectFeedthrough = false;  % retard d'un echantillon
 end
 for k = 1:3
     block.OutputPort(k).Dimensions = 1;
+    block.OutputPort(k).DatatypeID = 0;
+    block.OutputPort(k).Complexity = 'Real';
+    block.OutputPort(k).SamplingMode = 'Sample';
 end
 block.NumDialogPrms = 1;
 P = block.DialogPrm(1).Data;
 block.SampleTimes = [P(10) 0];
 block.SimStateCompliance = 'DefaultSimState';
+block.RegBlockMethod('SetInputPortSamplingMode', @SetInpPortSamplingMode);
 block.RegBlockMethod('PostPropagationSetup', @DoPostPropSetup);
 block.RegBlockMethod('InitializeConditions', @InitConditions);
 block.RegBlockMethod('Outputs', @Outputs);
 block.RegBlockMethod('Update',  @Update);
+end
+
+function SetInpPortSamplingMode(block, idx, fd)
+% Exige par Simulink pour une S-function niveau 2 a plusieurs sorties.
+block.InputPort(idx).SamplingMode = fd;
+for k = 1:block.NumOutputPorts
+    block.OutputPort(k).SamplingMode = fd;
+end
 end
 
 function DoPostPropSetup(block)
