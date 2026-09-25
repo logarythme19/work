@@ -52,7 +52,10 @@ d=d_{ff}(r)+K_p(br-v_o)+\frac{K_i}{s}(r-v_o)+K_d\frac{N_Cs}{s+N_C}(cr-v_o),
 \end{equation}
 with
 \begin{equation}
-K_p=K_{vx}+\frac{K_{ix}}{R},\; K_i=-K_z,\; K_d=C(K_{ix}-r_CK_{vx}),\; N_C=\frac{1}{r_CC},\; b=1,\; c=0 .
+\begin{aligned}
+K_p&=K_{vx}+\frac{K_{ix}}{R},\quad K_i=-K_z,\quad K_d=C(K_{ix}-r_CK_{vx}),\\
+N&=N_C=\frac{1}{r_CC},\quad b=1,\quad c=0 .
+\end{aligned}
 \label{eq:map}
 \end{equation}
 \end{proposition}
@@ -166,24 +169,45 @@ hull in $\{\Re s<-\alpha\}\cap\{\zeta(s)>\zeta\}$ \citep{Chilali1996}. Bisection
 gives the boundary values; a \SI{1}{\percent} safety factor is applied and the
 recovered $P$ is re-checked for strictness.
 
-\paragraph{Discrete implementation} All controllers run at $T_s$ with a
-one-sample computational delay, total duty saturation and forward-Euler
-integral and back-calculation updates; the PIDF derivative filter is discretized
-exactly (zero-order hold), $x_F^+=\phi x_F+(1-\phi)(cr-v_o)$ with
-$\phi=e^{-NT_s}$, and initialized with $x_F(0)=cr(0)-v_C(0)$.
+\paragraph{Discrete implementation}
+All controllers run at $T_s$ with a one-sample computational delay, total duty
+saturation and forward-Euler integral and back-calculation updates.
+Proposition~\ref{prop:struct}(i) says that the derivative-filter state is an
+observer of the capacitor voltage, $x_F=cr-v_C$, and it should be discretized as
+one. The usual zero-order-hold discretization,
+$x_F[k{+}1]=\phi x_F[k]+(1-\phi)w[k]$ with $w=cr-v_o$ and $\phi=e^{-NT_s}$, uses at
+sample $k$ an estimate built from $v_o[k{-}1]$ only; during a \SI{45}{V} slew
+$v_o$ moves by about \SI{2.7}{V} per sample and $K_dN\approx0.7$ turns this lag
+into a duty error of order one. We therefore use the triangle-hold (first-order
+hold) update, exact when $v_o$ is piecewise linear between samples,
+\begin{equation}
+x_F[k]=\phi\,x_F[k{-}1]+(1-\phi)\,w[k{-}1]+\gamma\big(w[k]-w[k{-}1]\big),\quad
+\gamma=1-\frac{1-\phi}{NT_s},
+\label{eq:foh}
+\end{equation}
+evaluated with the current sample before the command
+$\tilde d[k]=d_{ff}+K_p(br[k]-v_o[k])+x_I[k]+K_dN(w[k]-x_F[k])$ is formed, and
+initialized with $x_F[0]=cr[0]-v_C(0)$. Section~\ref{sec:res:equiv} shows that
+this single choice decides whether the sampled PIDF remains equivalent to the
+sampled LQI.
 
 \subsection{Numerical instantiation}\label{sec:instantiation}
 At the \SI{24}{V} point, \eqref{eq:ss} evaluates to
 \begin{equation}
-A=\begin{bmatrix}\Aa&\Ab\\\Ac&\Ad\end{bmatrix}\si{s^{-1}},\quad
+\begin{gathered}
+A=\begin{bmatrix}\Aa&\Ab\\\Ac&\Ad\end{bmatrix}\si{s^{-1}},\\
 B_d=\begin{bmatrix}\Bd\\0\end{bmatrix},\quad
 C_y=\begin{bmatrix}\Cya&\Cyb\end{bmatrix}.
+\end{gathered}
 \end{equation}
 For $\xi_0$, $Q=\mathrm{diag}(\Qa,\Qb,\Qc)$, $R_d=\Rd$ and \eqref{eq:care} gives
 $K=[\Ka\;\;\Kb\;\;\Kc]$ with a relative Riccati residual of \CAREres{} and
 closed-loop poles \Poles{}. The realization \eqref{eq:map} gives
 \begin{equation}
-\theta_0=[K_p,K_i,K_d,N,b,c,K_b]=[\ThA,\ \ThB,\ \ThC,\ \SI{2e5}{},\ 1,\ 0,\ \ThG],
+\begin{aligned}
+\theta_0&=[K_p,K_i,K_d,N,b,c,K_b]\\
+&=[\ThA,\ \ThB,\ \ThC,\ 2\times10^{5},\ 1,\ 0,\ \ThG],
+\end{aligned}
 \end{equation}
 with a zero coefficient residual and a maximum relative frequency-domain error of
 \FreqErr{} over $[10^{-1},10^{8}]$\,rad/s. The minimum return difference is

@@ -1,0 +1,315 @@
+\begin{thebibliography}{35}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Abdelmalek et~al.(2020)Abdelmalek, Dali, Bakdi and
+  Bettayeb}]{Abdelmalek2020}
+\bibinfo{author}{Abdelmalek, S.}, \bibinfo{author}{Dali, A.},
+  \bibinfo{author}{Bakdi, A.}, \bibinfo{author}{Bettayeb, M.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Design and experimental implementation of a new
+  robust observer-based nonlinear controller for {DC--DC} buck converters}.
+\newblock \bibinfo{journal}{Energy} \bibinfo{volume}{213},
+  \bibinfo{pages}{118816}.
+\newblock \DOIprefix\doi{10.1016/j.energy.2020.118816}.
+%Type = Article
+\bibitem[{Alsamia et~al.(2024)Alsamia, Koch, Albedran and Ray}]{Alsamia2024}
+\bibinfo{author}{Alsamia, S.}, \bibinfo{author}{Koch, E.},
+  \bibinfo{author}{Albedran, H.}, \bibinfo{author}{Ray, R.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Adaptive exploration artificial bee colony for
+  mathematical optimization}.
+\newblock \bibinfo{journal}{AI} \bibinfo{volume}{5},
+  \bibinfo{pages}{2218--2236}.
+\newblock \DOIprefix\doi{10.3390/ai5040109}.
+%Type = Book
+\bibitem[{Anderson and Moore(1990)}]{Anderson1990}
+\bibinfo{author}{Anderson, B.D.O.}, \bibinfo{author}{Moore, J.B.},
+  \bibinfo{year}{1990}.
+\newblock \bibinfo{title}{Optimal Control: Linear Quadratic Methods}.
+\newblock \bibinfo{publisher}{Prentice Hall}, \bibinfo{address}{Englewood
+  Cliffs, NJ}.
+%Type = Book
+\bibitem[{{\AA}str{\"o}m and H{\"a}gglund(2006)}]{Astrom2006}
+\bibinfo{author}{{\AA}str{\"o}m, K.J.}, \bibinfo{author}{H{\"a}gglund, T.},
+  \bibinfo{year}{2006}.
+\newblock \bibinfo{title}{Advanced {PID} Control}.
+\newblock \bibinfo{publisher}{ISA -- The Instrumentation, Systems, and
+  Automation Society}, \bibinfo{address}{Research Triangle Park, NC}.
+%Type = Inproceedings
+\bibitem[{{\AA}str{\"o}m and Rundqwist(1989)}]{Astrom1989}
+\bibinfo{author}{{\AA}str{\"o}m, K.J.}, \bibinfo{author}{Rundqwist, L.},
+  \bibinfo{year}{1989}.
+\newblock \bibinfo{title}{Integrator windup and how to avoid it}, in:
+  \bibinfo{booktitle}{1989 American Control Conference}, pp.
+  \bibinfo{pages}{1693--1698}.
+\newblock \DOIprefix\doi{10.23919/ACC.1989.4790464}.
+%Type = Article
+\bibitem[{Bianchi et~al.(2008)Bianchi, Mantz and Christiansen}]{Bianchi2008}
+\bibinfo{author}{Bianchi, F.D.}, \bibinfo{author}{Mantz, R.J.},
+  \bibinfo{author}{Christiansen, C.F.}, \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{Multivariable {PID} control with set-point weighting
+  via {BMI} optimisation}.
+\newblock \bibinfo{journal}{Automatica} \bibinfo{volume}{44},
+  \bibinfo{pages}{472--478}.
+\newblock \DOIprefix\doi{10.1016/j.automatica.2007.05.021}.
+%Type = Article
+\bibitem[{Bouchama et~al.(2020)Bouchama, Khatir, Benaggoune and
+  Harmas}]{Bouchama2020}
+\bibinfo{author}{Bouchama, Z.}, \bibinfo{author}{Khatir, A.},
+  \bibinfo{author}{Benaggoune, S.}, \bibinfo{author}{Harmas, M.N.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Design and experimental validation of an intelligent
+  controller for {DC--DC} buck converters}.
+\newblock \bibinfo{journal}{Journal of the Franklin Institute}
+  \bibinfo{volume}{357}, \bibinfo{pages}{10353--10366}.
+\newblock \DOIprefix\doi{10.1016/j.jfranklin.2020.08.011}.
+%Type = Book
+\bibitem[{Bryson and Ho(1975)}]{Bryson1975}
+\bibinfo{author}{Bryson, A.E.}, \bibinfo{author}{Ho, Y.C.},
+  \bibinfo{year}{1975}.
+\newblock \bibinfo{title}{Applied Optimal Control: Optimization, Estimation,
+  and Control}.
+\newblock \bibinfo{publisher}{Hemisphere}, \bibinfo{address}{Washington, DC}.
+%Type = Article
+\bibitem[{Chilali and Gahinet(1996)}]{Chilali1996}
+\bibinfo{author}{Chilali, M.}, \bibinfo{author}{Gahinet, P.},
+  \bibinfo{year}{1996}.
+\newblock \bibinfo{title}{{$H_\infty$} design with pole placement constraints:
+  An {LMI} approach}.
+\newblock \bibinfo{journal}{IEEE Transactions on Automatic Control}
+  \bibinfo{volume}{41}, \bibinfo{pages}{358--367}.
+\newblock \DOIprefix\doi{10.1109/9.486637}.
+%Type = Article
+\bibitem[{Coutinho et~al.(2023)Coutinho, Santos and Reis}]{Coutinho2023}
+\bibinfo{author}{Coutinho, J.P.L.}, \bibinfo{author}{Santos, L.O.},
+  \bibinfo{author}{Reis, M.S.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Bayesian optimization for automatic tuning of digital
+  multi-loop {PID} controllers}.
+\newblock \bibinfo{journal}{Computers \& Chemical Engineering}
+  \bibinfo{volume}{173}, \bibinfo{pages}{108211}.
+\newblock \DOIprefix\doi{10.1016/j.compchemeng.2023.108211}.
+%Type = Article
+\bibitem[{Deb(2000)}]{Deb2000}
+\bibinfo{author}{Deb, K.}, \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{An efficient constraint handling method for genetic
+  algorithms}.
+\newblock \bibinfo{journal}{Computer Methods in Applied Mechanics and
+  Engineering} \bibinfo{volume}{186}, \bibinfo{pages}{311--338}.
+\newblock \DOIprefix\doi{10.1016/S0045-7825(99)00389-8}.
+%Type = Article
+\bibitem[{Dem{\v s}ar(2006)}]{Demsar2006}
+\bibinfo{author}{Dem{\v s}ar, J.}, \bibinfo{year}{2006}.
+\newblock \bibinfo{title}{Statistical comparisons of classifiers over multiple
+  data sets}.
+\newblock \bibinfo{journal}{Journal of Machine Learning Research}
+  \bibinfo{volume}{7}, \bibinfo{pages}{1--30}.
+%Type = Article
+\bibitem[{Doyle(1978)}]{Doyle1978}
+\bibinfo{author}{Doyle, J.C.}, \bibinfo{year}{1978}.
+\newblock \bibinfo{title}{Guaranteed margins for {LQG} regulators}.
+\newblock \bibinfo{journal}{IEEE Transactions on Automatic Control}
+  \bibinfo{volume}{23}, \bibinfo{pages}{756--757}.
+\newblock \DOIprefix\doi{10.1109/TAC.1978.1101812}.
+%Type = Article
+\bibitem[{Doyle and Stein(1979)}]{Doyle1979}
+\bibinfo{author}{Doyle, J.C.}, \bibinfo{author}{Stein, G.},
+  \bibinfo{year}{1979}.
+\newblock \bibinfo{title}{Robustness with observers}.
+\newblock \bibinfo{journal}{IEEE Transactions on Automatic Control}
+  \bibinfo{volume}{24}, \bibinfo{pages}{607--611}.
+\newblock \DOIprefix\doi{10.1109/TAC.1979.1102095}.
+%Type = Book
+\bibitem[{Erickson and Maksimovi{\'c}(2020)}]{Erickson2020}
+\bibinfo{author}{Erickson, R.W.}, \bibinfo{author}{Maksimovi{\'c}, D.},
+  \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Fundamentals of Power Electronics}.
+\newblock \bibinfo{edition}{3} ed., \bibinfo{publisher}{Springer}.
+\newblock \DOIprefix\doi{10.1007/978-3-030-43881-4}.
+%Type = Article
+\bibitem[{Hou et~al.(2022)Hou, Gao, Wang and Du}]{Hou2022}
+\bibinfo{author}{Hou, Y.}, \bibinfo{author}{Gao, H.}, \bibinfo{author}{Wang,
+  Z.}, \bibinfo{author}{Du, C.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Improved grey wolf optimization algorithm and
+  application}.
+\newblock \bibinfo{journal}{Sensors} \bibinfo{volume}{22},
+  \bibinfo{pages}{3810}.
+\newblock \DOIprefix\doi{10.3390/s22103810}.
+%Type = Misc
+\bibitem[{{Infineon Technologies AG}(2026)}]{Infineon2026}
+\bibinfo{author}{{Infineon Technologies AG}}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{{IRF540NPbF} data sheet}.
+\newblock \bibinfo{note}{Revision 2.1}.
+%Type = Article
+\bibitem[{Izci et~al.(2022)Izci, Ekinci and Hekimo{\u g}lu}]{Izci2022}
+\bibinfo{author}{Izci, D.}, \bibinfo{author}{Ekinci, S.},
+  \bibinfo{author}{Hekimo{\u g}lu, B.}, \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{A new artificial ecosystem-based optimization
+  integrated with {Nelder--Mead} method for {PID} controller design of buck
+  converter}.
+\newblock \bibinfo{journal}{Alexandria Engineering Journal}
+  \bibinfo{volume}{61}, \bibinfo{pages}{2030--2044}.
+\newblock \DOIprefix\doi{10.1016/j.aej.2021.07.037}.
+%Type = Article
+\bibitem[{Kalman(1964)}]{Kalman1964}
+\bibinfo{author}{Kalman, R.E.}, \bibinfo{year}{1964}.
+\newblock \bibinfo{title}{When is a linear control system optimal?}
+\newblock \bibinfo{journal}{Journal of Basic Engineering} \bibinfo{volume}{86},
+  \bibinfo{pages}{51--60}.
+\newblock \DOIprefix\doi{10.1115/1.3653115}.
+%Type = Article
+\bibitem[{Karaboga and Basturk(2008)}]{Karaboga2008}
+\bibinfo{author}{Karaboga, D.}, \bibinfo{author}{Basturk, B.},
+  \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{On the performance of artificial bee colony ({ABC})
+  algorithm}.
+\newblock \bibinfo{journal}{Applied Soft Computing} \bibinfo{volume}{8},
+  \bibinfo{pages}{687--697}.
+\newblock \DOIprefix\doi{10.1016/j.asoc.2007.05.007}.
+%Type = Inproceedings
+\bibitem[{Kennedy and Eberhart(1995)}]{Kennedy1995}
+\bibinfo{author}{Kennedy, J.}, \bibinfo{author}{Eberhart, R.},
+  \bibinfo{year}{1995}.
+\newblock \bibinfo{title}{Particle swarm optimization}, in:
+  \bibinfo{booktitle}{Proceedings of ICNN'95 -- International Conference on
+  Neural Networks}, pp. \bibinfo{pages}{1942--1948}.
+\newblock \DOIprefix\doi{10.1109/ICNN.1995.488968}.
+%Type = Article
+\bibitem[{Liu et~al.(2018)Liu, Xie, Bemporad and Lu}]{Liu2018}
+\bibinfo{author}{Liu, Z.}, \bibinfo{author}{Xie, L.},
+  \bibinfo{author}{Bemporad, A.}, \bibinfo{author}{Lu, S.},
+  \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Fast linear parameter varying model predictive
+  control of buck {DC--DC} converters based on {FPGA}}.
+\newblock \bibinfo{journal}{IEEE Access} \bibinfo{volume}{6},
+  \bibinfo{pages}{52434--52446}.
+\newblock \DOIprefix\doi{10.1109/ACCESS.2018.2869043}.
+%Type = Inproceedings
+\bibitem[{Middlebrook and {\'C}uk(1976)}]{Middlebrook1976}
+\bibinfo{author}{Middlebrook, R.D.}, \bibinfo{author}{{\'C}uk, S.},
+  \bibinfo{year}{1976}.
+\newblock \bibinfo{title}{A general unified approach to modelling
+  switching-converter power stages}, in: \bibinfo{booktitle}{1976 IEEE Power
+  Electronics Specialists Conference}, pp. \bibinfo{pages}{18--34}.
+\newblock \DOIprefix\doi{10.1109/PESC.1976.7072895}.
+%Type = Article
+\bibitem[{Mirjalili et~al.(2014)Mirjalili, Mirjalili and Lewis}]{Mirjalili2014}
+\bibinfo{author}{Mirjalili, S.}, \bibinfo{author}{Mirjalili, S.M.},
+  \bibinfo{author}{Lewis, A.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{Grey wolf optimizer}.
+\newblock \bibinfo{journal}{Advances in Engineering Software}
+  \bibinfo{volume}{69}, \bibinfo{pages}{46--61}.
+\newblock \DOIprefix\doi{10.1016/j.advengsoft.2013.12.007}.
+%Type = Article
+\bibitem[{Nadimi-Shahraki et~al.(2021)Nadimi-Shahraki, Taghian and
+  Mirjalili}]{NadimiShahraki2021}
+\bibinfo{author}{Nadimi-Shahraki, M.H.}, \bibinfo{author}{Taghian, S.},
+  \bibinfo{author}{Mirjalili, S.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{An improved grey wolf optimizer for solving
+  engineering problems}.
+\newblock \bibinfo{journal}{Expert Systems with Applications}
+  \bibinfo{volume}{166}, \bibinfo{pages}{113917}.
+\newblock \DOIprefix\doi{10.1016/j.eswa.2020.113917}.
+%Type = Article
+\bibitem[{Nanyan et~al.(2024)Nanyan, Ahmad and Hekimo{\u g}lu}]{Nanyan2024}
+\bibinfo{author}{Nanyan, N.F.}, \bibinfo{author}{Ahmad, M.A.},
+  \bibinfo{author}{Hekimo{\u g}lu, B.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Optimal {PID} controller for the {DC--DC} buck
+  converter using the improved sine cosine algorithm}.
+\newblock \bibinfo{journal}{Results in Control and Optimization}
+  \bibinfo{volume}{14}, \bibinfo{pages}{100352}.
+\newblock \DOIprefix\doi{10.1016/j.rico.2023.100352}.
+%Type = Article
+\bibitem[{Peterchev and Sanders(2003)}]{Peterchev2003}
+\bibinfo{author}{Peterchev, A.V.}, \bibinfo{author}{Sanders, S.R.},
+  \bibinfo{year}{2003}.
+\newblock \bibinfo{title}{Quantization resolution and limit cycling in
+  digitally controlled {PWM} converters}.
+\newblock \bibinfo{journal}{IEEE Transactions on Power Electronics}
+  \bibinfo{volume}{18}, \bibinfo{pages}{301--308}.
+\newblock \DOIprefix\doi{10.1109/TPEL.2002.807092}.
+%Type = Article
+\bibitem[{Rodr{\'i}guez-Molina et~al.(2020)Rodr{\'i}guez-Molina, Mezura-Montes,
+  Villarreal-Cervantes and Aldape-P{\'e}rez}]{RodriguezMolina2020}
+\bibinfo{author}{Rodr{\'i}guez-Molina, A.}, \bibinfo{author}{Mezura-Montes,
+  E.}, \bibinfo{author}{Villarreal-Cervantes, M.G.},
+  \bibinfo{author}{Aldape-P{\'e}rez, M.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Multi-objective meta-heuristic optimization in
+  intelligent control: A survey on the controller tuning problem}.
+\newblock \bibinfo{journal}{Applied Soft Computing} \bibinfo{volume}{93},
+  \bibinfo{pages}{106342}.
+\newblock \DOIprefix\doi{10.1016/j.asoc.2020.106342}.
+%Type = Article
+\bibitem[{Safonov and Athans(1977)}]{Safonov1977}
+\bibinfo{author}{Safonov, M.G.}, \bibinfo{author}{Athans, M.},
+  \bibinfo{year}{1977}.
+\newblock \bibinfo{title}{Gain and phase margin for multiloop {LQG}
+  regulators}.
+\newblock \bibinfo{journal}{IEEE Transactions on Automatic Control}
+  \bibinfo{volume}{22}, \bibinfo{pages}{173--179}.
+\newblock \DOIprefix\doi{10.1109/TAC.1977.1101470}.
+%Type = Article
+\bibitem[{Siano and Citro(2014)}]{Siano2014}
+\bibinfo{author}{Siano, P.}, \bibinfo{author}{Citro, C.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{Designing fuzzy logic controllers for {DC--DC}
+  converters using multi-objective particle swarm optimization}.
+\newblock \bibinfo{journal}{Electric Power Systems Research}
+  \bibinfo{volume}{112}, \bibinfo{pages}{74--83}.
+\newblock \DOIprefix\doi{10.1016/j.epsr.2014.03.010}.
+%Type = Article
+\bibitem[{Siddhartha et~al.(2018)Siddhartha, Hote and Saxena}]{Siddhartha2018}
+\bibinfo{author}{Siddhartha, V.}, \bibinfo{author}{Hote, Y.V.},
+  \bibinfo{author}{Saxena, S.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Non-ideal modelling and {IMC} based {PID} controller
+  design of {PWM} {DC--DC} buck converter}.
+\newblock \bibinfo{journal}{IFAC-PapersOnLine} \bibinfo{volume}{51},
+  \bibinfo{pages}{639--644}.
+\newblock \DOIprefix\doi{10.1016/j.ifacol.2018.06.168}.
+%Type = Article
+\bibitem[{Sitbon et~al.(2020)Sitbon, Aharon, Averbukh, Baimel and
+  Sassonker}]{Sitbon2020}
+\bibinfo{author}{Sitbon, M.}, \bibinfo{author}{Aharon, I.},
+  \bibinfo{author}{Averbukh, M.}, \bibinfo{author}{Baimel, D.},
+  \bibinfo{author}{Sassonker, M.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Disturbance observer based robust voltage control of
+  photovoltaic generator interfaced by current mode buck converter}.
+\newblock \bibinfo{journal}{Energy Conversion and Management}
+  \bibinfo{volume}{209}, \bibinfo{pages}{112622}.
+\newblock \DOIprefix\doi{10.1016/j.enconman.2020.112622}.
+%Type = Inproceedings
+\bibitem[{Snoek et~al.(2012)Snoek, Larochelle and Adams}]{Snoek2012}
+\bibinfo{author}{Snoek, J.}, \bibinfo{author}{Larochelle, H.},
+  \bibinfo{author}{Adams, R.P.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{Practical {Bayesian} optimization of machine learning
+  algorithms}, in: \bibinfo{booktitle}{Advances in Neural Information
+  Processing Systems}.
+%Type = Misc
+\bibitem[{{STMicroelectronics}(2023)}]{ST2023}
+\bibinfo{author}{{STMicroelectronics}}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{{STPST10H100}: 100 {V}--10 {A} power {Schottky}
+  trench diode, data sheet}.
+%Type = Article
+\bibitem[{Valencia-Rivera et~al.(2024)Valencia-Rivera, Benavides-Robles,
+  Vela~Morales, Amaya, Cruz-Duarte, Ortiz-Bayliss and
+  Avi{\~n}a-Cervantes}]{ValenciaRivera2024}
+\bibinfo{author}{Valencia-Rivera, G.H.}, \bibinfo{author}{Benavides-Robles,
+  M.T.}, \bibinfo{author}{Vela~Morales, A.}, \bibinfo{author}{Amaya, I.},
+  \bibinfo{author}{Cruz-Duarte, J.M.}, \bibinfo{author}{Ortiz-Bayliss, J.C.},
+  \bibinfo{author}{Avi{\~n}a-Cervantes, J.G.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{A systematic review of metaheuristic algorithms in
+  electric power systems optimization}.
+\newblock \bibinfo{journal}{Applied Soft Computing} \bibinfo{volume}{150},
+  \bibinfo{pages}{111047}.
+\newblock \DOIprefix\doi{10.1016/j.asoc.2023.111047}.
+
+\end{thebibliography}

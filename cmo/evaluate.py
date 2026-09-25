@@ -12,11 +12,14 @@ Constraints (absolute engineering specifications, fixed before any search), g <=
   g2 largest |e| from the load-pulse onset to the next event <= 0.5 V
   g3 peak inductor current <= 23 A (IRF540N continuous rating at 100 C)
   g4 largest final-window |mean error| <= 25 mV
-  g5 |Eu/Eu0 - 1| <= 0.5 %   (same useful task as the record xi0)
-  g6 loss intensity rho_loss <= 1.005
-  g37 switched screen: duty peak-to-peak, last 4 ms of each level <= 0.20
-  g38 switched screen: |mean error|, last 4 ms of each level       <= 25 mV
-  g39 switched screen: peak inductor current                       <= 23 A
+  g5 loss intensity rho_loss <= 1.005
+(The useful-energy band |Eu/Eu0 - 1| <= 0.5 % of the v6 protocol is reported,
+not constrained: anchored to xi0 it penalizes the removal of xi0's 9.8 V
+step-down undershoot, and against the ideal task it penalizes the passive
+discharge of an asynchronous converter. The absolute tracking gates pin the task.)
+  g31 switched screen: duty peak-to-peak, last 4 ms of each level <= 0.20
+  g32 switched screen: |mean error|, last 4 ms of each level       <= 25 mV
+  g33 switched screen: peak inductor current                       <= 23 A
 The switched screen (sw_screen) runs the switched model of cmo/sim.py over the
 transition sequence 24 -> 1 -> 46 -> 24 V (34 ms, 1 us RK4). It replaces the analytical ripple
 bound of the v6 protocol, which did not prevent ripple-induced limit cycles
@@ -166,7 +169,7 @@ class Evaluator:
         rip = ripple_ratio(p)
         ms = self.metrics(p)
         if any(m is None for m in ms):
-            g = np.full(39, 1e3)
+            g = np.full(33, 1e3)
             dpp = ess_sw = ipk_sw = np.inf
             return Record(np.asarray(x), 1e3, g, float(np.sum(g)), False,
                           dict(ripple=rip, dpp=dpp, ess_sw=ess_sw, ipk_sw=ipk_sw))
@@ -177,7 +180,6 @@ class Evaluator:
             g += [m['OS'] / OS_LIM - 1 if np.isfinite(m['OS']) else -1.0,
                   m['LD'] / LOAD_LIM - 1 if np.isfinite(m['LD']) else -1.0,
                   (m['ILpk'] + HALF_RIPPLE) / I_LIM - 1, m['ess'] / ESS_TOL - 1,
-                  abs(m['Eu'] / m0['Eu'] - 1) / EU_BAND - 1,
                   (m['LI'] / m0['LI'] - 1) / LI_TOL - 1]
         dpp, ess_sw, ipk_sw = sw_screen(p)
         g.append(dpp / DPP_LIM - 1)
@@ -187,7 +189,8 @@ class Evaluator:
         viol = float(np.sum(np.maximum(g, 0.0)))
         return Record(np.asarray(x) if x is not None else None, J, g, viol,
                       viol <= FEAS_TOL,
-                      dict(ripple=rip, dpp=dpp, ess_sw=ess_sw, ipk_sw=ipk_sw, ratios=r, clip=max(m['clip'] for m in ms),
+                      dict(ripple=rip, dpp=dpp, ess_sw=ess_sw, ipk_sw=ipk_sw, ratios=r,
+                           eu_dev=[m['Eu'] / m0['Eu'] - 1 for m, m0 in zip(ms, self.ref)], clip=max(m['clip'] for m in ms),
                            sat=max(m['sat'] for m in ms)))
 
     def __call__(self, x):

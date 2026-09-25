@@ -15,12 +15,17 @@ Parameter vector p (float64, length NP):
 Law coefficients:
   PI   : Kp Ki Kb
   PID  : Kp Ki Kd b Kb           (backward-difference derivative on c*r - vo, c = 0)
-  PIDF : Kp Ki Kd N b c Kb       (ZOH-exact first-order derivative filter)
+  PIDF : Kp Ki Kd N b c Kb [zoh]  (first-order derivative filter, triangle-hold
+                                  (FOH) discretization: the filter state is the
+                                  v_C observer of Proposition 2 and is updated
+                                  with the current sample before it is used;
+                                  p[8] = 1 selects the legacy ZOH update)
   LQR  : p[8:10] = K1 K2
   LQG  : p[8:10] = K1 K2, p[10:12] = Lo, p[12:16] = Ad, p[16:18] = Bd, p[18:20] = Cd
   LQI  : p[8:11] = K1 K2 K3 (discrete), p[1] = Kb
 State vector s (length NS): s[0] integral, s[1] filter / previous output,
-  s[2:4] observer state, s[4] applied duty (delay register), s[5] d_pre.
+  s[2:4] observer state, s[4] applied duty (delay register), s[5] d_pre,
+  s[6] previous filter input, s[7] first-sample flag.
 """
 from __future__ import annotations
 
@@ -48,7 +53,7 @@ def ctrl_init(p, s, r0, vo0, iL0, vC0):
     s[5] = d0
     if code == 3:
         # consistent initialization of the derivative filter:
-        # x_F(0) = c r - v_C(0)  (Proposition 3: x_F tracks c r - v_C)
+        # x_F(0) = c r - v_C(0)  (Proposition 2: x_F tracks c r - v_C)
         s[1] = p[6] * r0 - vC0
     elif code == 2:
         s[1] = -vo0
@@ -81,11 +86,22 @@ def ctrl_step(p, s, r, vo, iL, iC):
         yd = -vo
         u = Kp * (b * r - vo) + s[0] + Kd * (yd - s[1]) / Ts
         s[1] = yd
-    elif code == 3:                    # PIDF 2-DOF
+    elif code == 3:                    # PIDF 2-DOF, triangle-hold (FOH) filter
         Kp = p[1]; Kd = p[3]; N = p[4]; b = p[5]; c = p[6]
-        u = Kp * (b * r - vo) + s[0] + Kd * N * (c * r - vo - s[1])
-        phi = np.exp(-N * Ts)
-        s[1] = phi * s[1] + (1.0 - phi) * (c * r - vo)
+        w = c * r - vo
+        if p[8] == 1.0:                # legacy zero-order-hold filter (audit only)
+            u = Kp * (b * r - vo) + s[0] + Kd * N * (w - s[1])
+            phi = np.exp(-N * Ts)
+            s[1] = phi * s[1] + (1.0 - phi) * w
+        elif s[7] == 0.0:
+            s[7] = 1.0                 # first sample: x_F(0) set by ctrl_init
+        else:
+            phi = np.exp(-N * Ts)
+            gam = 1.0 - (1.0 - phi) / (N * Ts)
+            s[1] = phi * s[1] + (1.0 - phi) * s[6] + gam * (w - s[6])
+        if p[8] != 1.0:
+            s[6] = w
+            u = Kp * (b * r - vo) + s[0] + Kd * N * (w - s[1])
     elif code == 4 or code == 6:       # LQR / LQI, measured state
         vC = vo - rC * iC
         u = -p[8] * (iL - r / R) - p[9] * (vC - r)

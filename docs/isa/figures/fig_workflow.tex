@@ -8,8 +8,8 @@
 \node[box, text width=28mm] (plant) {Non-ideal Buck\\ Eqs.~\eqref{eq:node}--\eqref{eq:dff}, $G_{vd}(s)$};
 \node[hl, right=of plant, text width=30mm] (lqi) {LQI weights $\xi$\\ Bryson $Q,R_d$ $\to$ CARE \eqref{eq:care}};
 \node[hl, right=of lqi, text width=30mm] (map) {Exact map \eqref{eq:map}\\ $K\to(K_p,K_i,K_d,N_C,1,0,K_b)$};
-\node[box, right=of map, text width=30mm] (avg) {Averaged evaluator\\ 6 scenarios, $J_s$, $g_1..g_{36}$};
-\node[sw, below=of avg, text width=30mm] (scr) {Switched screen\\ 24$\to$1$\to$46$\to$24 V, 34 ms: $g_{37}..g_{39}$};
+\node[box, right=of map, text width=30mm] (avg) {Averaged evaluator\\ 6 scenarios, $J_s$, $g_1..g_{30}$};
+\node[sw, below=of avg, text width=30mm] (scr) {Switched screen\\ 24$\to$1$\to$46$\to$24 V, 34 ms: $g_{31}..g_{33}$};
 \node[box, left=of scr, text width=30mm] (deb) {Deb record\\ feasible-first, no penalty};
 \node[hl, left=of deb, text width=30mm] (opt) {7 algorithms, 30 seeds\\ 240 global + 60 refineBO};
 \node[box, left=of opt, text width=28mm] (cert) {Certificates\\ LQR margins, D-region LMI, Prop.~\ref{prop:struct}};

@@ -82,8 +82,10 @@ C_y=\begin{bmatrix}\gamma r_C & \gamma\end{bmatrix},
 $B_p=[\gamma r_C/L\;\;-\gamma/C]^\top$ and $D_p=-\gamma r_C$. The control-to-output
 transfer function is
 \begin{equation}
-G_{vd}(s)=\frac{E_dR(1+r_CCs)}{\Delta(s)},\quad
-\Delta(s)=LC(R+r_C)s^2+\big[L+C\big((R+r_C)\rho_0+Rr_C\big)\big]s+R+\rho_0 ,
+\begin{aligned}
+G_{vd}(s)&=\frac{E_dR(1+r_CCs)}{\Delta(s)},\\
+\Delta(s)&=LC(R+r_C)s^2+\big[L+C\big((R+r_C)\rho_0+Rr_C\big)\big]s+R+\rho_0 ,
+\end{aligned}
 \label{eq:gvd}
 \end{equation}
 with the ESR zero $\omega_{z}=N_C=1/(r_CC)=\SI{2e5}{rad/s}$. Table~\ref{tab:tf}

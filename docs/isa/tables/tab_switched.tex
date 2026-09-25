@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering
+\caption{Switched replay on the 324 ms reference mission (24$\to$1$\to$46 V, 0.5 A load pulse). Specification ratios: overshoot/1.5 V, load deviation/0.5 V, peak $i_L$/23 A, worst steady error/25 mV, steady duty peak-to-peak/0.20; a ratio $\le1$ meets the specification. $u$ is the largest ratio. Energy residual below \RESmax{} for every row.}
+\label{tab:switched}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lrrrrrrrrrrc@{}}
+\toprule
+Controller & IAE (V\,s) & overshoot (V) & $i_{L,pk}$ (A) & $|\bar e|_{\max}$ (mV) & load dev.\ (V) & $\eta$ (\%) & $E_{loss}/E_u$ & sat.\ frac. & $u$ & specs met & sensors\\
+\midrule
+CMO--LQI--PIDF (retained, $v_o$ only) & 0.0364 & \textbf{0.02} & \textbf{22.44} & 25.6 & \textbf{0.137} & 97.978 & 0.01801 & 0.089 & 1.02 & 4/5 & $v_o$\\
+CMO--LQI--SF (twin, measured $i_L$) & 0.0348 & \textbf{0.02} & \textbf{22.70} & \textbf{0.0} & \textbf{0.214} & 97.980 & 0.01799 & 0.010 & 0.99 & 5/5 & $v_o,i_L,i_C$\\
+Bryson LQI--PIDF $\xi_0$ & 0.0340 & 8.05 & 32.50 & \textbf{0.0} & \textbf{0.193} & 97.936 & 0.01845 & 0.012 & 5.37 & 3/5 & $v_o$\\
+PI (loop shaping) & 0.0480 & 26.63 & 40.78 & \textbf{0.1} & \textbf{0.474} & 97.813 & 0.01972 & 0.012 & 17.76 & 3/5 & $v_o$\\
+PID (pole--zero) & 0.0467 & 28.64 & 40.77 & \textbf{11.3} & \textbf{0.128} & 97.802 & 0.01984 & 0.093 & 19.09 & 3/5 & $v_o$\\
+PIDF (Type III) & 0.0453 & 28.65 & 40.78 & \textbf{0.0} & \textbf{0.157} & 97.801 & 0.01986 & 0.013 & 19.10 & 3/5 & $v_o$\\
+LQR & 0.1339 & \textbf{0.97} & 24.36 & 754.3 & 0.805 & 97.969 & 0.01811 & 0.001 & 30.17 & 2/5 & $v_o,i_L,i_C$\\
+LQG & 0.0716 & \textbf{0.28} & 24.39 & 289.5 & \textbf{0.466} & 97.960 & 0.01818 & 0.000 & 11.58 & 3/5 & $v_o$\\
+LQI (discrete, full state) & 0.0348 & 9.41 & 32.61 & \textbf{0.0} & 0.552 & 97.931 & 0.01849 & 0.013 & 6.28 & 2/5 & $v_o,i_L,i_C$\\
+\bottomrule
+\end{tabular}}
+\end{table*}

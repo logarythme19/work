@@ -19,7 +19,9 @@ from cmo.lmi import certificate  # noqa: E402
 from cmo.equiv import sim_cont  # noqa: E402
 from cmo.run import plant_vec  # noqa: E402
 from cmo.ripple import ripple_ratio  # noqa: E402
-from cmo.designs import dec_cmo  # noqa: E402
+from cmo.designs import dec_cmo, dec_cmo_sf  # noqa: E402
+from cmo.plant import equilibrium  # noqa: E402
+from cmo import sim  # noqa: E402
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'results', 'cmo')
 
@@ -64,6 +66,26 @@ def equivalence_tests(D):
     return out
 
 
+def sampling_equivalence():
+    """Sampled PIDF (FOH or ZOH filter) vs sampled full-state LQI vs continuous law."""
+    D = lqi(XI0)
+    out = {}
+    for name, lv in (('1to46', (1.0, 46.0)), ('24to1', (24.0, 1.0)), ('46to24', (46.0, 24.0))):
+        IL0, _ = equilibrium(lv[0])
+        c = sim_cont(0, plant_vec(), PLANT.R, D.K, D.theta, D.theta[6], np.array([0.01]), np.array(lv),
+                     0.0, 0.0, 0.0, IL0, lv[0], 0.04, 0.05e-6, SAMP.dmin, SAMP.dmax, 4000)
+        pf = dec_cmo(XI0); pz = pf.copy(); pz[8] = 1.0
+        R = [sim.sim_avg(plant_vec(), p, np.array([0.01]), np.array(lv), 0.0, 0.0, 0.0, IL0, lv[0], 0.04, 5)
+             for p in (pf, pz, dec_cmo_sf(XI0))]
+        vc = np.interp(R[0][0], c[:, 0], c[:, 1])
+        out[name] = dict(foh_vs_lqi=float(np.max(np.abs(R[0][2] - R[2][2]))),
+                         zoh_vs_lqi=float(np.max(np.abs(R[1][2] - R[2][2]))),
+                         foh_vs_cont=float(np.max(np.abs(R[0][2] - vc))),
+                         zoh_vs_cont=float(np.max(np.abs(R[1][2] - vc))),
+                         lqi_vs_cont=float(np.max(np.abs(R[2][2] - vc))))
+    return out
+
+
 def main():
     res = {}
     res['ccm'] = [ccm_screen(V) for V in (1.0, 24.0, 46.0)]
@@ -95,6 +117,7 @@ def main():
                          ripple_ratio=ripple_ratio(dec_cmo(XI0)))
     res['anchor_lmi'] = certificate(D.K)
     res['equivalence'] = equivalence_tests(D)
+    res['sampling'] = sampling_equivalence()
     os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(OUT, 'formula_first.json'), 'w') as f:
         json.dump(jl(res), f, indent=1)

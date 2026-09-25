@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\caption{Controller families under the identical protocol (7 algorithms, 30 seeds, 300 calls, 33 inequalities). Paired comparison with CMO--LQI--PIDF on the same (algorithm, seed) cells: Deb-consistent score, two-sided Wilcoxon signed-rank test.}
+\label{tab:families}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llrrrrrl@{}}
+\toprule
+Family & variables & feasible runs & best $J_s$ & median $J_s$ (feasible) & CMO better / tie / worse & $p$ & min.\ violation\\
+\midrule
+CMO-LQI-PIDF & 4 (LQI weights, $K_b$) & 124/180 & 0.8151 & 0.8287 & -- & -- & 0.000\\
+CMO-LQI-SF & 4 (same, full state) & 23/180 & 0.9424 & 0.9740 & -- & -- & 0.000\\
+\bottomrule
+\end{tabular}}
+\end{table*}

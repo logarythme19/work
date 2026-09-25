@@ -23,7 +23,8 @@ from cmo.evaluate import Evaluator  # noqa: E402
 from cmo.run import mission_sw  # noqa: E402
 from cmo.params import MISSION_WINDOWS, MISSION_STEPS, IDS_RATING_A  # noqa: E402
 from cmo.ripple import ripple_ratio  # noqa: E402
-from cmo.lqi import lqi  # noqa: E402
+from cmo.lqi import lqi, return_difference  # noqa: E402
+from cmo.lmi import certificate  # noqa: E402
 
 OUT = os.path.join(ROOT, 'results', 'cmo')
 
@@ -169,8 +170,14 @@ def main():
         out['switched'][k]['avg_ratios'] = np.asarray(r.extra.get('ratios')).tolist() if 'ratios' in r.extra else None
     if 'CMO-LQI-PIDF' in out['families']:
         D = lqi(np.array(out['families']['CMO-LQI-PIDF']['best']['x']))
+        cert = certificate(D.K)
+        rdmin, pm = return_difference(D)
         out['retained_lqi'] = dict(K=D.K.tolist(), theta=D.theta.tolist(), poles=[[z.real, z.imag] for z in D.poles],
-                                   care_res_rel=D.care_res_rel)
+                                   care_res_rel=D.care_res_rel, xi=D.xi.tolist(),
+                                   alpha_cert=cert['alpha_cert'], zeta_cert=cert['zeta_cert'],
+                                   lamminP=[cert['lamminP_alpha'], cert['lamminP_zeta']],
+                                   lmax=[cert['lmax_alpha'], cert['lmax_zeta']],
+                                   min_return_difference=rdmin, phase_margin_deg=pm)
     with open(os.path.join(OUT, 'analysis.json'), 'w') as f:
         json.dump(out, f, indent=1, default=float)
     with open(os.path.join(OUT, 'controllers.csv'), 'w') as f:

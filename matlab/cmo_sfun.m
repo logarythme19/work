@@ -108,10 +108,18 @@ switch code
         u = p(2) * (p(5) * r - vo) + s(1) + p(4) * (yd - s(2)) / Ts;
         s(2) = yd;
     case 3
+        % triangle-hold (FOH) update of the v_C observer x_F with the current
+        % sample, then use (Proposition 2: x_F = c r - v_C)
         Kd = p(4); N = p(5); b = p(6); c = p(7);
-        u = p(2) * (b * r - vo) + s(1) + Kd * N * (c * r - vo - s(2));
-        phi = exp(-N * Ts);
-        s(2) = phi * s(2) + (1 - phi) * (c * r - vo);
+        w = c * r - vo;
+        if s(8) == 0
+            s(8) = 1;
+        else
+            phi = exp(-N * Ts); gam = 1 - (1 - phi) / (N * Ts);
+            s(2) = phi * s(2) + (1 - phi) * s(7) + gam * (w - s(7));
+        end
+        s(7) = w;
+        u = p(2) * (b * r - vo) + s(1) + Kd * N * (w - s(2));
     case {4, 6}
         vC = vo - rC * iC;
         u = -p(9) * (iL - r / R) - p(10) * (vC - r);
