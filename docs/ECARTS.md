@@ -25,3 +25,9 @@ protocole (A1–A4) sont aussi consignés dans `protocol/protocol_v6_1.json`.
 - *« Le cycle du rapport cyclique est une bascule à la fréquence de Nyquist. »* — **Partiellement
   réfutée** : le candidat b = 1 montre une alternance d'échantillon à échantillon de faible amplitude,
   mais le candidat b libre présente un cycle limite à 7,7 kHz, bien en dessous de Nyquist.
+
+## Diagnostics post hoc ajoutés après la campagne v6.1
+
+| # | Diagnostic | Constat | Statut |
+|---|---|---|---|
+| E11 | Plancher de tension à d = d_min (`scripts/floor_dmin.py`) | Les marges g6 reviennent à l'identique d'un correcteur à l'autre (Vmin = 0,7541 V au nominal). En boucle ouverte à d = 0,02, la sortie se stabilise sous 0,8 V pour la plupart des cas : le seuil de g6 est **au-dessus** du plancher physique du convertisseur saturé. | Rapporté, jamais utilisé pour sélectionner (§8). |
