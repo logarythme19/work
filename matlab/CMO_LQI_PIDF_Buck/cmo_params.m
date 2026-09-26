@@ -58,7 +58,7 @@ P.lqi.Di0  = 15;            % excursion admissible du courant (A)
 P.lqi.Dv0  = [];            % excursion de tension ; vide => Vhigh
 P.lqi.wB0  = 2*pi*1500;     % bande de l'intégrateur (rad/s)
 P.lqi.Kb0  = 2*pi*1500;     % gain d'anti-windup (1/s)
-P.lqi.LB   = [0 0 2 2];     % bornes basses de xi ; bornes hautes : section 9
+P.lqi.LB   = [0 0 2 2];     % bornes basses de xi ; bornes hautes calculées à la fin
 P.lqi.UB12 = [2 2.4];       % bornes hautes de log10 Di et log10 Dv
 
 %% 7. Paramètres optimaux publiés (CMO-LQI-PIDF, J_s = 0.8151)
