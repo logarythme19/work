@@ -44,8 +44,8 @@
 \bibinfo{author}{{\AA}str{\"o}m, K.J.}, \bibinfo{author}{H{\"a}gglund, T.},
   \bibinfo{year}{2006}.
 \newblock \bibinfo{title}{Advanced {PID} Control}.
-\newblock \bibinfo{publisher}{ISA -- The Instrumentation, Systems, and
-  Automation Society}, \bibinfo{address}{Research Triangle Park, NC}.
+\newblock \bibinfo{publisher}{{ISA -- The Instrumentation, Systems, and
+  Automation Society}}, \bibinfo{address}{Research Triangle Park, NC}.
 %Type = Inproceedings
 \bibitem[{{\AA}str{\"o}m and Rundqwist(1989)}]{Astrom1989}
 \bibinfo{author}{{\AA}str{\"o}m, K.J.}, \bibinfo{author}{Rundqwist, L.},
@@ -114,6 +114,7 @@
   data sets}.
 \newblock \bibinfo{journal}{Journal of Machine Learning Research}
   \bibinfo{volume}{7}, \bibinfo{pages}{1--30}.
+\newblock \URLprefix \url{https://www.jmlr.org/papers/v7/demsar06a.html}.
 %Type = Article
 \bibitem[{Doyle(1978)}]{Doyle1978}
 \bibinfo{author}{Doyle, J.C.}, \bibinfo{year}{1978}.
@@ -149,7 +150,9 @@
 \bibitem[{{Infineon Technologies AG}(2026)}]{Infineon2026}
 \bibinfo{author}{{Infineon Technologies AG}}, \bibinfo{year}{2026}.
 \newblock \bibinfo{title}{{IRF540NPbF} data sheet}.
-\newblock \bibinfo{note}{Revision 2.1}.
+\newblock \URLprefix
+  \url{https://www.infineon.com/assets/row/public/documents/24/49/infineon-irf540n-datasheet-en.pdf}.
+  \bibinfo{note}{revision 2.1}.
 %Type = Article
 \bibitem[{Izci et~al.(2022)Izci, Ekinci and Hekimo{\u g}lu}]{Izci2022}
 \bibinfo{author}{Izci, D.}, \bibinfo{author}{Ekinci, S.},
@@ -293,11 +296,15 @@
 \newblock \bibinfo{title}{Practical {Bayesian} optimization of machine learning
   algorithms}, in: \bibinfo{booktitle}{Advances in Neural Information
   Processing Systems}.
+\newblock \URLprefix
+  \url{https://proceedings.neurips.cc/paper_files/paper/2012/hash/05311655a15b75fab86956663e1819cd-Abstract.html}.
 %Type = Misc
 \bibitem[{{STMicroelectronics}(2023)}]{ST2023}
 \bibinfo{author}{{STMicroelectronics}}, \bibinfo{year}{2023}.
 \newblock \bibinfo{title}{{STPST10H100}: 100 {V}--10 {A} power {Schottky}
   trench diode, data sheet}.
+\newblock \URLprefix
+  \url{https://www.st.com/resource/en/datasheet/stpst10h100.pdf}.
 %Type = Article
 \bibitem[{Valencia-Rivera et~al.(2024)Valencia-Rivera, Benavides-Robles,
   Vela~Morales, Amaya, Cruz-Duarte, Ortiz-Bayliss and

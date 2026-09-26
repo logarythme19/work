@@ -7,16 +7,16 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--empty pages in Snoek2012
 You've used 35 entries,
             2990 wiz_defined-function locations,
-            902 strings with 11686 characters,
-and the built_in function-call counts, 23268 in all, are:
-= -- 1854
+            906 strings with 11986 characters,
+and the built_in function-call counts, 23323 in all, are:
+= -- 1865
 > -- 806
 < -- 22
 + -- 321
 - -- 276
-* -- 2515
-:= -- 3342
-add.period$ -- 128
+* -- 2528
+:= -- 3349
+add.period$ -- 131
 call.type$ -- 35
 change.case$ -- 265
 chr.to.int$ -- 35
@@ -24,20 +24,20 @@ cite$ -- 36
 duplicate$ -- 1744
 empty$ -- 1744
 format.name$ -- 395
-if$ -- 4371
+if$ -- 4382
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 331
-newline$ -- 213
+newline$ -- 216
 num.names$ -- 140
-pop$ -- 590
+pop$ -- 582
 preamble$ -- 1
 purify$ -- 232
 quote$ -- 0
-skip$ -- 542
+skip$ -- 546
 stack$ -- 0
 substring$ -- 1073
-swap$ -- 1244
+swap$ -- 1248
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
@@ -45,5 +45,5 @@ type$ -- 303
 warning$ -- 1
 while$ -- 156
 width$ -- 0
-write$ -- 548
+write$ -- 555
 (There was 1 warning)

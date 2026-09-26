@@ -45,7 +45,7 @@ In digitally controlled PWM converters, the sampled switching ripple and the
 duty resolution can sustain limit cycles that an averaged model does not
 predict \citep{Peterchev2003}. This is the mechanism behind the rejection of
 averaged-feasible candidates reported in Section~\ref{sec:res:switched}, and the
-reason why two inequalities of the present problem are measured on the
+reason why three inequalities of the present problem are measured on the
 switched model.
 
 Table~\ref{tab:gap} positions the study. The gap is not a new metaheuristic but
@@ -72,7 +72,7 @@ Study & Plant evidence & Controller / search & Relative to the present question\
 \citet{Siano2014} & Buck prototype & fuzzy, MO-PSO & no equal-budget solver comparison\\
 \citet{Abdelmalek2020} & Buck, experimental & observer-based nonlinear, PSO & tracking/robustness focus, not a matched co-design\\
 \citet{Coutinho2023} & multiloop process & PID, Bayesian optimization & not a power converter\\
-Present work & audited non-ideal Buck, 1--46 V, switched replica with energy balance & LQI weights $\to$ exact 2-DOF PIDF; 6 global operators + refineBO; 6 families & structural equivalence theorem; 33 inequalities (2 measured on the switched model); switched validation vs.\ PI, PID, PIDF, LQR, LQG, LQI\\
+Present work & audited non-ideal Buck, 1--46 V, switched replica with energy balance & LQI weights $\to$ exact 2-DOF PIDF; 6 global operators + refineBO; 6 families & structural equivalence theorem; 33 inequalities (3 measured on the switched model); switched validation vs.\ PI, PID, PIDF, LQR, LQG, LQI\\
 \bottomrule
 \end{tabular}}
 \end{table*}
