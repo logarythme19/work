@@ -1,0 +1,26 @@
+{
+  "v5": {
+    "n": 180,
+    "delta_marge_max_abs": 5.382637302525412,
+    "delta_marge_median": 0.001996674313970881,
+    "faisables_apres_correction": 0,
+    "meilleure_marge_avant": -0.439169134117932,
+    "meilleure_marge_apres": -0.4336682697106866
+  },
+  "v5b": {
+    "n": 180,
+    "delta_marge_max_abs": 5.421400942600331,
+    "delta_marge_median": 0.004456216988168227,
+    "faisables_apres_correction": 0,
+    "meilleure_marge_avant": -0.0667010796480269,
+    "meilleure_marge_apres": -0.06653557680020863
+  },
+  "v5kp": {
+    "n": 180,
+    "delta_marge_max_abs": 2.1981451896494266,
+    "delta_marge_median": 0.004093529869686252,
+    "faisables_apres_correction": 0,
+    "meilleure_marge_avant": -0.3123003637185866,
+    "meilleure_marge_apres": -0.3072637401074654
+  }
+}

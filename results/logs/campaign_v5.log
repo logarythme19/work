@@ -1,0 +1,5 @@
+bras v5: 180 cellules a calculer sur 4 coeurs
+[   1/180] ABC       2026092410  et1: STERILE         et2: marge=-0.81398 J=0.1331  (174s, ecoule 2.9min)
+[   2/180] AEABC     2026092410  et1: STERILE         et2: marge=-3.23982 J=0.1962  (175s, ecoule 2.9min)
+[   3/180] PSO       2026092410  et1: STERILE         et2: marge=-0.67857 J=0.1871  (177s, ecoule 2.9min)
+[   4/180] GA        2026092410  et1: STERILE         et2: marge=-1.19764 J=0.2803  (177s, ecoule 3.0min)

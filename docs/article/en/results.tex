@@ -1,0 +1,169 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Saturation audit}
+
+Figure~\ref{fig:audit} summarises the audit. Over \ChiffreAuditN{} Sobol
+samples of the v5 box, $\log_{10}k_p$ stays within
+$[\ChiffreKpPcinq;\ChiffreKpPqs]$ (5th and 95th percentiles, median
+\ChiffreKpMed) and reaches its lower bound in \ChiffreKpSat{} of cases. The
+$79~\%$ saturation reported by the earlier campaign would require
+$k_p<10^{-4}$, four orders of magnitude below what the projection produces.
+It therefore signals a defect \emph{upstream} of the clipping, not a bound set
+too tight.
+
+Two components saturate at $100~\%$: $\log_{10}\omega_f$ and $b$. Both are
+\emph{constants} of the synthesis ($\omega_f=1/(r_CC)$ and $b=1$ by
+relation~\eqref{eq:projection}): the saturation is structural and removes no
+degree of freedom. The FO-PIDF vector produced by the synthesis thus has five
+effective degrees of freedom, not seven.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_audit_saturation.pdf}
+\caption{Saturation audit of the anchoring bounds (figure labels in French).
+No varying component saturates; the two observed saturations affect
+constants of the synthesis.}
+\label{fig:audit}
+\end{figure}
+
+\subsection{Exploratory probe: the feasible region exists}
+
+Before the campaign, an exploratory probe (seeds 1 to 6, distinct from the
+campaign seeds) searched jointly over the whole of $\theta$, with 1500 calls
+per method. The nominally feasible region \emph{exists}: with $b$ free, the
+best margin is \ChiffreMargeBLibre{} after replay at $0.2~\mu$s
+(\ChiffreNFaisBLibre{} methods out of \ChiffreNLancersLibre{} reach it); with
+$b=1$ imposed, it is still \ChiffreMargeBUn{} (\ChiffreNFaisBUn{} out of
+\ChiffreNLancersUn), figure~\ref{fig:leverb}. The parameter $b$ is therefore
+a margin lever, not a feasibility barrier, contrary to the hypothesis we first
+put forward. However, the feasible point found with $b=1$ requires
+$\log_{10}k_p\approx-1.66$, outside the image of the v5 box under the
+synthesis; the one found with $b$ free requires $b=0$, which v5 cannot set.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_levier_b.pdf}
+\caption{Exploratory probe: best nominal margin per method, $b$ free versus
+$b=1$. Joint search over the whole of $\theta$, 1500 calls per run.}
+\label{fig:leverb}
+\end{figure}
+
+\subsection{Confirmatory campaign}
+
+Table~\ref{tab:arms} summarises the three arms. \textbf{None of the 540 cells
+is robustly feasible on the design set}, and the Wilson interval per method
+and per arm is $[0;\ChiffreWilsonHaut]$.
+
+\begin{table}[t]
+\centering
+\caption{Confirmatory campaign, 30 seeds $\times$ 6 methods per arm.}
+\label{tab:arms}
+\begin{tabular}{lccc}
+\toprule
+ & v5 (brief) & v5b ($b$ free) & v5kp ($k_p$ free) \\
+\midrule
+cells & \ChiffreNCinq & \ChiffreNCinqB & \ChiffreNCinqKp \\
+sterile seeds (stage 1) & \ChiffreSterilesCinq & \ChiffreSterilesCinqB & \ChiffreSterilesCinqKp \\
+cells with a nominally feasible point & \ChiffreNomFaisCinq & \ChiffreNomFaisCinqB & \ChiffreNomFaisCinqKp \\
+best nominal margin (stage 1) & \ChiffreMargeEtUnCinq & \ChiffreMargeEtUnCinqB & \ChiffreMargeEtUnCinqKp \\
+robustly feasible cells & \ChiffreRobFaisCinq & \ChiffreRobFaisCinqB & \ChiffreRobFaisCinqKp \\
+best robust margin (stage 2) & \ChiffreMargeEtDeuxCinq & \ChiffreMargeEtDeuxCinqB & \ChiffreMargeEtDeuxCinqKp \\
+Friedman, $p$ & \ChiffreFriedmanPCinq & \ChiffreFriedmanPCinqB & \ChiffreFriedmanPCinqKp \\
+significant pairs (Holm, of 15) & \ChiffrePairesCinq & \ChiffrePairesCinqB & \ChiffrePairesCinqKp \\
+method with best median margin & \ChiffreMeilleureCinq & \ChiffreMeilleureCinqB & \ChiffreMeilleureCinqKp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The v5 arm, as specified by the brief, finds \emph{no} nominally feasible
+point in 700 calls, for any of the 180 cells. Freeing $b$ (v5b) makes nominal
+feasibility reachable in \ChiffreNomFaisCinqB{} cells out of 180, and freeing
+$k_p$ (v5kp) in \ChiffreNomFaisCinqKp; in both cases, no cell holds on the
+design set.
+
+Friedman tests are significant in every arm. These differences, however,
+concern \emph{proximity} to feasibility (all margins are negative), not
+feasibility achieved. The ranking of methods changes from one arm to another
+(\ChiffreMeilleureCinq{} leads on v5, \ChiffreMeilleureCinqB{} on v5b): no
+universal superiority is established (figure~\ref{fig:seeds}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.49\linewidth]{fig_graines_v5.pdf}\hfill
+\includegraphics[width=0.49\linewidth]{fig_graines_v5b.pdf}
+\caption{Robust margin per seed (the statistical unit), arms v5 and v5b.
+Symlog scale: linear over $[-1;1]$. Figure labels in French.}
+\label{fig:seeds}
+\end{figure}
+
+\paragraph{Rerun after correcting the feedforward.}
+The campaign was first computed with a defect: the stage-2 feedforward used
+the perturbed plant parameters instead of the frozen nominal values. It was
+rerun in full after correction (protocol v6.2), with the same seeds, budgets
+and methods. The figures reported here are those of the rerun. Stage~1 is
+reproduced identically in all 540 cells. At stage~2, the best robust margins
+move from \ChiffreAncMargeEtDeuxCinq{}, \ChiffreAncMargeEtDeuxCinqB{} and
+\ChiffreAncMargeEtDeuxCinqKp{} to \ChiffreMargeEtDeuxCinq{},
+\ChiffreMargeEtDeuxCinqB{} and \ChiffreMargeEtDeuxCinqKp{} (arms v5, v5b and
+v5kp); no cell becomes feasible and the ranking of methods is unchanged.
+
+\paragraph{Stage 3 and sealed test.}
+Since no candidate is feasible on the design set, stage~3 has nothing to
+replay and the sealed test \emph{was not played}. It remains untouched,
+seed \ChiffreGraineTest{} included, and keeps its full probative value for
+a later study.
+
+\subsection{Cross-validation against the Simulink model}
+
+Six frozen candidates were replayed on the reference Simulink model (nominal
+plant), with the same controller, translated into an S-function, and the same
+cost and constraint formulas. Agreement criteria were fixed before the run.
+The \ChiffreXvalN{} candidates with a controller agree: difference in $J$ of at
+most \ChiffreXvalDJmax, difference in each $g_i$ of at most \ChiffreXvalDgmax,
+identical feasibility verdict. Both feasible points of the probe remain
+feasible under Simulink (margin \ChiffreXvalMargeSl{} for the $b=1$ point).
+
+The feedback-free witness fails the criterion on $g_4$ (difference
+\ChiffreXvalFFdg): its error on the 1~V plateau differs by \ChiffreXvalFFde{}
+between the two models. Without feedback, nothing corrects the
+discontinuous-conduction equilibrium, which depends on the diode and switch
+models; in closed loop, the integrator removes this difference. The same cause
+explains a $V_\mathrm{min}$ that is on average \ChiffreXvalDVmin{} higher under
+Simulink. The floor at $d_\mathrm{min}$ remains below the threshold there
+($V_\mathrm{min}=\ChiffreXvalVminSl$): the physical obstruction is confirmed by
+the reference model.
+
+\subsection{Two post hoc diagnostics}
+
+The following two diagnostics were added \emph{after} observation. They are
+reported, but were used for no selection.
+
+\paragraph{Voltage floor at minimum duty ratio.}
+The $g_6$ margins recur identically, to the fourth decimal, across
+controllers and arms. At $d=d_\mathrm{min}=0.02$ in open loop, the converter
+in discontinuous conduction settles at \ChiffrePlancherNominal{} in the
+nominal case, and below $0.8$~V in \ChiffrePlancherN{} of the
+\ChiffrePlancherTot{} cases (down to \ChiffrePlancherMin). Any controller that
+stays saturated at the floor during the $24\to1$~V descent is trapped there
+and violates $g_6$; to satisfy $g_6$, it must leave saturation before the
+voltage falls below $0.8$~V.
+
+\paragraph{Limit cycles invisible to the constraints.}
+The best controller of the probe, feasible with respect to the six
+constraints, sustains at the 24~V plateau a limit cycle at about $7.7$~kHz,
+of 624~mV peak-to-peak on $v_o$ averaged over a PWM period
+(figure~\ref{fig:traj}). The controller obtained with $b=1$ also oscillates,
+more weakly (158~mV). Plateau errors are window means, which cancel the
+oscillation, and the $|\Delta d|$ term of $J$ is too weak to penalise it.
+With $b=0$, the output also drops from about 24 to 14~V at start-up, a
+transient that no constraint detects.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig_trajectoire_b_libre.pdf}
+\caption{Trajectory of the best controller of the probe ($b$ free). Feasible
+with respect to the six constraints, it shows a start-up dip and a limit
+cycle at the 24~V plateau. Figure labels in French.}
+\label{fig:traj}
+\end{figure}

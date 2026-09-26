@@ -1,0 +1,174 @@
+\section{Résultats}
+\label{sec:resultats}
+
+\subsection{Audit de saturation}
+
+La figure~\ref{fig:audit} résume l'audit. Sur \ChiffreAuditN{} tirages Sobol
+de la boîte v5, $\log_{10}k_p$ reste dans $[\ChiffreKpPcinq;\ChiffreKpPqs]$
+(5\textsuperscript{e} et 95\textsuperscript{e} centiles, médiane
+\ChiffreKpMed) et touche sa borne basse dans \ChiffreKpSat{} des cas. La
+saturation de $79~\%$ rapportée par la campagne antérieure exigerait
+$k_p<10^{-4}$, soit quatre ordres de grandeur sous ce que produit la
+projection. Elle signale donc un défaut \emph{en amont} de l'écrêtage, et non
+une borne trop serrée.
+
+Deux composantes saturent à $100~\%$ : $\log_{10}\omega_f$ et $b$. Toutes
+deux sont \emph{constantes} de la synthèse ($\omega_f=1/(r_CC)$ et $b=1$ par
+la relation~\eqref{eq:projection}) : la saturation est structurelle et ne
+retire aucun degré de liberté. Le vecteur FO-PIDF issu de la synthèse n'a
+donc que cinq degrés de liberté effectifs, et non sept.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_audit_saturation.pdf}
+\caption{Audit de saturation des bornes d'ancrage. Aucune composante variable
+ne sature ; les deux saturations observées portent sur des constantes de la
+synthèse.}
+\label{fig:audit}
+\end{figure}
+
+\subsection{Sonde exploratoire : la région faisable existe}
+
+Avant la campagne, une sonde exploratoire (graines 1 à 6, distinctes des
+graines de campagne) a cherché conjointement sur tout $\theta$, à 1500 appels
+par méthode. La région nominalement faisable \emph{existe} : avec $b$ libre,
+la meilleure marge vaut \ChiffreMargeBLibre{} après rejeu à $0{,}2~\mu$s
+(\ChiffreNFaisBLibre{} méthodes sur \ChiffreNLancersLibre{} l'atteignent) ;
+avec $b=1$ imposé, elle vaut encore \ChiffreMargeBUn{}
+(\ChiffreNFaisBUn{} sur \ChiffreNLancersUn), figure~\ref{fig:levierb}. Le
+paramètre $b$ est donc un levier de marge et non une barrière de faisabilité,
+contrairement à l'hypothèse que nous avions d'abord formulée. En revanche, le
+point faisable trouvé avec $b=1$ exige $\log_{10}k_p\approx-1{,}66$, hors de
+l'image de la boîte v5 par la synthèse ; celui trouvé avec $b$ libre exige
+$b=0$, que v5 ne peut pas régler.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_levier_b.pdf}
+\caption{Sonde exploratoire : meilleure marge nominale par méthode, $b$ libre
+contre $b=1$. Recherche conjointe sur tout $\theta$, 1500 appels par lancer.}
+\label{fig:levierb}
+\end{figure}
+
+\subsection{Campagne confirmatoire}
+
+Le tableau~\ref{tab:bras} résume les trois bras. \textbf{Aucune des
+540 cellules n'est robustement faisable sur le jeu de conception}, et
+l'intervalle de Wilson par méthode et par bras est $[0;\ChiffreWilsonHaut]$.
+
+\begin{table}[t]
+\centering
+\caption{Campagne confirmatoire, 30 graines $\times$ 6 méthodes par bras.}
+\label{tab:bras}
+\begin{tabular}{lccc}
+\toprule
+ & v5 (cadrage) & v5b ($b$ libre) & v5kp ($k_p$ libre) \\
+\midrule
+cellules & \ChiffreNCinq & \ChiffreNCinqB & \ChiffreNCinqKp \\
+graines stériles (étage 1) & \ChiffreSterilesCinq & \ChiffreSterilesCinqB & \ChiffreSterilesCinqKp \\
+cellules avec un point nominal faisable & \ChiffreNomFaisCinq & \ChiffreNomFaisCinqB & \ChiffreNomFaisCinqKp \\
+meilleure marge nominale (étage 1) & \ChiffreMargeEtUnCinq & \ChiffreMargeEtUnCinqB & \ChiffreMargeEtUnCinqKp \\
+cellules robustement faisables & \ChiffreRobFaisCinq & \ChiffreRobFaisCinqB & \ChiffreRobFaisCinqKp \\
+meilleure marge robuste (étage 2) & \ChiffreMargeEtDeuxCinq & \ChiffreMargeEtDeuxCinqB & \ChiffreMargeEtDeuxCinqKp \\
+Friedman, $p$ & \ChiffreFriedmanPCinq & \ChiffreFriedmanPCinqB & \ChiffreFriedmanPCinqKp \\
+paires significatives (Holm, sur 15) & \ChiffrePairesCinq & \ChiffrePairesCinqB & \ChiffrePairesCinqKp \\
+méthode de meilleure marge médiane & \ChiffreMeilleureCinq & \ChiffreMeilleureCinqB & \ChiffreMeilleureCinqKp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le bras v5, conforme au cadrage, ne trouve \emph{aucun} point nominalement
+faisable en 700 appels, pour aucune des 180 cellules. Libérer $b$ (v5b) rend
+la faisabilité nominale accessible dans \ChiffreNomFaisCinqB{} cellules sur
+180, et libérer $k_p$ (v5kp) dans \ChiffreNomFaisCinqKp{} ; dans les deux cas,
+aucune cellule ne tient sur le jeu de conception.
+
+Les tests de Friedman sont significatifs dans chaque bras. Ces différences
+portent toutefois sur la \emph{proximité} de la faisabilité (des marges
+toutes négatives), et non sur une faisabilité atteinte. Le classement des
+méthodes change d'un bras à l'autre (\ChiffreMeilleureCinq{} en tête sur v5,
+\ChiffreMeilleureCinqB{} sur v5b) : aucune supériorité universelle n'est
+établie (figure~\ref{fig:graines}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.49\linewidth]{fig_graines_v5.pdf}\hfill
+\includegraphics[width=0.49\linewidth]{fig_graines_v5b.pdf}
+\caption{Marge robuste par graine (unité statistique), bras v5 et v5b.
+Échelle symlog : linéaire sur $[-1;1]$.}
+\label{fig:graines}
+\end{figure}
+
+\paragraph{Relance après correction du feedforward.}
+La campagne a d'abord été calculée avec un défaut : le feedforward de
+l'étage~2 utilisait les paramètres du plant perturbé au lieu des valeurs
+nominales figées. Elle a été relancée en entier après correction (protocole
+v6.2), avec les mêmes graines, budgets et méthodes. Les chiffres rapportés
+ici sont ceux de la relance. L'étage~1 se reproduit à l'identique dans les
+540 cellules. À l'étage~2, les meilleures marges robustes passent de
+\ChiffreAncMargeEtDeuxCinq{}, \ChiffreAncMargeEtDeuxCinqB{} et
+\ChiffreAncMargeEtDeuxCinqKp{} à \ChiffreMargeEtDeuxCinq{},
+\ChiffreMargeEtDeuxCinqB{} et \ChiffreMargeEtDeuxCinqKp{} (bras v5, v5b et
+v5kp) ; aucune cellule ne devient faisable et le classement des méthodes est
+inchangé.
+
+\paragraph{Étage 3 et test scellé.}
+Aucun candidat n'étant faisable en conception, l'étage~3 n'a rien à rejouer
+et le test scellé \emph{n'a pas été joué}. Il reste vierge, graine
+\ChiffreGraineTest{} comprise, et conserve toute sa valeur probante pour une
+étude ultérieure.
+
+\subsection{Validation croisée avec le modèle Simulink}
+
+Six candidats figés ont été rejoués sur le modèle Simulink de référence (plant
+nominal), avec le même correcteur, traduit en S-function, et les mêmes
+formules de coût et de contraintes. Les critères d'accord avaient été fixés
+avant l'essai. Les \ChiffreXvalN{} candidats dotés d'un correcteur sont en
+accord : écart sur $J$ d'au plus \ChiffreXvalDJmax, écart sur chaque $g_i$
+d'au plus \ChiffreXvalDgmax, verdict de faisabilité identique. Les deux points
+faisables de la sonde restent faisables sous Simulink (marge
+\ChiffreXvalMargeSl{} pour le point à $b=1$).
+
+Le témoin sans rétroaction ne satisfait pas le critère sur $g_4$ (écart
+\ChiffreXvalFFdg) : son erreur au palier de 1~V diffère de
+\ChiffreXvalFFde{} entre les deux modèles. Sans rétroaction, rien ne corrige
+l'équilibre en conduction discontinue, qui dépend du modèle de diode et
+d'interrupteur ; en boucle fermée, l'intégrateur efface cet écart. La même
+origine explique un $V_\mathrm{min}$ plus haut de \ChiffreXvalDVmin{} en
+moyenne sous Simulink. Le plancher à $d_\mathrm{min}$ y reste sous le seuil
+($V_\mathrm{min}=\ChiffreXvalVminSl$) : le verrou physique est confirmé par le
+modèle de référence.
+
+\subsection{Deux diagnostics post hoc}
+
+Les deux diagnostics suivants ont été ajoutés \emph{après} observation. Ils
+sont rapportés, mais n'ont servi à aucune sélection.
+
+\paragraph{Plancher de tension à rapport cyclique minimal.}
+Les marges $g_6$ reviennent à l'identique, à la quatrième décimale près,
+d'un correcteur et d'un bras à l'autre. À $d=d_\mathrm{min}=0{,}02$ en boucle
+ouverte, le convertisseur en conduction discontinue se stabilise à
+\ChiffrePlancherNominal{} au nominal, et sous $0{,}8$~V dans
+\ChiffrePlancherN{} des \ChiffrePlancherTot{} cas (jusqu'à
+\ChiffrePlancherMin). Tout correcteur qui reste saturé au plancher pendant la
+descente $24\to1$~V y est piégé et viole $g_6$ ; pour satisfaire $g_6$, il
+doit se désaturer avant que la tension ne passe sous $0{,}8$~V.
+
+\paragraph{Cycles limites invisibles aux contraintes.}
+Le meilleur correcteur de la sonde, faisable au sens des six contraintes,
+entretient au palier de 24~V un cycle limite à environ $7{,}7$~kHz, de
+624~mV crête à crête sur $v_o$ moyennée par période MLI
+(figure~\ref{fig:traj}). Le correcteur obtenu avec $b=1$ oscille aussi, plus
+faiblement (158~mV). Les erreurs de palier sont des moyennes de fenêtre, qui
+annulent l'oscillation, et le terme en $|\Delta d|$ de $J$ est trop faible pour
+la pénaliser. Avec $b=0$, la sortie chute en outre d'environ 24 à 14~V au
+démarrage, transitoire qu'aucune contrainte ne voit.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig_trajectoire_b_libre.pdf}
+\caption{Trajectoire du meilleur correcteur de la sonde ($b$ libre).
+Faisable au sens des six contraintes, il présente un creux au démarrage et
+un cycle limite au palier de 24~V.}
+\label{fig:traj}
+\end{figure}

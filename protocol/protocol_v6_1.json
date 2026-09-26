@@ -1,0 +1,333 @@
+{
+  "algorithmes": {
+    "budget_appariement": "graines communes, budget identique en APPELS",
+    "classement_faisables": "-marge (par.3.4), et non J",
+    "comparateur": "Deb (faisable > infaisable; puis marge; puis violation)",
+    "methodes": [
+      "PSO",
+      "GA",
+      "ABC",
+      "AEABC",
+      "IGWO",
+      "IGWO_DLH"
+    ],
+    "population": 10
+  },
+  "amende_depuis": {
+    "empreinte": "df340d5a29447f54a9dbbfc1358de7efdd8bf0a995f16976ad2005617d7efb4d",
+    "fichier": "protocol/protocol_v6.json"
+  },
+  "amendements": [
+    {
+      "id": "A1",
+      "objet": "taille du jeu de test : 300 -> 400",
+      "raison": "Le cadrage indique qu'environ 300 tirages sans echec portent la borne de Wilson a 99 %. Le calcul exact donne 98,74 % pour 300/300 ; il en faut 381. On retient 400 (99,05 %)."
+    },
+    {
+      "id": "A2",
+      "objet": "ajout du bras v5b : b en 8e variable de decision",
+      "raison": "Sonde exploratoire (recherche conjointe sur tout theta, 1500 appels x 6 methodes) : b libre donne une marge nominale de +0,191 contre +0,016 avec b = 1, soit 12 fois plus, apres replay fin. b = 1 n'est PAS infaisable : c'est un levier de marge, pas une barriere. Liberer b affaiblit la part issue de la synthese ; c'est declare comme extension, le bras v5 conforme au cadrage reste le bras principal."
+    },
+    {
+      "id": "A3",
+      "objet": "l'ablation kp (option A du par.3.1) devient le bras v5kp",
+      "raison": "Annoncee dans v6 sans implementation ; implementee a l'identique de v5b, sur les bornes d'ancrage du par.2. Priorite la plus basse des trois bras."
+    },
+    {
+      "id": "A4",
+      "objet": "mise a jour des empreintes sources",
+      "raison": "problem.py et run_campaign.py modifies pour A2 et A3 ; aucun changement du modele, de la mission, du cout, des contraintes ni des seuils."
+    }
+  ],
+  "bras": {
+    "v5": "principal, conforme au cadrage",
+    "v5b": "extension declaree (A2)",
+    "v5kp": "ablation declaree (A3)"
+  },
+  "correcteur_theta": {
+    "ancrage_borne_basse": [
+      -4.0,
+      -4.0,
+      -5.0,
+      0.4,
+      0.4,
+      2.6989700043360187,
+      0.0
+    ],
+    "ancrage_borne_haute": [
+      2.0,
+      6.0,
+      -1.0,
+      1.0,
+      1.0,
+      4.301029995663981,
+      1.0
+    ],
+    "c": 0.0,
+    "noms": [
+      "log10_kp",
+      "log10_ki",
+      "log10_kd",
+      "lambda",
+      "mu",
+      "log10_wf",
+      "b"
+    ],
+    "seuil_alarme_saturation": 0.2
+  },
+  "decision_par_3_1": {
+    "ablation_prevue": "campagne secondaire avec log10(kp) libere en 8e composante, pour mesurer ce que la liberte supplementaire apporte reellement",
+    "justification": "La proposition 1 est reproduite ici a 5.4e-16: kp = Kv + Ki*Vn/(In*R) est CALCULE exactement par la projection, il n'est pas un degre de liberte residuel. L'audit de saturation sur 4096 tirages Sobol de toute la boite v5 montre que log10(kp) ne touche jamais ses bornes (p05 = -0.64, mediane = +0.44, p95 = +0.96), tres loin de lb = -4. La saturation a 79 % rapportee au par.2 ne peut donc pas provenir d'une borne trop serree: il faudrait kp < 1e-4, soit quatre ordres de grandeur sous ce que produit la projection. Elle signale un defaut en AMONT de l'ecretage. Promouvoir kp en variable de decision affaiblirait la part issue de la synthese (le cadrage le dit lui-meme) pour corriger un symptome et non la cause.",
+    "question": "log10(kp) doit-il devenir une 8e variable de decision, ou la borne d'ancrage doit-elle etre elargie ?",
+    "reponse": "AUCUNE DES DEUX"
+  },
+  "decision_v5": {
+    "borne_basse": [
+      -2.0,
+      -2.0,
+      -1.0,
+      0.65,
+      0.4,
+      -4.3,
+      0.4
+    ],
+    "borne_haute": [
+      2.0,
+      2.0,
+      3.0,
+      0.98,
+      1.0,
+      -2.3,
+      1.0
+    ],
+    "noms": [
+      "log_qi",
+      "log_qv",
+      "log_qmemory",
+      "alpha",
+      "mu",
+      "log10_tau_aw_s",
+      "lambda"
+    ],
+    "note_ordre": "lambda en 7e position, mu en 5e: ne jamais intervertir."
+  },
+  "empreinte_protocole": "bf8859a2465011bf2966cb66cdf6f86eba52c7fbb3522950aa4a8fb6728b65bc",
+  "empreintes_sources": {
+    "isafo/_kernel.py": "4ddba803a4372126f131491837f2f17b6d04bd0802968125d75e852d82ade3b7",
+    "isafo/algos.py": "f268631fd7c1294b637fabbdbe22c22e294a98615d1fe5bfc96ec4b639eaf286",
+    "isafo/anchor.py": "52c17b63dc459222ed3a7be6f371af02fb71224df1916f962906b994488ba538",
+    "isafo/deb.py": "f2f533c09a734ccc072548879a4e075d2bc4a5f1706bc08723830f39016664d9",
+    "isafo/evaluate.py": "663b1a64fcfe63af61e6067ae814f956e7524feb67189875d8e608495bd0d430",
+    "isafo/folqi.py": "865c2096d0864ba8425e371a73d23bc8991403313a2b5f519ca0dba44b8b36e3",
+    "isafo/oustaloup.py": "5c3dc21620c101e8cbf548852f4061f81e4366664a44e7dbe894a616957b9c64",
+    "isafo/params.py": "56236a6094660439d11fe4e0459aed8a80ca879bbdcb6456838b7f786c6f2957",
+    "isafo/problem.py": "2f4ba6f5ffa7a1b4936197d0b2ffb2385c71da803787ceab4c38627b5924acb9",
+    "isafo/stats.py": "af138f52e6beb5fd6741d8e23caf3d2f7ef3e359ef9365f4884121f023989ecd",
+    "scripts/run_campaign.py": "614dc6bd2e17e4775fad7259cf3996eb889ba9b78e64802a2f32e12840aa5b38"
+  },
+  "evaluateur": {
+    "ecart_mesure_J_1us_vs_02us": 0.0013,
+    "fronts_pwm": "decoupage exact du pas d'integration sur chaque front",
+    "justification": "L'espace de travail du modele Simulink de reference documente que le palier 1 V siege a 3 % de la frontiere CCM/DCM et que le saut 24 -> 1 V force environ 3.2 ms de conduction discontinue. Un evaluateur moyenne a conduction continue serait donc structurellement faux la ou vit la contrainte g4.",
+    "pas_confirmation_s": 2e-07,
+    "pas_recherche_s": 1e-06,
+    "type": "modele COMMUTE avec blocage reel de la diode"
+  },
+  "fige_le": "2026-09-24T18:00:04+00:00",
+  "incertitude": {
+    "Vin": "fixe a 48 V, jamais varie",
+    "amplitudes_relatives": {
+      "C": 0.2,
+      "L": 0.2,
+      "R": 0.2,
+      "rC": 0.5
+    },
+    "note": "CHOIX DECLARE: le cadrage evoque 17 cas et 16 coins sans les specifier. 16 = 2^4. rC est retenu parce qu'il fixe a lui seul le pole projete wf = 1/(rC C).",
+    "parametres": [
+      "L",
+      "C",
+      "R",
+      "rC"
+    ]
+  },
+  "invariants": {
+    "cost": {
+      "dduty_ref": 0.96,
+      "e1_tol": 0.03,
+      "e24_tol": 0.05,
+      "e46_tol": 0.1,
+      "i_ref": 20.0,
+      "imax_lim": 20.0,
+      "n_constraints": 6,
+      "r_floor": 1.0,
+      "vmax_band": 1.5,
+      "vmax_ref": 46.0,
+      "vmin_lim": 0.8,
+      "w_current": 0.01,
+      "w_duty": 0.001
+    },
+    "mission": {
+      "iL0": 2.4,
+      "ip_amp": 0.5,
+      "ip_t0": 0.054,
+      "ip_t1": 0.09,
+      "t_end": 0.324,
+      "t_step1": 0.108,
+      "t_step2": 0.216,
+      "v0": 24.0,
+      "v1": 1.0,
+      "v2": 46.0,
+      "vC0": 24.0,
+      "win_1": [
+        0.198,
+        0.2124
+      ],
+      "win_24": [
+        0.0936,
+        0.1044
+      ],
+      "win_46": [
+        0.306,
+        0.3204
+      ]
+    },
+    "numerics": {
+      "D_norm": 0.48,
+      "I_norm": 5.0,
+      "R_lqr": 1.0,
+      "T0": 0.001,
+      "Ts": 1e-05,
+      "V_norm": 24.0,
+      "delay_samples": 1,
+      "duty_max": 0.98,
+      "duty_min": 0.02,
+      "f_pwm": 50000.0,
+      "h_confirm": 2e-07,
+      "h_quad": 1e-05,
+      "h_search": 1e-06,
+      "oustaloup_half_order": 3,
+      "oustaloup_wb": 1.0,
+      "oustaloup_wh": 100000.0,
+      "proj_wf_hi": 20000.0,
+      "proj_wf_lo": 20.0,
+      "uniform_derivative": true
+    },
+    "plant": {
+      "C": 0.0001,
+      "L": 0.0001,
+      "R": 10.0,
+      "Ron": 0.05,
+      "Vf": 0.42,
+      "Vin": 48.0,
+      "rC": 0.05,
+      "rL": 0.1,
+      "rd": 0.02
+    }
+  },
+  "jeux_disjoints": {
+    "conception": [
+      0,
+      3,
+      5,
+      6,
+      8,
+      9,
+      11,
+      13,
+      16
+    ],
+    "graine_partage": 2026092401,
+    "graine_test_scellee": 2026092402,
+    "n_tirages_test": 400,
+    "regle": "un jeu consulte pour decider redevient un jeu de conception et perd toute valeur probante",
+    "validation": [
+      1,
+      2,
+      4,
+      7,
+      10,
+      12,
+      14,
+      15
+    ]
+  },
+  "limites_declarees": [
+    "L'identite FO-LQI -> FO-PIDF n'est exacte que sur le plant LTI nominal, ip = 0, saturation inactive et etats coherents. La projection du pole 2e5 -> 2e4 rad/s injecte a elle seule jusqu'a 63 % d'erreur en haut de bande: c'est mesure, pas suppose.",
+    "Les snubbers presents dans le modele Simulink ne sont pas reproduits (valeurs indisponibles); ils n'entrent pas dans J ni dans les six contraintes.",
+    "Le modele de diode est la loi affine statique du constructeur: ni recouvrement inverse, ni capacite non lineaire, ni retroaction thermique.",
+    "Une reussite sur un nombre fini de cas n'est jamais un certificat sur un domaine continu."
+  ],
+  "nom": "campagne-v6-folqi-fopidf",
+  "objet": "Optimisation des parametres FO-LQI par six metaheuristiques, puis conversion vers FO-PIDF sur Buck non ideal d'ordre entier.",
+  "recherche_etagee": {
+    "etage_1": {
+      "budget": 700,
+      "cas": "nominal seul",
+      "critere_passage": ">= 20 points faisables distincts",
+      "sinon": "graine declaree STERILE et rapportee comme telle"
+    },
+    "etage_2": {
+      "amorcage": "points faisables de l'etage 1 de la MEME graine",
+      "budget": 300,
+      "cas": "jeu de conception"
+    },
+    "etage_3": {
+      "cas": "replay fin",
+      "pas_s": 2e-07,
+      "regle": "aucun candidat faisable sans replay fin effectif"
+    }
+  },
+  "statistiques": {
+    "appariement": "methodes appariees sur graines communes",
+    "correction_multiplicite": "Holm",
+    "graines": [
+      2026092410,
+      2026092411,
+      2026092412,
+      2026092413,
+      2026092414,
+      2026092415,
+      2026092416,
+      2026092417,
+      2026092418,
+      2026092419,
+      2026092420,
+      2026092421,
+      2026092422,
+      2026092423,
+      2026092424,
+      2026092425,
+      2026092426,
+      2026092427,
+      2026092428,
+      2026092429,
+      2026092430,
+      2026092431,
+      2026092432,
+      2026092433,
+      2026092434,
+      2026092435,
+      2026092436,
+      2026092437,
+      2026092438,
+      2026092439
+    ],
+    "interdits": [
+      "conclure sur des p-values intermediaires",
+      "ne rapporter que les graines favorables",
+      "ajuster un seuil apres observation"
+    ],
+    "n_graines": 30,
+    "rapporte": [
+      "medianes",
+      "dispersions",
+      "tailles d'effet",
+      "incertitudes",
+      "TOUS les echecs y compris graines steriles"
+    ],
+    "test": "Wilcoxon signe apparie (non parametrique) + Friedman omnibus",
+    "unite": "la graine, jamais un scenario ni une iteration"
+  },
+  "statut_des_calculs_anterieurs": "Avant cet amendement, seuls des calculs EXPLORATOIRES ont ete faits (audit de saturation, depistages Sobol, sonde du levier b sur les graines 1 a 6). Aucune graine de campagne (2026092410 a 2026092439) n'a ete evaluee, et le jeu de test scelle n'a jamais ete touche.",
+  "version": "6.1"
+}

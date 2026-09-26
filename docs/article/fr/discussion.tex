@@ -1,0 +1,82 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Ce que l'audit change au diagnostic.}
+L'échec antérieur était attribué à une borne. L'audit montre que, pour une
+projection vérifiée, la borne n'est jamais atteinte. Le véritable frein se
+situe dans l'\emph{image} de la paramétrisation : la synthèse FO-LQI ne produit
+ni les faibles valeurs de $k_p$ ni les valeurs de $b<1$ que requièrent les
+points faisables trouvés par recherche directe. Une borne n'est donc
+significative que rapportée à ce que la chaîne de synthèse peut produire ; un
+taux de saturation ne dit rien sans la distinction entre saturation
+structurelle et saturation pathologique.
+
+\paragraph{Ce que la campagne établit.}
+Sur 540 cellules préenregistrées, aucun correcteur n'est robustement faisable.
+Ce résultat négatif est mesuré, non supposé : les graines stériles sont
+rapportées, les intervalles de Wilson bornent le taux de réussite, et le test
+scellé est resté intact faute de candidat à tester. Libérer $b$ ou $k_p$ rend
+la faisabilité \emph{nominale} accessible, mais pas la robustesse : la
+liberté de réglage ne suffit pas.
+
+\paragraph{Un verrou physique.}
+Le plancher de tension à rapport cyclique minimal est une propriété du
+convertisseur, non du correcteur. Le seuil $V_\mathrm{min}\ge0{,}8$~V se
+trouve au-dessus de ce plancher dans la plupart des cas d'incertitude, si
+bien qu'une commande saturée pendant la descente $24\to1$~V ne peut pas le
+respecter. Le cahier des charges demande donc implicitement au correcteur de
+se désaturer à temps, exigence qui dépend de l'anti-emballement autant que
+des gains. Toute comparaison future devrait examiner si ce seuil est
+compatible avec $d_\mathrm{min}=0{,}02$ et la charge, avant de chercher des
+gains.
+
+\paragraph{Un angle mort du cahier des charges.}
+Des correcteurs faisables au sens des six contraintes peuvent osciller en
+permanence. Pour une revue orientée vers la mise en œuvre, c'est le constat
+le plus lourd de conséquences : une contrainte de moyenne ne garantit pas
+l'absence de cycle limite. Nous ne modifions pas les contraintes après
+observation ; nous recommandons d'ajouter, dans une étude future et
+préenregistrée, une contrainte sur l'amplitude d'oscillation en fenêtre
+stationnaire.
+
+\paragraph{Caractère fractionnaire.}
+Les meilleurs points trouvés ont $\lambda$ et $\mu$ égaux ou très proches
+de~1. Le correcteur qui en résulte est, en pratique, d'ordre entier. Rien dans
+nos résultats n'attribue un gain à la fractionnalité ; l'étude ne comporte
+pas le comparateur à réglage direct et budget égal qui permettrait d'en
+juger.
+
+\section{Limites et bilan de ce qui n'a pas été démontré}
+\label{sec:limites}
+
+\begin{itemize}
+\item \textbf{Modèle.} La campagne a tourné sur un simulateur commuté écrit
+  en Python. La validation croisée avec Simulink ne porte que sur six
+  candidats et le plant nominal ; le snubber y est supposé ($R_s=10^5~\Omega$,
+  $C_s=\infty$).
+\item \textbf{Défaut corrigé et campagne relancée.} Le feedforward de
+  l'étage~2 utilisait d'abord les paramètres du plant perturbé. La campagne a
+  été relancée en entier après correction (protocole v6.2) ; les conclusions
+  sont inchangées.
+\item \textbf{Projection.} L'identité FO-LQI $\to$ FO-PIDF n'est exacte qu'en
+  ordre entier, pôle exact, sur le plant nominal non saturé ; la projection du
+  pôle introduit à elle seule jusqu'à \ChiffreErreurProjPole{} d'erreur en
+  haut de bande.
+\item \textbf{Infaisabilité non prouvée.} Aucune cellule n'est robustement
+  faisable, mais cela ne prouve pas qu'aucun correcteur robuste n'existe :
+  les budgets sont finis, et l'ensemble d'incertitude est un choix déclaré.
+\item \textbf{Ensemble d'incertitude.} Les paramètres incertains et leurs
+  amplitudes ont été choisis par nous, le cadrage ne les précisant pas.
+\item \textbf{Test scellé.} Il n'a pas été joué : aucune affirmation de
+  robustesse n'est donc faite, même sous forme de proportion.
+\item \textbf{Comparateurs.} Les références de l'état de l'art et le
+  comparateur à réglage direct à budget égal ne sont pas implémentés ; aucune
+  supériorité ne peut être attribuée à la fractionnalité.
+\item \textbf{Diagnostics post hoc.} Le plancher de tension et les cycles
+  limites ont été identifiés après observation ; ils motivent une étude
+  future préenregistrée, mais ne doivent pas être lus comme des résultats
+  confirmatoires.
+\item \textbf{Métaheuristiques.} Les différences significatives mesurent la
+  proximité de la faisabilité, non une faisabilité atteinte, et leur
+  classement dépend du bras.
+\end{itemize}

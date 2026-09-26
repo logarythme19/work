@@ -1,0 +1,184 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{System, mission and invariants}
+
+The converter is a non-ideal asynchronous Buck converter that is
+\emph{physically of integer order}, supplied by a fixed source
+$V_\mathrm{in}=48$~V, with $L=100~\mu$H, $C=100~\mu$F, $R=10~\Omega$,
+$r_L=0.1~\Omega$, $r_C=0.05~\Omega$, $R_\mathrm{on}=0.05~\Omega$ and a
+freewheeling diode with affine law $v_D=V_f+r_d\,i_D$, $V_f=0.42$~V,
+$r_d=0.020~\Omega$. Fractional order belongs exclusively to the controller.
+
+The imposed mission is $24\to1\to46$~V, with transitions at $0.108$ and
+$0.216$~s and end at $0.324$~s, a $+0.5$~A load step between $0.054$ and
+$0.090$~s, and initial conditions $(i_L,v_C)=(2.4~\mathrm{A},24~\mathrm{V})$
+in all circumstances. The controller is sampled at $T_s=10~\mu$s with a
+one-sample delay; PWM runs at $50$~kHz and the duty ratio is bounded to
+$[0.02;0.98]$. The nominal feedforward
+\begin{equation}
+d_\mathrm{ff}=\frac{(R+r_L+r_d)\,v_\mathrm{ref}}{R\,V_\mathrm{in}-(R_\mathrm{on}-r_d)\,v_\mathrm{ref}}
+\label{eq:dff}
+\end{equation}
+is kept without a $V_f$ term, with nominal variables frozen during
+disturbances.
+
+\paragraph{Cost and constraints.}
+\begin{equation}
+J=\frac{1}{T}\!\int_0^T\!\frac{|r-v_o|}{\max(r,1)}\,dt
++0.01\,\frac{\int_0^T i_L^2\,dt}{T\cdot 20^2}
++0.001\,\frac{\overline{|\Delta d|}}{0.96},\qquad T=0.324~\mathrm{s},
+\end{equation}
+subject to six constraints $g_i\le0$:
+$g_1=I_\mathrm{max}/20-1$,
+$g_2=(V_\mathrm{max}-46)/1.5-1$,
+$g_3=|e_{24}|/0.05-1$,
+$g_4=|e_{1}|/0.03-1$,
+$g_5=|e_{46}|/0.10-1$,
+$g_6=(0.8-V_\mathrm{min})/0.8$.
+Extrema are taken on raw solver outputs and the errors $e_\bullet$ are means
+over the steady-state windows $[0.0936;0.1044]$, $[0.198;0.2124]$ and
+$[0.306;0.3204]$~s. The \emph{margin} of a candidate is $m=-\max_i g_i$, and
+over a set of cases $m=\min_k(-\max_i g_{i,k})$: a minimum of maxima, hence a
+non-differentiable function.
+
+\subsection{Switched evaluator}
+
+\paragraph{Why a switched model.}
+The workspace of the reference Simulink model states that the 1~V plateau
+lies within $3~\%$ of the boundary between continuous and discontinuous
+conduction, and that the $24\to1$~V step forces about $3.2$~ms of
+discontinuous conduction. An averaged continuous-conduction evaluator would
+therefore be wrong exactly where $g_4$ applies. We simulate the switched
+converter with three conduction states: switch on, diode on, and diode
+blocked ($i_L=0$), the latter producing discontinuous conduction without a
+separate model.
+
+\paragraph{PWM edges.}
+Each integration step (fourth-order Runge--Kutta) is split exactly at carrier
+edges. Without this, a $1~\mu$s step over a $20~\mu$s period would limit
+duty-ratio resolution to $5~\%$, making the $[0.02;0.98]$ bounds fictitious.
+The relative difference in $J$ between the search step ($1~\mu$s) and the
+confirmation step ($0.2~\mu$s) is \ChiffreEcartPas{} for a reference control
+law.
+
+\paragraph{Fractional realisation.}
+The operator $s^\gamma$, $\gamma\in[0;1]$, is approximated by a
+half-order-3 Oustaloup filter (7 cells) over $[1;10^5]$~rad/s, each cell
+$(s+z)/(s+p)$ being discretised exactly with a zero-order hold. The integral
+is realised as $s^{-\lambda}=s^{-1}\cdot s^{1-\lambda}$: an exact integrator
+ensures zero steady-state error, and the Oustaloup cell carries only the
+fractional part. The derivative uses the same realisation, including for
+$\mu=1$, where the Oustaloup formula yields $\omega_h(s+\omega_b)/(s+\omega_h)$,
+a band-limited derivative.
+
+\subsection{FO-LQI synthesis and projection onto FO-PIDF}
+
+The small-signal model is normalised by $I=5$~A, $V=24$~V, $d=0.48$ and
+$T_0=1$~ms, then augmented with a memory state. The LQR law ($R=1$) gives
+$K=[K_i^x,K_v^x,K_z]$. For the nominal linear plant, without disturbance and
+without saturation, the state feedback reduces algebraically to
+\begin{equation}
+C_\mathrm{FOLQI}(s)=K_v^x+\frac{a}{R}
++C\,(a-r_CK_v^x)\,\frac{N s}{s+N}
++\frac{k_i}{s^\alpha},\qquad
+a=K_i^x\frac{V}{I},\quad N=\frac{1}{r_CC},\quad k_i=-\frac{K_z}{T_0^{\alpha}},
+\label{eq:projection}
+\end{equation}
+which gives the anchor $k_p=K_v^x+a/R$, $k_d=C(a-r_CK_v^x)$,
+$\omega_f=\mathrm{clip}(N;20;2\cdot10^4)$, $b=1$, $c=0$. The factor
+$T_0^{\alpha}$ is the path through which the parent order $\alpha$ acts on the
+synthesis: the memory state is an integral of order $\alpha$ in normalised
+time. The integral order of the projection is then replaced by $\lambda$,
+and the derivative order is $\mu$.
+
+In the integer-order case ($\alpha=\lambda=\mu=1$, exact pole),
+relation~\eqref{eq:projection} reproduces proposition~1 of the earlier study
+with a relative error of \ChiffreErreurPropUn{} over $[1;10^6]$~rad/s.
+\textbf{This is the only exact case.} Projecting the pole
+$N=2\cdot10^5$~rad/s into the band $[20;2\cdot10^4]$~rad/s alone introduces
+a relative error of \ChiffreErreurProjPole{} at the top of the band. The
+FO-LQI $\to$ FO-PIDF identity is therefore neither general nor exact; we
+treat it as an anchor, never as an equivalence nor as a proof of fractional
+optimality.
+
+\subsection{Bound-saturation audit}
+
+An earlier campaign spent more than 1800 evaluations without reaching robust
+feasibility, and its diagnosis blamed clipping of $\log_{10}k_p$ at the bound
+$-4$, reached by $79.0~\%$ of candidates. We therefore treat each bound as an
+object of measurement: for each component of $\theta$, we report the
+fraction of projections that reach each bound, over \ChiffreAuditN{} Sobol
+samples of the decision box. We distinguish two kinds of saturation.
+\emph{Structural} saturation affects a component that is constant in the
+synthesis: the bound then removes no degree of freedom, it merely makes an
+identity visible. \emph{Pathological} saturation affects a component that
+varies and runs into the bound: the bound then truly truncates the search.
+
+\subsection{Staged search and six metaheuristics}
+
+\paragraph{Decision vector.}
+The v5 vector acts on the \emph{synthesis}, not on the final controller:
+$x=[\log q_i,\log q_v,\log q_\mathrm{mem},\alpha,\mu,\log_{10}\tau_\mathrm{aw},\lambda]$,
+with $\lambda$ in seventh position and $\mu$ in fifth.
+
+\paragraph{Methods.}
+PSO, GA, ABC and three project variants --- pAEABC, pIGWO and pIGWO-DLH ---
+reuse the operators of the earlier study. The prefix ``p'' signals that
+operator-level identity with the original publications is not established.
+All receive the same box, the same initial population for a given seed
+(population 10), the same Deb comparator and the same budget counted in
+\emph{evaluator calls}; pIGWO-DLH spends two calls per comparison and thus
+performs fewer iterations at equal budget, by design.
+
+\paragraph{Comparator.}
+Feasible precedes infeasible; among infeasible points, the lower violation
+wins; among feasible points, we rank by \emph{decreasing margin} rather than
+increasing $J$. Ranking by $J$ produces candidates stuck to the boundary
+(median nominal margin $0.0066$ in the earlier study, robust margin/violation
+correlation $-0.821$), which are the worst starting points for robustness.
+The final criterion is lexicographic: feasibility on all design cases, then
+maximal minimum margin, then worst $J$ at equal margin ($<10^{-4}$).
+
+\paragraph{Stages.}
+Stage~1 seeks nominal feasibility on a single scenario, with
+\ChiffreBudgetUn{} calls; a seed producing fewer than \ChiffreMinFaisables{}
+distinct feasible points is declared \emph{sterile} and reported as such.
+Stage~2 seeks robustness on the design set with \ChiffreBudgetDeux{} calls,
+seeded only from the stage-1 feasible points of the \emph{same} seed.
+Stage~3 replays every retained candidate at a $0.2~\mu$s step: no candidate is
+declared feasible without this replay.
+
+\subsection{Validation protocol}
+
+\paragraph{Uncertainty set (declared choice).}
+The brief mentions seventeen robust cases and sixteen corners without
+defining them. We retain $L$, $C$ and $R$ at $\pm20~\%$ and $r_C$ at
+$\pm50~\%$, i.e.\ $2^4=16$ corners plus the nominal case. $r_C$ is chosen
+because it alone sets the projected pole $\omega_f=1/(r_CC)$, hence the
+projection error. $V_\mathrm{in}$ stays fixed and the mission is never
+modified.
+
+\paragraph{Three disjoint sets.}
+The sixteen corners are split between design and validation by random draw
+(published seed \ChiffreGraineSplit), never after observing which cases fail.
+The test set consists of uniform draws in the hypercube, with seed
+\ChiffreGraineTest{} sealed in the protocol before any evaluation, and is
+played only once; a sentinel file prevents replaying it. A set consulted for a
+decision becomes a design set and loses all probative value.
+
+\paragraph{Test size.}
+Success on $n$ draws without failure certifies nothing beyond the 95~\% Wilson
+interval. With $50/50$, the lower bound is $92.9~\%$. The brief stated that
+``about 300'' draws suffice for a $99~\%$ lower bound; the exact computation
+gives $98.74~\%$ for $300/300$ and requires $381$ draws. We retain
+\ChiffreNTest.
+
+\subsection{Preregistered statistics}
+
+The statistical unit is the seed: thirty common seeds, paired methods. We
+apply the Friedman omnibus test (with the Iman--Davenport correction), then
+pairwise Wilcoxon signed-rank tests corrected with Holm's method, and report
+the paired rank-biserial correlation as effect size. Success proportions are
+given with their 95~\% Wilson interval. All seeds are reported, sterile ones
+included; no threshold is adjusted after observation.
