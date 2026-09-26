@@ -97,6 +97,17 @@ Symlog scale: linear over $[-1;1]$. Figure labels in French.}
 \label{fig:seeds}
 \end{figure}
 
+\paragraph{Rerun after correcting the feedforward.}
+The campaign was first computed with a defect: the stage-2 feedforward used
+the perturbed plant parameters instead of the frozen nominal values. It was
+rerun in full after correction (protocol v6.2), with the same seeds, budgets
+and methods. The figures reported here are those of the rerun. Stage~1 is
+reproduced identically in all 540 cells. At stage~2, the best robust margins
+move from \ChiffreAncMargeEtDeuxCinq{}, \ChiffreAncMargeEtDeuxCinqB{} and
+\ChiffreAncMargeEtDeuxCinqKp{} to \ChiffreMargeEtDeuxCinq{},
+\ChiffreMargeEtDeuxCinqB{} and \ChiffreMargeEtDeuxCinqKp{} (arms v5, v5b and
+v5kp); no cell becomes feasible and the ranking of methods is unchanged.
+
 \paragraph{Stage 3 and sealed test.}
 Since no candidate is feasible on the design set, stage~3 has nothing to
 replay and the sealed test \emph{was not played}. It remains untouched,

@@ -184,7 +184,7 @@ def main():
             th = rep["bras"][key]["theta_meilleur"]
             fig_trajectory(th[:7], 1.0 / 10 ** th[7], lab, args.out, nm)
     for tag in ("v5", "v5b", "v5kp"):
-        fig_campaign(f"results/campaign_{tag}", args.out, tag)
+        fig_campaign(f"results/campaign_{tag}_v62", args.out, tag)
 
 
 if __name__ == "__main__":

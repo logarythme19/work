@@ -40,7 +40,7 @@ def load(p):
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(root)
-    proto = load("protocol/protocol_v6_1.json") or load("protocol/protocol_v6.json")
+    proto = load("protocol/protocol_v6_2.json") or load("protocol/protocol_v6_1.json")
     audit = load("results/audit_saturation.json")
     probe = load("results/probe_setpoint_weight.json")
 
@@ -89,9 +89,9 @@ def main():
         # --- campagne confirmatoire, par bras -------------------------------
         import glob
         for arm, tag in (("v5", "Cinq"), ("v5b", "CinqB"), ("v5kp", "CinqKp")):
-            rows = [json.load(open(f)) for f in glob.glob(f"results/campaign_{arm}/*.json")
+            rows = [json.load(open(f)) for f in glob.glob(f"results/campaign_{arm}_v62/*.json")
                     if not os.path.basename(f).startswith("_")]
-            an = load(f"results/campaign_{arm}/_analyse.json")
+            an = load(f"results/campaign_{arm}_v62/_analyse.json")
             if not rows or not an:
                 continue
             M[f"ChiffreN{tag}"] = str(len(rows))
@@ -110,6 +110,11 @@ def main():
             M[f"ChiffreMedMeilleure{tag}"] = f"${fmt(med[best], 3, lang)}$"
             lo, hi = an["par_methode"][best]["wilson95_faisable"]
             M["ChiffreWilsonHaut"] = pct(hi, 1, lang)
+        # Comparaison v6.1 -> v6.2 (defaut E12)
+        for arm, tag in (("v5", "Cinq"), ("v5b", "CinqB"), ("v5kp", "CinqKp")):
+            o = {os.path.basename(f): json.load(open(f)) for f in glob.glob(f"results/campaign_{arm}/*.json") if not os.path.basename(f).startswith("_")}
+            if o:
+                M[f"ChiffreAncMargeEtDeux{tag}"] = f"${fmt(max(r['etage2']['meilleure_marge'] for r in o.values()), 3, lang)}$"
         fl = load("results/plancher_dmin.json")
         if fl:
             M["ChiffrePlancherN"] = str(fl["n_cas_plancher_sous_seuil"])

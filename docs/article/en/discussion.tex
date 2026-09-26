@@ -49,12 +49,10 @@ equal-budget comparator that would allow such a judgement.
   Python. Cross-validation against Simulink covers only six candidates and
   the nominal plant; the snubber is assumed there ($R_s=10^5~\Omega$,
   $C_s=\infty$).
-\item \textbf{Defect corrected after the campaign.} The stage-2 feedforward
-  used the perturbed plant parameters instead of the frozen nominal values.
-  Re-evaluated after correction, the 540 retained candidates remain
-  infeasible, but 18 cells degrade by more than $0.05$: the defect favoured
-  the controllers, and some stage-2 margins are optimistic. The stage-2
-  search has not been rerun.
+\item \textbf{Defect corrected and campaign rerun.} The stage-2
+  feedforward first used the perturbed plant parameters. The campaign was
+  rerun in full after correction (protocol v6.2); the conclusions are
+  unchanged.
 \item \textbf{Projection.} The FO-LQI $\to$ FO-PIDF identity is exact only
   in integer order, with the exact pole, on the unsaturated nominal plant; the
   pole projection alone introduces up to \ChiffreErreurProjPole{} error at the
