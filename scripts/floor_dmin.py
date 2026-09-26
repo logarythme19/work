@@ -13,14 +13,17 @@ import json, os, sys
 from dataclasses import replace
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from isafo.params import MISSION, NUM
+from isafo.params import MISSION, NUM, PLANT
 from isafo.evaluate import Controller, evaluate
 from isafo.problem import corner_plants, split_design_validation
 
 out = {"d_min": NUM.duty_min, "seuil_g6_V": 0.8, "cas": {}}
 design, validation = split_design_validation()
 for i, Pk in enumerate(corner_plants()):
-    r = NUM.duty_min * Pk.R * Pk.Vin / ((Pk.R + Pk.rL + Pk.rd) + NUM.duty_min * (Pk.Ron - Pk.rd))
+    # Le feedforward est nominal fige (par.1, E12) : la consigne qui donne
+    # exactement d = d_min se calcule avec le plant NOMINAL.
+    P0 = PLANT
+    r = NUM.duty_min * P0.R * P0.Vin / ((P0.R + P0.rL + P0.rd) + NUM.duty_min * (P0.Ron - P0.rd))
     M = replace(MISSION, v0=r, v1=r, v2=r, ip_amp=0.0, iL0=0.0, vC0=0.9)
     res = evaluate(Controller(kp=1e-12, ki=1e-12, kd=0.0, lam=1, mu=1, wf=2e4, b=1, Kb=0.0),
                    h=NUM.h_confirm, plant=Pk, mission=M)
