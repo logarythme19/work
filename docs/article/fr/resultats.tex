@@ -105,6 +105,27 @@ et le test scellé \emph{n'a pas été joué}. Il reste vierge, graine
 \ChiffreGraineTest{} comprise, et conserve toute sa valeur probante pour une
 étude ultérieure.
 
+\subsection{Validation croisée avec le modèle Simulink}
+
+Six candidats figés ont été rejoués sur le modèle Simulink de référence (plant
+nominal), avec le même correcteur, traduit en S-function, et les mêmes
+formules de coût et de contraintes. Les critères d'accord avaient été fixés
+avant l'essai. Les \ChiffreXvalN{} candidats dotés d'un correcteur sont en
+accord : écart sur $J$ d'au plus \ChiffreXvalDJmax, écart sur chaque $g_i$
+d'au plus \ChiffreXvalDgmax, verdict de faisabilité identique. Les deux points
+faisables de la sonde restent faisables sous Simulink (marge
+\ChiffreXvalMargeSl{} pour le point à $b=1$).
+
+Le témoin sans rétroaction ne satisfait pas le critère sur $g_4$ (écart
+\ChiffreXvalFFdg) : son erreur au palier de 1~V diffère de
+\ChiffreXvalFFde{} entre les deux modèles. Sans rétroaction, rien ne corrige
+l'équilibre en conduction discontinue, qui dépend du modèle de diode et
+d'interrupteur ; en boucle fermée, l'intégrateur efface cet écart. La même
+origine explique un $V_\mathrm{min}$ plus haut de \ChiffreXvalDVmin{} en
+moyenne sous Simulink. Le plancher à $d_\mathrm{min}$ y reste sous le seuil
+($V_\mathrm{min}=\ChiffreXvalVminSl$) : le verrou physique est confirmé par le
+modèle de référence.
+
 \subsection{Deux diagnostics post hoc}
 
 Les deux diagnostics suivants ont été ajoutés \emph{après} observation. Ils

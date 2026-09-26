@@ -1,0 +1,9 @@
+candidat               J py     J sl   dJ %     m py     m sl  max|dg|      Vmin py/sl   verdict
+sonde_b_libre       0.12637  0.12648   0.09  +0.1911  +0.1911   0.0040  0.9943/ 0.9942    ACCORD
+sonde_b1            0.09290  0.09292   0.03  +0.0162  +0.0189   0.0027  0.8129/ 0.8151    ACCORD
+meilleur_v5         0.08081  0.08073   0.09  -0.1504  -0.1504   0.0029  0.7551/ 0.7574    ACCORD
+meilleur_v5b        0.07843  0.07920   0.97  -0.0561  -0.0532   0.0032  0.7551/ 0.7575    ACCORD
+meilleur_v5kp       0.08148  0.08141   0.08  -0.0561  -0.0532   0.0029  0.7551/ 0.7574    ACCORD
+feedforward_seul    0.12925  0.12855   0.54 -17.8104 -17.8090   0.0999  0.8045/ 0.8073 DESACCORD
+
+Conclusion : au moins un desaccord : a analyser avant toute conclusion

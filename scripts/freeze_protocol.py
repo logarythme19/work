@@ -23,7 +23,7 @@ SOURCES = [
     "isafo/params.py", "isafo/oustaloup.py", "isafo/_kernel.py",
     "isafo/evaluate.py", "isafo/folqi.py", "isafo/anchor.py",
     "isafo/deb.py", "isafo/algos.py", "isafo/problem.py",
-    "scripts/run_campaign.py", "isafo/stats.py",
+    "scripts/run_campaign.py", "isafo/stats.py", "isafo/trace.py",
 ]
 
 N_SEEDS = 30
@@ -177,11 +177,11 @@ def main():
         src[rel] = sha256(p) if os.path.exists(p) else None
     proto["empreintes_sources"] = src
 
-    v6 = os.path.join(root, "protocol", "protocol_v6.json")
-    proto["version"] = "6.1"
+    v61 = os.path.join(root, "protocol", "protocol_v6_1.json")
+    proto["version"] = "6.2"
     proto["amende_depuis"] = {
-        "fichier": "protocol/protocol_v6.json",
-        "empreinte": json.load(open(v6))["empreinte_protocole"] if os.path.exists(v6) else None,
+        "fichier": "protocol/protocol_v6_1.json",
+        "empreinte": json.load(open(v61))["empreinte_protocole"] if os.path.exists(v61) else None,
     }
     proto["statut_des_calculs_anterieurs"] = (
         "Avant cet amendement, seuls des calculs EXPLORATOIRES ont ete faits "
@@ -210,6 +210,25 @@ def main():
                     "aucun changement du modele, de la mission, du cout, des "
                     "contraintes ni des seuils.")},
     ]
+    proto["amendements"].append(
+        {"id": "A5", "objet": "feedforward nominal fige (correction du defaut E12) et relance",
+         "raison": ("Le noyau v6.1 calculait le feedforward avec les parametres du "
+                    "plant simule ; le par.1 impose les valeurs nominales figees. "
+                    "Seul l'etage 2 etait touche, et le defaut favorisait les "
+                    "correcteurs (18 cellules sur 540 degradees de plus de 0,05 "
+                    "une fois corrigees). La campagne est RELANCEE en entier avec les "
+                    "memes graines, budgets, methodes et bras, dans des dossiers "
+                    "distincts (results/campaign_<bras>_v62) ; les resultats v6.1 "
+                    "sont conserves pour comparaison. L'etage 1 ne simulant que le "
+                    "plant nominal, il doit se reproduire a l'identique. Verification "
+                    "faite avant la relance sur deux cellules (dont une calculee sur "
+                    "la machine de l'utilisateur) : meme point retenu x (ecart 0,0), "
+                    "meme nombre de points faisables, marges egales a 1e-14 pres "
+                    "(arrondi machine du feedforward recalcule).")})
+    proto["statut_des_calculs_anterieurs"] = (
+        "La campagne v6.1 (540 cellules) a ete calculee avec le noyau defectueux ; "
+        "ses resultats sont conserves et ne sont pas melanges avec ceux de v6.2. "
+        "Le jeu de test scelle n'a toujours jamais ete joue.")
     proto["bras"] = {"v5": "principal, conforme au cadrage",
                      "v5b": "extension declaree (A2)",
                      "v5kp": "ablation declaree (A3)"}
@@ -217,7 +236,7 @@ def main():
     body = json.dumps(proto, indent=2, ensure_ascii=False, sort_keys=True)
     proto["empreinte_protocole"] = hashlib.sha256(body.encode()).hexdigest()
 
-    out = os.path.join(root, "protocol", "protocol_v6_1.json")
+    out = os.path.join(root, "protocol", "protocol_v6_2.json")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         json.dump(proto, f, indent=2, ensure_ascii=False, sort_keys=True)

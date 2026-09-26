@@ -117,6 +117,26 @@ def main():
             M["ChiffrePlancherNominal"] = f"${fmt(fl['cas']['0']['Vmin_plancher_V'], 3, lang)}$~V"
             M["ChiffrePlancherMin"] = f"${fmt(min(v['Vmin_plancher_V'] for v in fl['cas'].values()), 3, lang)}$~V"
 
+        # --- validation croisee Simulink ---------------------------------
+        import csv
+        pc, ps = "validation_simulink/candidates.csv", "validation_simulink/simulink_results.csv"
+        if os.path.exists(pc) and os.path.exists(ps):
+            A = {r["nom"]: r for r in csv.DictReader(open(pc))}
+            B = {r["nom"]: r for r in csv.DictReader(open(ps))}
+            ctl = [n for n in A if n != "feedforward_seul" and n in B]
+            dJ = [abs(float(B[n]["J_sl"]) - float(A[n]["J_py"])) / float(A[n]["J_py"]) for n in ctl]
+            dg = [max(abs(float(A[n][f"g{i}_py"]) - float(B[n][f"g{i}_sl"])) for i in range(1, 7)) for n in ctl]
+            dV = [float(B[n]["Vmin_sl"]) - float(A[n]["Vmin_py"]) for n in ctl if n.startswith("meilleur")]
+            M["ChiffreXvalN"] = str(len(ctl))
+            M["ChiffreXvalDJmax"] = pct(max(dJ), 2, lang)
+            M["ChiffreXvalDgmax"] = f"${fmt(max(dg), 4, lang)}$"
+            M["ChiffreXvalDVmin"] = f"${fmt(1e3 * float(np.mean(dV)), 1, lang)}$~mV"
+            M["ChiffreXvalVminSl"] = f"${fmt(float(B['meilleur_v5']['Vmin_sl']), 4, lang)}$~V"
+            ff = "feedforward_seul"
+            M["ChiffreXvalFFdg"] = f"${fmt(abs(float(A[ff]['g4_py']) - float(B[ff]['g4_sl'])), 3, lang)}$"
+            M["ChiffreXvalFFde"] = f"${fmt(1e3 * abs(float(A[ff]['e1_py']) - float(B[ff]['e1_sl'])), 1, lang)}$~mV"
+            M["ChiffreXvalMargeSl"] = f"${fmt(-max(float(B['sonde_b1'][f'g{i}_sl']) for i in range(1, 7)), 4, lang)}$"
+
         lines = ["% Genere par scripts/make_numbers.py -- NE PAS EDITER A LA MAIN"]
         for k, v in sorted(M.items()):
             lines.append(f"\\newcommand{{\\{k}}}{{{v}}}")

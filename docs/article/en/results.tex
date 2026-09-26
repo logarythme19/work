@@ -103,6 +103,26 @@ replay and the sealed test \emph{was not played}. It remains untouched,
 seed \ChiffreGraineTest{} included, and keeps its full probative value for
 a later study.
 
+\subsection{Cross-validation against the Simulink model}
+
+Six frozen candidates were replayed on the reference Simulink model (nominal
+plant), with the same controller, translated into an S-function, and the same
+cost and constraint formulas. Agreement criteria were fixed before the run.
+The \ChiffreXvalN{} candidates with a controller agree: difference in $J$ of at
+most \ChiffreXvalDJmax, difference in each $g_i$ of at most \ChiffreXvalDgmax,
+identical feasibility verdict. Both feasible points of the probe remain
+feasible under Simulink (margin \ChiffreXvalMargeSl{} for the $b=1$ point).
+
+The feedback-free witness fails the criterion on $g_4$ (difference
+\ChiffreXvalFFdg): its error on the 1~V plateau differs by \ChiffreXvalFFde{}
+between the two models. Without feedback, nothing corrects the
+discontinuous-conduction equilibrium, which depends on the diode and switch
+models; in closed loop, the integrator removes this difference. The same cause
+explains a $V_\mathrm{min}$ that is on average \ChiffreXvalDVmin{} higher under
+Simulink. The floor at $d_\mathrm{min}$ remains below the threshold there
+($V_\mathrm{min}=\ChiffreXvalVminSl$): the physical obstruction is confirmed by
+the reference model.
+
 \subsection{Two post hoc diagnostics}
 
 The following two diagnostics were added \emph{after} observation. They are
