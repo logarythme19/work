@@ -5,45 +5,45 @@ The style file: elsarticle-harv.bst
 Database file #1: refs.bib
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--empty pages in Snoek2012
-You've used 35 entries,
+You've used 70 entries,
             2990 wiz_defined-function locations,
-            906 strings with 11986 characters,
-and the built_in function-call counts, 23323 in all, are:
-= -- 1865
-> -- 806
-< -- 22
-+ -- 321
-- -- 276
-* -- 2528
-:= -- 3349
-add.period$ -- 131
-call.type$ -- 35
-change.case$ -- 265
-chr.to.int$ -- 35
-cite$ -- 36
-duplicate$ -- 1744
-empty$ -- 1744
-format.name$ -- 395
-if$ -- 4382
+            1155 strings with 17891 characters,
+and the built_in function-call counts, 46837 in all, are:
+= -- 3737
+> -- 1628
+< -- 42
++ -- 656
+- -- 558
+* -- 5090
+:= -- 6714
+add.period$ -- 256
+call.type$ -- 70
+change.case$ -- 531
+chr.to.int$ -- 70
+cite$ -- 71
+duplicate$ -- 3497
+empty$ -- 3517
+format.name$ -- 786
+if$ -- 8787
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 331
-newline$ -- 216
-num.names$ -- 140
-pop$ -- 582
+missing$ -- 672
+newline$ -- 411
+num.names$ -- 280
+pop$ -- 1172
 preamble$ -- 1
-purify$ -- 232
+purify$ -- 466
 quote$ -- 0
-skip$ -- 546
+skip$ -- 1065
 stack$ -- 0
-substring$ -- 1073
-swap$ -- 1248
-text.length$ -- 3
+substring$ -- 2227
+swap$ -- 2515
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 303
+type$ -- 603
 warning$ -- 1
-while$ -- 156
+while$ -- 323
 width$ -- 0
-write$ -- 555
+write$ -- 1084
 (There was 1 warning)

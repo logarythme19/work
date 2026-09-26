@@ -53,8 +53,8 @@ def flatten(text, base):
     def rep(m):
         name = m.group(1)
         f = os.path.join(base, name if name.endswith('.tex') else name + '.tex')
-        if name.startswith('figures/fig_workflow'):
-            return '\\includegraphics[width=\\textwidth]{fig_workflow}'
+        if name.startswith('figures/fig_') and os.path.exists(os.path.join(HERE, 'png', os.path.basename(name) + '.png')):
+            return '\\includegraphics[width=\\textwidth]{%s}' % os.path.basename(name)
         return flatten(read(f), base)
     text = re.sub(r'(?m)(?<!\\)%.*$', '', text)          # comments
     return re.sub(r'\\input\{([^}]*)\}', rep, text)
