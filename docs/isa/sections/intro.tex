@@ -17,42 +17,48 @@ without losing the optimality certificate on the way?
 
 The answer turns out to be yes, and exactly so, under conditions that we state
 and test. The rest of this section reviews how PID-type and linear--quadratic
-controllers reached their present form, why the non-ideal Buck is a demanding
-test case, and why metaheuristics and Bayesian optimization are used here. It
-then states the research gap, the working assumptions, the difficulties and the
-contributions.
+controllers reached their present form and why the non-ideal Buck is a
+demanding test case. It then states three research gaps, each paired with the
+design choice it motivates (the PID equivalent, the CMO--LQI formulation, the
+metaheuristics and refineBO), followed by the working assumptions, the
+difficulties and the contributions.
 
 \subsection{Literature review}\label{sec:lit}
 
 \subsubsection{From the three-term controller to the 2-DOF PIDF}
 The three-term law was first analysed by \citet{Minorsky1922} for the automatic
 steering of ships, and the rules published by \citet{Ziegler1942} made it an
-industrial standard. Each term was added to cure a defect of the previous
-structure. A proportional controller leaves a steady error under a constant
-load; the integral term removes it, giving the PI controller; the derivative
-term adds phase lead and damping, giving the PID \citep{Astrom2006}. A pure
-derivative is not realizable and amplifies measurement noise, so every
-practical PID filters it with a first-order pole $N$; the result is the PIDF,
-the form found in industrial controllers and in the Simulink PID block
+industrial standard. On a Buck converter the reason for each term is easy to
+see. With proportional action alone the output settles below its reference
+whenever the load draws current, because only a standing error can pull the
+duty ratio away from its feedforward value. Integral action removes that
+offset, which gives the PI controller. The output filter, however, is lightly
+damped (in our model $\zeta\approx0.14$ at \SI{24}{V}), and a PI has no phase
+lead to offer it; the derivative term supplies that lead and turns the PI into
+a PID \citep{Astrom2006}. An ideal derivative cannot be built, and on a
+converter it would also amplify the switching ripple riding on the measured
+voltage. Industrial controllers and the Simulink PID block therefore filter it
+with a first-order pole $N$, and the PID becomes a PIDF
 \citep{Ang2005,Astrom2006}.
 
-A single-loop PIDF still ties two things together: the response to a
-disturbance and the response to a setpoint change. With one set of gains, a
-loop tuned for fast load rejection overshoots on reference steps. Setpoint
-weighting separates the two. The proportional and derivative terms act on
-$b\,r-y$ and $c\,r-y$ instead of $r-y$, while the integral keeps acting on the
-true error so that the steady state is unchanged
-\citep{Astrom2006,Astrom2001}; the idea has been extended to multivariable PID
-loops \citep{Bianchi2008}. This is a particular case of the
-two-degree-of-freedom (2-DOF) structure introduced by \citet{Horowitz1963}, in
-which the feedback path fixes robustness and disturbance rejection and a
-separate path shapes the command response. The 2-DOF PIDF, with its six
-parameters $(K_p,K_i,K_d,N,b,c)$, is the most complete PID-type law offered by
-standard automation hardware, and it is the end point of the upper branch of
-Fig.~\ref{fig:evolution}. Surveys of PID practice document both the dominance of this
-family in industrial loops and the very large number of tuning methods
-proposed for it, a sign that tuning, more than structure, is where the
-difficulty lies \citep{Astrom2001,Ang2005}.
+The PIDF still uses one error signal for two different jobs. The gains that
+make it recover quickly from a load step act in the same way on every change
+of reference, so a loop tuned for load rejection tends to overshoot on a large
+setpoint step, such as the \SI{1}{}$\to$\SI{46}{V} step of our mission.
+Setpoint weighting decouples the two. The proportional and derivative terms act
+on $b\,r-y$ and $c\,r-y$ instead of $r-y$, while the integral keeps acting on the
+true error, so the steady state does not change \citep{Astrom2006,Astrom2001};
+\citet{Bianchi2008} extended the idea to multivariable PID loops. The general
+principle goes back to \citet{Horowitz1963}: one path of the controller is
+designed for robustness and disturbance rejection, and a second path, driven by
+the reference alone, shapes the command response. Setpoint weighting is the
+simplest instance of this two-degree-of-freedom (2-DOF) structure. Adding $N$,
+$b$ and $c$ to the three gains gives a law with six parameters,
+$(K_p,K_i,K_d,N,b,c)$, which is as far as a standard PID block goes; we take it
+as the end point of the upper branch of Fig.~\ref{fig:evolution}. Surveys of
+PID practice document both the dominance of this family in industrial loops and
+the very large number of tuning methods proposed for it, a sign that tuning,
+more than structure, is where the difficulty lies \citep{Astrom2001,Ang2005}.
 
 \begin{figure*}[t]
 \centering
@@ -114,98 +120,62 @@ realizable from the output voltage.
 \subsubsection{Why a non-ideal Buck converter}
 The Buck converter is often used as a benchmark because its ideal averaged
 model is linear in the states and bilinear in the duty ratio
-\citep{Middlebrook1976,Erickson2020}. That ideal model is misleading for the
-question asked here. The ESR $r_C$ is the element that creates the
-output-network zero on which the exact equivalence rests, so it cannot be
-neglected. The winding resistance $r_L$, the switch resistance $R_{on}$, the
-diode drop $V_f$ and its resistance $r_d$ shift the equilibrium duty and the
-dissipated power; at \SI{1}{V}, where the modelled efficiency falls to about
-\SI{61}{\percent}, they dominate the energy balance
-\citep{Kazimierczuk2015,Siddhartha2018}. With an asynchronous diode the
-inductor current cannot reverse, so light loads and deep step-downs drive the
-converter into discontinuous conduction, where the small-signal model changes
-order \citep{Sun2001}. Averaging itself is an approximation whose validity
-depends on the ripple and the switching frequency \citep{Krein1990,Maksimovic2001},
-and in digital loops the sampled ripple and the duty resolution can sustain
-limit cycles that no averaged model predicts \citep{Peterchev2003,Peng2007,Buso2015}.
-A wide-range, non-ideal Buck therefore combines saturation, a mode change and
-switching nonlinearities in a plant that is still simple enough to analyse in
-closed form, which makes it a fair test of any claim of equivalence.
+\citep{Middlebrook1976,Erickson2020}. For the question asked here the ideal
+model is not enough. The ESR $r_C$ creates the output-network zero on which the
+exact equivalence rests, so it cannot be dropped. The other parasitic elements
+matter for the operating point. Each volt lost in $r_L$, $R_{on}$, $r_d$ or across
+the diode threshold $V_f$ has to be made up by a larger duty ratio, and at a
+\SI{1}{V} output these drops are no longer small compared with the output
+itself: our model gives an efficiency of about \SI{61}{\percent} there, so
+nearly \SI{40}{\percent} of the input power ends up in these elements
+\citep{Kazimierczuk2015,Siddhartha2018}. The freewheeling diode adds a second
+effect. It blocks reverse current, so at light load or during a deep
+step-down the inductor current falls to zero inside the switching period and
+the converter enters discontinuous conduction, where the small-signal model
+loses one order \citep{Sun2001}. Our \SI{1}{V} operating point sits only
+\SI{3}{\percent} above the conduction boundary at the nominal load and spends
+\DCMone{} of its steady-state time in discontinuous conduction. Averaging itself
+is an approximation whose validity depends on the ripple and the switching
+frequency \citep{Krein1990,Maksimovic2001}, and in digital loops the sampled
+ripple and the duty resolution can sustain limit cycles that no averaged model
+predicts \citep{Peterchev2003,Peng2007,Buso2015}. A wide-range, non-ideal Buck
+therefore combines saturation, a mode change and switching nonlinearities in a
+plant that is still simple enough to analyse in closed form, which makes it a
+fair test of any claim of equivalence.
 
-\subsubsection{Why seek a PID equivalent, and why the 2-DOF PIDF}
-If the LQI is better founded, one may ask why it should be converted into a
-PID at all. The first reason is implementation: an LQI needs the inductor
-current, which requires a current sensor with its bandwidth, cost and noise,
-whereas the output voltage is always measured. The second is acceptance:
-commissioning engineers can inspect, bound and retune three gains, and the PID
-block brings validated anti-windup and bumpless transfer with it
-\citep{Astrom2006}. The third is methodological. Tuning a PID directly in gain
-space, whether by rules or by an optimizer, gives no stability or robustness
-guarantee for the resulting point \citep{Ang2005}. An exact map from the LQI to
-a PID-type law turns every candidate of a search into a controller that has
-the LQR margins and, at the same time, runs on a standard block.
+\subsection{Research gap and motivation}\label{sec:gap}
+The review leaves three gaps open. Each one motivates a design choice of this
+paper, and we state them in pairs.
 
-The map requires the extra degrees of freedom of the 2-DOF PIDF. The LQI
-feeds back the capacitor voltage and the inductor current; replacing them by
-the measured output needs a filtered derivative whose pole matches the ESR
-zero, which is the $N$ of the PIDF. The LQI also acts on the reference only
-through the integral state, so the equivalent PIDF must have $b=1$ and $c=0$:
-without setpoint weights, a PIDF can reproduce the disturbance response of the
-LQI but not its command response (Proposition~\ref{prop:map}). A PI or a PID has too few
-parameters for either condition, which is why they appear in this study only as
-comparators.
+\subsubsection{Gap 1: the LQI--PID link is known only in nominal form}
+The link between the LQI of a Buck converter and a filtered PID is known as a
+transfer-function identity at one operating point. Whether it survives duty
+saturation, anti-windup, discontinuous conduction and parameter mismatch has
+not been shown, yet these are exactly the conditions a converter meets across a
+wide range. Without that result, a PID tuned from an LQI is only an
+approximation of it, and the LQ margins do not carry over.
 
-\subsubsection{CMO--LQI: constrained multi-criteria optimization of the LQI weights}
-Bryson's rule gives a sensible starting point, but the weights it produces are
-not optimal with respect to overshoot, device current or loss, which are what a
-specification actually lists. We call CMO--LQI (constrained multi-criteria
-optimization of the LQI) the problem of choosing the weights so that the
-resulting LQI, realized as a 2-DOF PIDF, minimizes an aggregate of seven
-performance criteria over six scenarios subject to hard engineering
-constraints. The word \emph{multi-criteria} is meant literally and not in the
-Pareto sense: the criteria are normalized and averaged into one scalar, and the
-constraints are handled by feasibility rules \citep{Deb2000}. A weighted scalar
-index does not describe a trade-off front \citep{RodriguezMolina2020}, and we
-do not claim one. The search variables are the logarithms of the Bryson
-excursions and of the integral bandwidth, four numbers with a physical scale,
-rather than the PIDF gains.
+\subsubsection{Motivation 1: why a PID equivalent, and why the 2-DOF PIDF}
+If the LQI is better founded, one may ask why it should be turned into a PID at
+all. There are three reasons. The LQI needs the inductor current, hence a
+current sensor with its own bandwidth, cost and noise, whereas the output
+voltage is measured on every converter. Commissioning engineers can inspect,
+bound and retune three gains, and the PID block comes with validated
+anti-windup and bumpless transfer \citep{Astrom2006}. And tuning a PID directly
+in gain space, by rules or by an optimizer, gives no stability or robustness
+guarantee for the point it returns \citep{Ang2005}. An exact map from the LQI to
+a PID-type law removes that last objection: every candidate of a search becomes
+a controller that has the LQR margins and still runs on a standard block.
 
-\subsubsection{Why metaheuristics, and why refineBO}
-The CMO--LQI problem is small, four variables, but its objective and its
-constraints are obtained from simulations with saturation, mode changes and
-switching, so no gradient is available and the feasible set may be
-disconnected. Population-based metaheuristics are the usual answer to such
-black-box problems, and they have been applied widely to converter controllers
-\citep{Izci2022,Nanyan2024,Siano2014,ValenciaRivera2024}. Two warnings from the
-optimization literature shape the way we use them. The no-free-lunch theorems
-state that no algorithm dominates on all problems \citep{Wolpert1997}, and
-metaphor-based variants are often presented without evidence that they differ
-from existing methods \citep{Sorensen2015}. We therefore do not propose a new
-metaheuristic. We take three classical operators with well-documented
-behaviour, particle swarm optimization \citep{Kennedy1995,Poli2007}, the
-genetic algorithm \citep{Holland1975} and the artificial bee colony
-\citep{Karaboga2007,Karaboga2008}, and three recent variants built on the grey
-wolf optimizer and on an adaptive bee colony
-\citep{Mirjalili2014,NadimiShahraki2021,Hou2022,Alsamia2024}, and ask whether the
-answer depends on the operator. Constraints are handled by Deb's feasibility
-ordering, which avoids penalty factors \citep{Deb2000,MezuraMontes2011}, and
-the runs are compared on matched seeds with non-parametric tests
-\citep{Derrac2011,Demsar2006}.
-
-A global operator spends most of its budget exploring. Once a promising region
-is found, a local model-based stage is more economical, which is the idea of
-memetic and hybrid schemes \citep{Neri2012}. For expensive black-box functions,
-Bayesian optimization fits a Gaussian-process surrogate to the evaluated points
-and chooses the next one by maximizing an acquisition function such as the
-expected improvement \citep{Jones1998,Rasmussen2006,Snoek2012,Shahriari2016}. Unknown
-constraints are handled by multiplying the acquisition by the modelled
-probability of feasibility \citep{Gardner2014}, and a trust region keeps the
-surrogate local and reliable \citep{Eriksson2019}. Bayesian optimization has
-already been used to tune industrial controllers \citep{NeumannBrosig2020} and
-digital PID loops \citep{Coutinho2023}. The refineBO stage used here combines
-these three elements: it starts from the history of each global run, models the
-objective and all 33 constraints with Gaussian processes, and searches a
-shrinking region around the best feasible records.
+The map needs the extra parameters of the 2-DOF PIDF. The LQI feeds back the
+capacitor voltage and the inductor current; replacing them by the measured
+output requires a filtered derivative whose pole sits on the ESR zero, and that
+pole is the $N$ of the PIDF. The LQI also sees the reference only through its
+integral state, so the equivalent PIDF must have $b=1$ and $c=0$. Without
+setpoint weights a PIDF can match the disturbance response of the LQI but not
+its command response (Proposition~\ref{prop:map}). A PI or a PID lacks the
+parameters for either condition, which is why they appear here only as
+comparators. Table~\ref{tab:ctrl} lists all the controllers of the study.
 
 \begin{table*}[t]
 \centering
@@ -229,9 +199,77 @@ CMO--LQI--PIDF & $v_o$ & 4 log-excursions & LQ margins, D-region & proposal & th
 \end{tabular}}
 \end{table*}
 
-Table~\ref{tab:ctrl} summarizes the controllers that appear in the study, and
+\subsubsection{Gap 2: metaheuristics tune gains, not specifications}
+Metaheuristic tuning of converter controllers searches gain spaces
+\citep{Izci2022,Nanyan2024,Siano2014,ValenciaRivera2024}. A good result
+therefore carries no guarantee, the size of the search box is a guess, and the
+objective is usually a tracking index rather than the list of limits a
+specification actually contains. Searching the LQI weights instead has not been
+compared with a direct gain search under the same budget.
+
+\subsubsection{Motivation 2: CMO--LQI, constrained multi-criteria optimization of the LQI weights}
+Bryson's rule gives a sensible starting point, but its weights are not optimal
+with respect to overshoot, device current or loss. We call CMO--LQI
+(constrained multi-criteria optimization of the LQI) the problem of choosing the
+weights so that the resulting LQI, realized as a 2-DOF PIDF, minimizes an
+aggregate of seven performance criteria over six scenarios under hard
+engineering constraints. \emph{Multi-criteria} is meant literally, not in the
+Pareto sense: the criteria are normalized and averaged into one scalar, and the
+constraints are handled by feasibility rules \citep{Deb2000}. A weighted scalar
+index does not describe a trade-off front \citep{RodriguezMolina2020}, and we do
+not claim one. The search variables are the logarithms of the Bryson excursions
+and of the integral bandwidth, four numbers with a physical scale, rather than
+the PIDF gains.
+
+\subsubsection{Gap 3: candidates are accepted on the model that selected them}
+Most tuning studies accept a candidate on the averaged model that drives the
+search. In an earlier version of the present protocol, four of six winners
+accepted in this way failed on the switched model, because of switching limit
+cycles that the averaged model cannot represent. The same studies often
+introduce a new operator without a matched comparison against existing ones,
+so it is hard to tell whether a result comes from the algorithm or from the
+problem.
+
+\subsubsection{Motivation 3: why metaheuristics, and why refineBO}
+The CMO--LQI problem has only four variables, but its objective and its
+constraints come from simulations with saturation, mode changes and switching,
+so no gradient is available and the feasible set may be disconnected.
+Population-based metaheuristics are the usual tool for such black-box problems.
+Two results from the optimization literature shape the way we use them. The
+no-free-lunch theorems state that no algorithm dominates on all problems
+\citep{Wolpert1997}, and metaphor-based variants are often published without
+evidence that they differ from existing methods \citep{Sorensen2015}. We
+therefore do not propose a new metaheuristic. We take three classical operators
+with well-documented behaviour, particle swarm optimization
+\citep{Kennedy1995,Poli2007}, the genetic algorithm \citep{Holland1975} and the
+artificial bee colony \citep{Karaboga2007,Karaboga2008}, and three recent
+variants built on the grey wolf optimizer and on an adaptive bee colony
+\citep{Mirjalili2014,NadimiShahraki2021,Hou2022,Alsamia2024}, and ask whether the
+answer depends on the operator. Constraints are handled by Deb's feasibility
+ordering, which avoids penalty factors \citep{Deb2000,MezuraMontes2011}; the
+runs are compared on matched seeds with non-parametric tests
+\citep{Derrac2011,Demsar2006}; and three of the 33 constraints are measured on
+a short switched simulation inside every evaluation, which answers the
+acceptance problem of Gap 3.
+
+A global operator spends most of its budget exploring. Once a promising region
+is found, a local model-based stage is more economical, which is the idea of
+memetic and hybrid schemes \citep{Neri2012}. For expensive black-box functions,
+Bayesian optimization fits a Gaussian-process surrogate to the evaluated points
+and chooses the next one by maximizing an acquisition function such as the
+expected improvement \citep{Jones1998,Rasmussen2006,Snoek2012,Shahriari2016}. Unknown
+constraints are handled by multiplying the acquisition by the modelled
+probability of feasibility \citep{Gardner2014}, and a trust region keeps the
+surrogate local and reliable \citep{Eriksson2019}. Bayesian optimization has
+already been used to tune industrial controllers \citep{NeumannBrosig2020} and
+digital PID loops \citep{Coutinho2023}. The refineBO stage used here combines
+these three elements: it starts from the history of each global run, models the
+objective and all 33 constraints with Gaussian processes, and searches a
+shrinking region around the best feasible records.
+
 Table~\ref{tab:gap} positions the work against representative Buck control and
-tuning studies.
+tuning studies. The motivation, in short, is to close the three gaps on a plant
+that is fully specified, so that every number in the paper can be recomputed.
 
 \begin{table*}[t]
 \centering
@@ -254,22 +292,6 @@ Present work & audited non-ideal Buck, 1--46 V, switched replica with energy bal
 \bottomrule
 \end{tabular}}
 \end{table*}
-
-\subsection{Research gap and motivation}\label{sec:gap}
-The review leaves three questions open. First, the link between the LQI of a
-Buck converter and a filtered PID is known in nominal transfer-function form,
-but it is not known whether it survives saturation, anti-windup, discontinuous
-conduction and parameter mismatch, which are exactly the conditions under which
-a converter operates across a wide range. Second, metaheuristic tuning of
-converter controllers searches gain spaces, so a good result carries no
-guarantee and the size of the search box is a guess; searching the LQI weights
-instead has not been compared with a direct gain search under the same budget.
-Third, most tuning studies accept a candidate on the averaged model that drives
-the search. In an earlier version of the present protocol, four of six
-winners accepted in this way failed on the switched model, because of
-switching limit cycles that the averaged model cannot represent. The
-motivation of this paper is to close these three questions on a plant that is
-fully specified, so that every number can be recomputed.
 
 \subsection{Assumptions}\label{sec:assump}
 The analysis rests on the following assumptions, each of which is tested or
