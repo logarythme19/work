@@ -1,22 +1,23 @@
 \begin{abstract}
-A formula-first co-design is proposed for a non-ideal asynchronous Buck
-converter fed at \SI{48}{V} and commanded over \SIrange{1}{46}{V}. The
-search space is the set of Bryson excursions of a linear--quadratic--integral
-(LQI) cost; each candidate is solved from the Riccati equation and realized
-exactly as a two-degree-of-freedom PIDF that measures the output voltage only.
-We prove that the derivative filter, with its pole on the ESR zero,
-reconstructs the capacitor voltage along every trajectory, so the PIDF and the full-state LQI coincide under saturation,
-anti-windup and discontinuous conduction and differ only through an explicit
-output-current feedback, an output-network mismatch and sampling; a
-triangle-hold discretization keeps the sampled PIDF within \EqSampFOH{} of the
-sampled LQI on a \SI{45}{V} step, against \EqSampZOH{} with a zero-order hold.
-Six equal-budget optimizers with Gaussian-process refinement search the weights
-under 33 inequalities in engineering units, three measured on a switched model
-because averaged-feasible designs hold coexisting switching limit cycles. Over
-30 matched seeds all optimizers reach the same optimum, \CMOgainPct\,\% below
-the Bryson design. A direct gain-space search reaches the same LQ-optimal controller, but
-\IOpct\,\% of its feasible designs are not LQ-optimal. On a switched replica of the reference Simulink model, the retained
-controller removes the overshoot of classical designs and stays within the
-device current rating; its only miss is \SwEss{}\,mV of steady error at
-\SI{1}{V} against \SI{25}{mV}, which its full-state twin meets; standard PI, PID, PIDF, LQR, LQG and LQI designs exceed the specification by factors of 6 to 30.
+Metaheuristic tuning of PID-type controllers for power converters usually
+searches gain spaces that carry no stability guarantee, and its results are
+rarely checked against switching effects. This paper shows that, for a
+non-ideal Buck converter, the linear--quadratic--integral (LQI) law has an
+exact realization as a two-degree-of-freedom PIDF that measures only the output
+voltage. When its derivative pole is placed on the capacitor ESR zero, the
+filter state reconstructs the capacitor voltage along every trajectory. The
+PIDF and the full-state LQI therefore coincide under saturation, anti-windup
+and discontinuous conduction. They differ only through an explicit
+output-current term, output-network mismatch and sampling, and a first-order-hold
+discretization reduces the sampling gap by a factor of about 40. The controller
+is tuned by searching the LQI weights, not the gains, so every candidate is
+LQ-optimal and carries guaranteed margins and a certified pole region. A
+constrained, multi-fidelity search includes short switched-model simulations to
+reject coexisting switching limit cycles that averaged models miss. On a
+\SI{48}{V} converter commanded from 1 to \SI{46}{V}, six metaheuristics converge
+to the same optimum. An unconstrained gain search reaches the same controller,
+but \IOpct\,\% of its feasible solutions are not LQ-optimal. On a switched
+replica of the reference Simulink model, the tuned controller eliminates
+overshoot and respects the device current rating, whereas standard PI, PID,
+PIDF, LQR, LQG and LQI designs exceed the specification by factors of 6 to 30.
 \end{abstract}
