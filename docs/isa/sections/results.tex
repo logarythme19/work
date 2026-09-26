@@ -1,0 +1,145 @@
+\section{Results and discussion}\label{sec:results}
+
+\input{sections/results_equiv}
+
+\subsection{Seven algorithms on the LQI-weight space}\label{sec:res:algos}
+Table~\ref{tab:algores} and Fig.~\ref{fig:campaign}(a) summarize the 180 runs of
+the CMO--LQI--PIDF family. \CMOfeas{} runs end feasible. All six branches
+converge to the same optimum: their best records lie between \CMObestLo{} and
+\CMObestHi{}, a spread of $2\times10^{-4}$, and decode to practically the same
+controller. The LQI-weight space therefore has a single, well-defined optimum
+under the 33 inequalities, and the retained design is not an artefact of one
+operator or one seed. The retained record improves the normalized objective by
+\CMOgainPct{}\,\% with respect to the Bryson record $\xi_0$, while $\xi_0$
+itself violates the overshoot specification.
+
+What separates the operators is reliability, not the optimum. The Friedman test
+over matched seeds rejects equality ($Q=\FriedQ$, $p=\FriedP$); after Holm
+correction \HolmNsig{} pairwise difference remains (\HolmSig{}). pIGWO reaches a
+feasible design in 28 of 30 seeds and pAEABC in 25, against 13 for GA. The
+refinement stage matters most where the global stage is weakest: it raises the
+number of feasible runs from 8 to 17 for ABC and from 18 to 25 for pAEABC
+(Table~\ref{tab:algores}), whereas it adds one run for pIGWO and none for PSO
+and GA. A practitioner who can afford only one run should therefore prefer the
+grey-wolf or adaptive-bee variant followed by refineBO; one who can afford a
+few seeds can use any of the six.
+
+\input{tables/tab_algos_res}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_campaign.pdf}
+\caption{(a) Median best-feasible objective against counted calls for the CMO--LQI--PIDF family (dotted line: end of the global stage); a curve starts once at least half of the 30 seeds hold a feasible record, which GA never achieves (13/30). (b) Final objective of the feasible runs of every family under the identical protocol, with the number of feasible runs out of 180 above each box.}
+\label{fig:campaign}
+\end{figure*}
+
+\paragraph{Retained controller}
+The retained weights are $\Delta_i=\SI{\RetDi}{A}$, $\Delta_v=\SI{\RetDv}{V}$,
+$\omega_B=\SI{\RetwB}{rad/s}$, giving $K=\RetK$ and closed-loop poles \RetPoles.
+Its exact realization is
+\begin{equation}
+\theta^\star=[K_p,K_i,K_d,N,b,c,K_b]=[\RetKp,\ \RetKi,\ \RetKd,\ 2\times10^5,\ 1,\ 0,\ \RetKb].
+\end{equation}
+Being an LQI law, it inherits the full-state LQR margins (minimum return
+difference 1, phase margin \RetPM{}), and the common-$P$ certificate over the
+operating polytope gives $\alpha_{cert}=\SI{\RetAlpha}{rad/s}$ and
+$\zeta_{cert}=\RetZeta$, i.e.\ \RetAlphaRatio{} times the guaranteed decay rate
+of $\xi_0$ at slightly better guaranteed damping. None of these certificates is
+available for a gain vector found by direct search.
+
+\subsection{Does the LQI parameterization help? Six families, one protocol}\label{sec:res:families}
+\input{sections/results_families}
+
+\input{tables/tab_families}
+
+\subsection{Switched validation on the reference mission}\label{sec:res:switched}
+Table~\ref{tab:switched} and Fig.~\ref{fig:switched} report the frozen
+controllers on the \SI{324}{ms} mission of the reference model. The energy
+balance closes to better than \RESmax{} of the input energy for every row, so
+all efficiency and loss figures are resolved by the integrator. As a fidelity
+check against the Simulink audit of the earlier version of this study, the
+replica gives for the fixed PI \SwPIOS{}\,V of overshoot, \SwPIIpk{}\,A and
+IAE \SwPIIAE{}\,V\,s (Simulink: 26.75\,V, 40.76\,A, 0.0464\,V\,s) and for the
+fixed LQI \SwLQIOS{}\,V, \SwLQIIpk{}\,A and \SwLQIIAE{}\,V\,s (Simulink:
+9.56\,V, 31.27\,A, 0.0346\,V\,s).
+
+\input{tables/tab_switched}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_switched.pdf}
+\caption{Switched replay on the reference mission: retained CMO--LQI--PIDF and the six fixed-rule comparators. Bottom: 24$\to$1~V and 1$\to$46~V transitions and the inductor current on the 1$\to$46~V step against the \SI{23}{A} device limit.}
+\label{fig:switched}
+\end{figure*}
+
+\paragraph{Answer to the comparison question}
+Against the six classical designs the result is unambiguous on the
+specification, and nuanced on individual indices.
+\begin{itemize}
+\item \emph{PI, PID and PIDF} designed by standard frequency-domain rules hold
+  every level but overshoot the 1$\to$46~V step by \SwPIOS--\SwPIDFOS{}\,V and
+  draw about \SwPIIpk{}\,A, i.e.\ 1.8 times the \SI{23}{A} device rating;
+  their specification ratios are \SwPIUtil--\SwPIDFUtil.
+\item \emph{LQR and LQG}, having no integral action, leave offsets of
+  \SwLQREss{} and \SwLQGEss{}\,mV at the worst level.
+\item \emph{LQI}, synthesized from the same Bryson limits and reading the full
+  state, tracks well (IAE \SwLQIIAE{}\,V\,s) but overshoots by \SwLQIOS{}\,V and
+  peaks at \SwLQIIpk{}\,A.
+\item The retained \emph{CMO--LQI--PIDF}, reading $v_o$ only, removes the
+  overshoot, stays at \SwIpk{}\,A, keeps the load deviation at \SwLD{}\,V and
+  converts at \SwEta{}\,\%, against 97.80--\SI{97.97}{\percent} for the six
+  fixed-rule designs. Its IAE, \SwIAE{}\,V\,s, is within 5\,\% of the LQI and 7\,\% of
+  $\xi_0$, whose lower IAE is bought with 8--\SI{9}{V} of overshoot. It misses
+  one of the five mission specifications by \SI{0.6}{mV}: \SwEss{}\,mV of
+  steady error at \SI{1}{V} for a \SI{25}{mV} limit ($u=\SwUtil$).
+\item Its full-state twin \emph{CMO--LQI--SF}, with the same weights and a
+  measured inductor current, meets all five specifications ($u=\SwSFUtil$) with
+  IAE \SwSFIAE{}\,V\,s.
+\end{itemize}
+The procedure is therefore superior to the six classical design rules in the
+sense that matters to an industrial user: every controller it returns, in any of
+the tuned families of Table~\ref{tab:families}, removes the overshoot, stays
+within the device rating and holds the levels, with specification ratios between
+\SwPIdUtil{} and \SwUtil{} against \SwLQIUtil--\SwLQRUtil{} for PI, PID, PIDF,
+LQR, LQG and LQI. It does not dominate every index: the LQI and $\xi_0$ track
+slightly better in IAE, at the cost of 8--\SI{9}{V} of overshoot and
+32--\SI{33}{A} of peak current. The retained CMO--LQI--PIDF and its
+direct-search counterpart are practically the same controller (IAE \SwIAE{}
+and \SwPIDFdIAE{}\,V\,s), and their \SI{1}{V} steady error sits on the \SI{25}{mV} line
+(\SwEss{} and \SwPIDFdEss{}\,mV); this level is the binding one, which the
+switched screen resolves only to within a millivolt because it is a shorter
+transient than the mission.
+
+\paragraph{The value of the current sensor}
+Among the LQI-structured controllers, the full-state twin meets every
+specification and the output-feedback realization misses one by
+\SI{0.6}{mV}. By Proposition~\ref{prop:struct} the two differ only by the term
+$-K_{ix}(i_o-v_o/R)$ of \eqref{eq:gap}, an instantaneous feedback on the
+unmodelled output current. At \SI{1}{V} in discontinuous conduction the
+output-current estimate $v_o/R$ is least accurate relative to the signal, and
+the PIDF must remove the resulting bias through its integrator in the presence
+of a switching limit cycle; the twin removes it directly. The gap between the
+two rows of Table~\ref{tab:switched} is thus the measured dividend of one
+current sensor, predicted in sign and location by the theory. The efficiencies
+of all tuned designs agree within 0.01 percentage point
+(97.978--\SI{97.987}{\percent}), so the conversion loss does not discriminate
+between them; it does separate them from the fixed-rule designs, whose
+overshoots and current peaks cost 0.01--0.18 percentage point.
+
+\subsection{Limitations}
+The evidence is simulated. The switched replica reproduces the controller-independent
+figures of the reference Simulink model and its fixed comparators, but the
+final numbers of Table~\ref{tab:switched} should be regenerated on the
+\texttt{.slx} with the provided S-function before being quoted as Simulink
+results. Losses are the modelled conduction and snubber losses of the declared
+boundary; dynamic switching loss, reverse recovery, magnetic and thermal effects
+are outside it, and the efficiency differences between rows (a few hundredths
+of a percentage point) are far below the accuracy of a laboratory power
+analyser. Component tolerances were not supplied and are not claimed: the
+common-$P$ certificate covers the nominal operating polytope only. The mission
+and the specification are those of a fixed \SI{48}{V} source; line regulation
+is outside the study. Finally, the specification set and the filter discretization were revised
+during pilot campaigns that are reported in Section~\ref{sec:problem} and
+Appendix~\ref{app:changes}; the final
+campaign was run once, with the protocol frozen, and its switched validation
+was not used for selection.

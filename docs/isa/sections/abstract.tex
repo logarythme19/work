@@ -1,0 +1,23 @@
+\begin{abstract}
+Metaheuristic tuning of PID-type controllers for power converters usually
+searches gain spaces that carry no stability guarantee, and its results are
+rarely checked against switching effects. This paper shows that, for a
+non-ideal Buck converter, the linear--quadratic--integral (LQI) law has an
+exact realization as a two-degree-of-freedom PIDF that measures only the output
+voltage. When its derivative pole is placed on the capacitor ESR zero, the
+filter state reconstructs the capacitor voltage along every trajectory. The
+PIDF and the full-state LQI therefore coincide under saturation, anti-windup
+and discontinuous conduction. They differ only through an explicit
+output-current term, output-network mismatch and sampling, and a first-order-hold
+discretization reduces the sampling gap by a factor of about 40. The controller
+is tuned by searching the LQI weights, not the gains, so every candidate is
+LQ-optimal and carries guaranteed margins and a certified pole region. A
+constrained, multi-fidelity search includes short switched-model simulations to
+reject coexisting switching limit cycles that averaged models miss. On a
+\SI{48}{V} converter commanded from 1 to \SI{46}{V}, six metaheuristics converge
+to the same optimum. An unconstrained gain search reaches the same controller,
+but \IOpct\,\% of its feasible solutions are not LQ-optimal. On a switched
+replica of the reference Simulink model, the tuned controller eliminates
+overshoot and respects the device current rating, whereas standard PI, PID,
+PIDF, LQR, LQG and LQI designs exceed the specification by factors of 6 to 30.
+\end{abstract}

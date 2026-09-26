@@ -1,0 +1,50 @@
+Table~\ref{tab:families} and Fig.~\ref{fig:campaign}(b) compare six families
+run under the identical protocol, so that the only difference between two rows
+is the space in which the seven algorithms search.
+
+\paragraph{Same structure, different coordinates} PIDF-direct searches the
+same 2-DOF PIDF ($b=1$, $c=0$, $N=N_C$) directly in
+$(\log K_p,\log K_i,\log K_d,\log K_b)$ over the gain ranges spanned by the LQI
+box. It reaches the same optimum (best $J_s=\BestPIDF$ against \CMObest{}) with
+a similar number of feasible runs (\FeasPIDF{} against \CMOfeas{} of 180), and
+the paired comparison on the same (algorithm, seed) cells is not significant
+($p=\AbPIDFp$). The LQI coordinates therefore do not make the search easier
+on this problem. What they change is what every candidate is. Inverting the map
+\eqref{eq:map} and applying Kalman's return-difference condition shows that the
+best direct-search design is itself LQ-optimal, $K=\IObestK$ with
+$\min_\omega|1+L_K(j\omega)|=1$, i.e.\ the gain search converges onto the LQ
+manifold; yet only \IOk{} of its \IOn{} feasible designs satisfy the condition,
+so \IOpct\,\% of the controllers an equally lucky gain search may return carry
+no LQ optimality, no guaranteed margins and no reason to be certifiable. The
+LQI parameterization confines the search to that manifold from the first
+evaluation, at no cost in optimality.
+
+\paragraph{Richer and poorer structures} PID-direct (backward-difference
+derivative) reaches best $J_s=\BestPID$ in \FeasPID{} feasible runs and is not
+significantly different from CMO--LQI--PIDF ($p=\AbPIDp$). PIDF7-direct, with
+free filter pole and setpoint weights, finds more feasible runs (\FeasPIDFs)
+but a worse optimum (\BestPIDFs), with $N=\PIDFsN$\,rad/s, $b=\PIDFsb$ and
+$c=\PIDFsc$; on the switched mission this design holds the \SI{1}{V} level
+with \SwPIDFsEss{}\,mV of error and IAE \SwPIDFsIAE{}\,V\,s, i.e.\ the extra
+freedom buys switched robustness at the price of the averaged objective. PI-direct never becomes feasible (minimum
+violation \ViolPI{}): a PI cannot meet the overshoot, load-deviation and
+current specifications of the six scenarios at once, and the paired comparison
+is decisive ($p=\AbPIp$).
+
+\paragraph{The full-state twin} CMO--LQI--SF uses the same four variables but
+applies the gain as a measured-state LQI. It is feasible more often
+(\FeasSF{} runs) but at a worse averaged optimum (\BestSF) than its
+output-feedback realization ($p=\AbSFp$ in favour of the PIDF on the averaged
+objective). On the switched mission the ordering reverses
+(Section~\ref{sec:res:switched}): the twin is the more robust controller at the
+\SI{1}{V} level, which is the switched counterpart of the output-current term
+of \eqref{eq:gap}.
+
+\paragraph{What the protocol, rather than the parameterization, buys}
+Every family tuned under the constrained multi-fidelity protocol ends close to
+full compliance on the reference mission (Table~\ref{tab:switched}: $u$ between
+\SwPIdUtil{} and \SwUtil{}; the lowest value belongs to a slow PI whose IAE,
+\SwPIdIAE{}\,V\,s, is 2.6 times that of the others), whereas the six fixed-rule designs lie between
+\SwLQIUtil{} and \SwLQRUtil{}. The decisive ingredients are the
+engineering-unit specification and the switched transition screen; the choice
+of search coordinates decides the guarantees that come with the result.

@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{CMO--LQI--PIDF family: 30 matched seeds per algorithm (Algorithms 1--6, each followed by refineBO). $J_s$ statistics over feasible runs; ``global counts runs already feasible after the 240 global calls.}
+\label{tab:algores}
+\footnotesize
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Algorithm & feasible & global & best $J_s$ & median & IQR & mean rank\\
+\midrule
+PSO & 18/30 & 18/30 & 0.8152 & 0.8283 & 0.0208 & 3.77\\
+GA & 13/30 & 13/30 & 0.8151 & 0.8330 & 0.0190 & 4.23\\
+ABC & 17/30 & 8/30 & 0.8152 & 0.8163 & 0.0162 & 3.77\\
+pAEABC & 25/30 & 18/30 & 0.8151 & 0.8161 & 0.0177 & 2.77\\
+pIGWO & 28/30 & 27/30 & 0.8153 & 0.8308 & 0.0205 & 3.10\\
+pIGWO-DLH & 23/30 & 18/30 & 0.8152 & 0.8291 & 0.0256 & 3.37\\
+\bottomrule
+\end{tabular}}
+\end{table}
