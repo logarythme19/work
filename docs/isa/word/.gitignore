@@ -1,0 +1,6 @@
+render/
+flat.tex
+reference.docx
+*.aux
+*.log
+fig_workflow_standalone.pdf

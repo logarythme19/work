@@ -1,0 +1,368 @@
+\section{Introduction}\label{sec:intro}
+
+Most DC--DC converters in industrial equipment are still closed by a PID-type
+loop. The reason is practical: a PID block is available in every digital
+controller, technicians know how to read its three gains, and it needs a single
+voltage sensor. Model-based laws such as the linear--quadratic regulator are
+better understood mathematically, but they ask for more sensors and their
+tuning knobs, the weights of a quadratic cost, have no obvious meaning on the
+shop floor. ISA Transactions addresses the engineering of measurement and
+automation for practitioners and applied researchers, and this gap between
+what theory certifies and what industry implements is the subject of this
+paper. We study one converter in detail, a non-ideal asynchronous Buck stage fed
+from \SI{48}{V} and commanded from \SI{1}{V} to \SI{46}{V}, and ask a precise
+question: can a controller be tuned in the coordinates of optimal control and
+still be delivered to the plant as an ordinary PID with a derivative filter,
+without losing the optimality certificate on the way?
+
+The answer turns out to be yes, and exactly so, under conditions that we state
+and test. The rest of this section reviews how PID-type and linear--quadratic
+controllers reached their present form and why the non-ideal Buck is a
+demanding test case. It then states three research gaps, each paired with the
+design choice it motivates (the PID equivalent, the CMO--LQI formulation, the
+metaheuristics and refineBO), followed by the working assumptions, the
+difficulties and the contributions.
+
+\subsection{Literature review}\label{sec:lit}
+
+\subsubsection{From the three-term controller to the 2-DOF PIDF}
+The three-term law was first analysed by \citet{Minorsky1922} for the automatic
+steering of ships, and the rules published by \citet{Ziegler1942} made it an
+industrial standard. On a Buck converter the reason for each term is easy to
+see. With proportional action alone the output settles below its reference
+whenever the load draws current, because only a standing error can pull the
+duty ratio away from its feedforward value. Integral action removes that
+offset, which gives the PI controller. The output filter, however, is lightly
+damped (in our model $\zeta\approx0.14$ at \SI{24}{V}), and a PI has no phase
+lead to offer it; the derivative term supplies that lead and turns the PI into
+a PID \citep{Astrom2006}. An ideal derivative cannot be built, and on a
+converter it would also amplify the switching ripple riding on the measured
+voltage. Industrial controllers and the Simulink PID block therefore filter it
+with a first-order pole $N$, and the PID becomes a PIDF
+\citep{Ang2005,Astrom2006}.
+
+The PIDF still uses one error signal for two different jobs. The gains that
+make it recover quickly from a load step act in the same way on every change
+of reference, so a loop tuned for load rejection tends to overshoot on a large
+setpoint step, such as the \SI{1}{}$\to$\SI{46}{V} step of our mission.
+Setpoint weighting decouples the two. The proportional and derivative terms act
+on $b\,r-y$ and $c\,r-y$ instead of $r-y$, while the integral keeps acting on the
+true error, so the steady state does not change \citep{Astrom2006,Astrom2001};
+\citet{Bianchi2008} extended the idea to multivariable PID loops. The general
+principle goes back to \citet{Horowitz1963}: one path of the controller is
+designed for robustness and disturbance rejection, and a second path, driven by
+the reference alone, shapes the command response. Setpoint weighting is the
+simplest instance of this two-degree-of-freedom (2-DOF) structure. Adding $N$,
+$b$ and $c$ to the three gains gives a law with six parameters,
+$(K_p,K_i,K_d,N,b,c)$, which is as far as a standard PID block goes; we take it
+as the end point of the upper branch of Fig.~\ref{fig:evolution}. Surveys of
+PID practice document both the dominance of this family in industrial loops and
+the very large number of tuning methods proposed for it, a sign that tuning,
+more than structure, is where the difficulty lies \citep{Astrom2001,Ang2005}.
+
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/fig_evolution}}
+\caption{Evolution of the two controller families used in this paper. Upper
+branch: output-feedback PID-type laws, from the proportional controller to the
+2-DOF PIDF. Lower branch: linear--quadratic state feedback, from LQR to LQI and
+to the constrained weight tuning (CMO--LQI) proposed here. The two branches meet
+through the exact realization of Propositions~\ref{prop:map} and
+\ref{prop:struct}.}
+\label{fig:evolution}
+\end{figure*}
+
+\subsubsection{From LQR to LQI}
+The lower branch of Fig.~\ref{fig:evolution} starts with \citet{Kalman1960},
+who posed the regulation of a linear system as the minimization of a quadratic
+cost and showed that its solution is a constant state feedback computed from a
+Riccati equation. The LQR comes with a certificate that no PID tuning rule
+offers: for a single input, the return difference satisfies $|1+L(j\omega)|\ge1$,
+which gives an infinite upward gain margin, a gain reduction margin of one half
+and at least \SI{60}{\degree} of phase margin \citep{Kalman1964,Safonov1977,Anderson1990}.
+
+The certificate assumes that every state is measured. When the states are
+estimated by a Kalman filter, the controller becomes the LQG law
+\citep{Athans1971}, and \citet{Doyle1978} showed with a counter-example that
+LQG loops can have arbitrarily small margins; loop-transfer recovery restores
+them only at the cost of observer bandwidth \citep{Doyle1979}. The second
+limitation of the LQR is that a proportional state feedback does not remove the
+steady error caused by a constant load or by a model error. The servomechanism
+theory of \citet{Young1972} and \citet{Davison1976}, grounded on the internal
+model principle of \citet{Francis1976}, solves this by adding the integral of
+the tracking error to the state vector and solving the LQR for the augmented
+plant. This linear--quadratic--integral (LQI) law is what the rest of the paper
+uses.
+
+Several variants of the LQI have been applied to converters. The weights have
+been chosen by Bryson's rule \citep{Bryson1975}, by hand, or by an optimizer;
+robust versions replace the Riccati equation by linear matrix inequalities that
+hold over a polytope of operating points \citep{Olalla2009}, and closed-loop
+poles can be confined to a prescribed region by the same means
+\citep{Chilali1996};
+early work already cast converter regulation as a general LQR problem
+\citep{Leung1991}. Saturation of the duty ratio requires an anti-windup
+mechanism, for which \citet{Kothare1994} gave a unified framework and
+back-calculation remains the usual industrial choice \citep{Astrom1989}.
+Other families exist and are strong on converters, for instance sliding-mode
+control \citep{Tan2008}, hybrid model predictive control
+\citep{Geyer2008,Liu2018}, and observer-based or intelligent nonlinear laws
+\citep{Abdelmalek2020,Sitbon2020,Bouchama2020}, but they give up either the fixed switching
+frequency or the low-order linear structure that a PID block can host. The LQI
+is chosen here for three reasons that are specific to the Buck: the averaged
+plant is second order, so the augmented state has dimension three and the
+Riccati solution is cheap enough to be computed inside an optimizer; the
+integral state gives zero steady error across a range in which the equilibrium
+duty moves from 0.03 to 0.97; and, as shown in Section~\ref{sec:theory}, the
+capacitor ESR places a zero in the output equation that makes the LQI exactly
+realizable from the output voltage.
+
+\subsubsection{Why a non-ideal Buck converter}
+The Buck converter is often used as a benchmark because its ideal averaged
+model is linear in the states and bilinear in the duty ratio
+\citep{Middlebrook1976,Erickson2020}. For the question asked here the ideal
+model is not enough. The ESR $r_C$ creates the output-network zero on which the
+exact equivalence rests, so it cannot be dropped. The other parasitic elements
+matter for the operating point. Each volt lost in $r_L$, $R_{on}$, $r_d$ or across
+the diode threshold $V_f$ has to be made up by a larger duty ratio, and at a
+\SI{1}{V} output these drops are no longer small compared with the output
+itself: our model gives an efficiency of about \SI{61}{\percent} there, so
+nearly \SI{40}{\percent} of the input power ends up in these elements
+\citep{Kazimierczuk2015,Siddhartha2018}. The freewheeling diode adds a second
+effect. It blocks reverse current, so at light load or during a deep
+step-down the inductor current falls to zero inside the switching period and
+the converter enters discontinuous conduction, where the small-signal model
+loses one order \citep{Sun2001}. Our \SI{1}{V} operating point sits only
+\SI{3}{\percent} above the conduction boundary at the nominal load and spends
+\DCMone{} of its steady-state time in discontinuous conduction. Averaging itself
+is an approximation whose validity depends on the ripple and the switching
+frequency \citep{Krein1990,Maksimovic2001}, and in digital loops the sampled
+ripple and the duty resolution can sustain limit cycles that no averaged model
+predicts \citep{Peterchev2003,Peng2007,Buso2015}. A wide-range, non-ideal Buck
+therefore combines saturation, a mode change and switching nonlinearities in a
+plant that is still simple enough to analyse in closed form, which makes it a
+fair test of any claim of equivalence.
+
+\subsection{Research gap and motivation}\label{sec:gap}
+The review leaves three gaps open. Each one motivates a design choice of this
+paper, and we state them in pairs.
+
+\subsubsection{Gap 1: the LQI--PID link is known only in nominal form}
+The link between the LQI of a Buck converter and a filtered PID is known as a
+transfer-function identity at one operating point. Whether it survives duty
+saturation, anti-windup, discontinuous conduction and parameter mismatch has
+not been shown, yet these are exactly the conditions a converter meets across a
+wide range. Without that result, a PID tuned from an LQI is only an
+approximation of it, and the LQ margins do not carry over.
+
+\subsubsection{Motivation 1: why a PID equivalent, and why the 2-DOF PIDF}
+If the LQI is better founded, one may ask why it should be turned into a PID at
+all. There are three reasons. The LQI needs the inductor current, hence a
+current sensor with its own bandwidth, cost and noise, whereas the output
+voltage is measured on every converter. Commissioning engineers can inspect,
+bound and retune three gains, and the PID block comes with validated
+anti-windup and bumpless transfer \citep{Astrom2006}. And tuning a PID directly
+in gain space, by rules or by an optimizer, gives no stability or robustness
+guarantee for the point it returns \citep{Ang2005}. An exact map from the LQI to
+a PID-type law removes that last objection: every candidate of a search becomes
+a controller that has the LQR margins and still runs on a standard block.
+
+The map needs the extra parameters of the 2-DOF PIDF. The LQI feeds back the
+capacitor voltage and the inductor current; replacing them by the measured
+output requires a filtered derivative whose pole sits on the ESR zero, and that
+pole is the $N$ of the PIDF. The LQI also sees the reference only through its
+integral state, so the equivalent PIDF must have $b=1$ and $c=0$. Without
+setpoint weights a PIDF can match the disturbance response of the LQI but not
+its command response (Proposition~\ref{prop:map}). A PI or a PID lacks the
+parameters for either condition, which is why they appear here only as
+comparators. Table~\ref{tab:ctrl} lists all the controllers of the study.
+
+\begin{table*}[t]
+\centering
+\caption{Controllers used in this study.}
+\label{tab:ctrl}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Controller & Measured signals & Tuning parameters & Certificate & Role here & Key references\\
+\midrule
+PI & $v_o$ & $K_p,K_i$ & none & comparator & \citet{Ziegler1942}\\
+PID & $v_o$ & $K_p,K_i,K_d$ & none & comparator & \citet{Astrom2006}\\
+PIDF & $v_o$ & $K_p,K_i,K_d,N$ & none & comparator & \citet{Ang2005}\\
+2-DOF PIDF & $v_o$ & $K_p,K_i,K_d,N,b,c$ & none if tuned directly & realization of the proposal & \citet{Horowitz1963}\\
+LQR & $i_L,v_o$ & $Q,R$ & LQ margins & comparator & \citet{Kalman1960}\\
+LQG & $v_o$ (+ observer) & $Q,R$, noise covariances & none & comparator & \citet{Athans1971}\\
+LQI & $i_L,v_o$ & $Q,R$ & LQ margins, zero steady error & comparator & \citet{Young1972}\\
+CMO--LQI--PIDF & $v_o$ & 4 log-excursions & LQ margins, D-region & proposal & this work\\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\subsubsection{Gap 2: metaheuristics tune gains, not specifications}
+Metaheuristic tuning of converter controllers searches gain spaces
+\citep{Izci2022,Nanyan2024,Siano2014,ValenciaRivera2024}. A good result
+therefore carries no guarantee, the size of the search box is a guess, and the
+objective is usually a tracking index rather than the list of limits a
+specification actually contains. Searching the LQI weights instead has not been
+compared with a direct gain search under the same budget.
+
+\subsubsection{Motivation 2: CMO--LQI, constrained multi-criteria optimization of the LQI weights}
+Bryson's rule gives a sensible starting point, but its weights are not optimal
+with respect to overshoot, device current or loss. We call CMO--LQI
+(constrained multi-criteria optimization of the LQI) the problem of choosing the
+weights so that the resulting LQI, realized as a 2-DOF PIDF, minimizes an
+aggregate of seven performance criteria over six scenarios under hard
+engineering constraints. \emph{Multi-criteria} is meant literally, not in the
+Pareto sense: the criteria are normalized and averaged into one scalar, and the
+constraints are handled by feasibility rules \citep{Deb2000}. A weighted scalar
+index does not describe a trade-off front \citep{RodriguezMolina2020}, and we do
+not claim one. The search variables are the logarithms of the Bryson excursions
+and of the integral bandwidth, four numbers with a physical scale, rather than
+the PIDF gains.
+
+\subsubsection{Gap 3: candidates are accepted on the model that selected them}
+Most tuning studies accept a candidate on the averaged model that drives the
+search. In an earlier version of the present protocol, four of six winners
+accepted in this way failed on the switched model, because of switching limit
+cycles that the averaged model cannot represent. The same studies often
+introduce a new operator without a matched comparison against existing ones,
+so it is hard to tell whether a result comes from the algorithm or from the
+problem.
+
+\subsubsection{Motivation 3: why metaheuristics, and why refineBO}
+The CMO--LQI problem has only four variables, but its objective and its
+constraints come from simulations with saturation, mode changes and switching,
+so no gradient is available and the feasible set may be disconnected.
+Population-based metaheuristics are the usual tool for such black-box problems.
+Two results from the optimization literature shape the way we use them. The
+no-free-lunch theorems state that no algorithm dominates on all problems
+\citep{Wolpert1997}, and metaphor-based variants are often published without
+evidence that they differ from existing methods \citep{Sorensen2015}. We
+therefore do not propose a new metaheuristic. We take three classical operators
+with well-documented behaviour, particle swarm optimization
+\citep{Kennedy1995,Poli2007}, the genetic algorithm \citep{Holland1975} and the
+artificial bee colony \citep{Karaboga2007,Karaboga2008}, and three recent
+variants built on the grey wolf optimizer and on an adaptive bee colony
+\citep{Mirjalili2014,NadimiShahraki2021,Hou2022,Alsamia2024}, and ask whether the
+answer depends on the operator. Constraints are handled by Deb's feasibility
+ordering, which avoids penalty factors \citep{Deb2000,MezuraMontes2011}; the
+runs are compared on matched seeds with non-parametric tests
+\citep{Derrac2011,Demsar2006}; and three of the 33 constraints are measured on
+a short switched simulation inside every evaluation, which answers the
+acceptance problem of Gap 3.
+
+A global operator spends most of its budget exploring. Once a promising region
+is found, a local model-based stage is more economical, which is the idea of
+memetic and hybrid schemes \citep{Neri2012}. For expensive black-box functions,
+Bayesian optimization fits a Gaussian-process surrogate to the evaluated points
+and chooses the next one by maximizing an acquisition function such as the
+expected improvement \citep{Jones1998,Rasmussen2006,Snoek2012,Shahriari2016}. Unknown
+constraints are handled by multiplying the acquisition by the modelled
+probability of feasibility \citep{Gardner2014}, and a trust region keeps the
+surrogate local and reliable \citep{Eriksson2019}. Bayesian optimization has
+already been used to tune industrial controllers \citep{NeumannBrosig2020} and
+digital PID loops \citep{Coutinho2023}. The refineBO stage used here combines
+these three elements: it starts from the history of each global run, models the
+objective and all 33 constraints with Gaussian processes, and searches a
+shrinking region around the best feasible records.
+
+Table~\ref{tab:gap} positions the work against representative Buck control and
+tuning studies. The motivation, in short, is to close the three gaps on a plant
+that is fully specified, so that every number in the paper can be recomputed.
+
+\begin{table*}[t]
+\centering
+\caption{Positioning with respect to representative Buck control and tuning studies. ``Not reported'' refers to the stated scope of each work only.}
+\label{tab:gap}
+\footnotesize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{3.0cm}p{3.3cm}p{3.6cm}p{6.4cm}@{}}
+\toprule
+Study & Plant evidence & Controller / search & Relative to the present question\\
+\midrule
+\citet{Siddhartha2018} & non-ideal Buck, dSPACE & IMC-PID, direct & no repeated solver comparison, no switched energy audit\\
+\citet{Izci2022} & averaged Buck & PID, AEO + Nelder--Mead & gain-space search, no structural certificate, no switched admissibility\\
+\citet{Nanyan2024} & averaged Buck & PID, improved SCA & gain-space search, single fidelity\\
+\citet{Siano2014} & Buck prototype & fuzzy, MO-PSO & no equal-budget solver comparison\\
+\citet{Abdelmalek2020} & Buck, experimental & observer-based nonlinear, PSO & tracking/robustness focus, not a matched co-design\\
+\citet{Olalla2009} & PWM converters, polytopic model & robust LQR & polytopic certificate, no PID realization, no search over weights\\
+\citet{Coutinho2023} & multiloop process & PID, Bayesian optimization & not a power converter\\
+Present work & audited non-ideal Buck, 1--46 V, switched replica with energy balance & LQI weights $\to$ exact 2-DOF PIDF; 6 global operators + refineBO; 6 families & structural equivalence theorem; 33 inequalities (3 measured on the switched model); switched validation vs.\ PI, PID, PIDF, LQR, LQG, LQI\\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\subsection{Assumptions}\label{sec:assump}
+The analysis rests on the following assumptions, each of which is tested or
+bounded later in the paper.
+\begin{itemize}
+\item The input voltage is constant, $V_{in}=\SI{48}{V}$; line regulation is not
+  part of the specification.
+\item The output network $(R,r_C,C)$ is known at design time. Load steps are
+  treated as unmeasured disturbances, and the error they cause in the
+  equivalence is given in closed form.
+\item The PIDF measures the output voltage only. The inductor current is
+  measured only by the full-state comparators and by the state-feedback twin of
+  the proposal.
+\item Control is sampled synchronously with the \SI{50}{kHz} carrier, with a
+  one-sample computational delay; ADC quantization and the finite resolution of
+  the PWM are not modelled.
+\item Losses are the conduction and snubber losses of the declared model
+  boundary; switching, reverse-recovery, magnetic and thermal losses are
+  outside it.
+\item Component tolerances were not supplied. Robustness claims are made on
+  the nominal operating polytope only.
+\end{itemize}
+
+\subsection{Challenges}\label{sec:challenges}
+Three difficulties had to be solved. The first is theoretical: showing that
+the equivalence holds along trajectories, not only in the frequency domain,
+and identifying exactly which disturbances break it. The second is numerical.
+A zero-order-hold discretization of the derivative filter, the usual choice,
+introduces a lag that separates the sampled PIDF from the sampled LQI by about
+\EqSampZOH{} during a wide slew, so the discretization had to be derived from
+the observer interpretation of the filter. The third concerns the search. The
+feasible set is defined by 33 inequalities, three of which depend on switching
+phenomena; checking them on the switched model is expensive, while ignoring
+them lets through candidates that are unacceptable on the real power stage.
+The screen had to be short enough to run inside every evaluation and long
+enough to excite the coexisting limit cycles.
+
+\subsection{Contributions}\label{sec:contrib}
+The contributions of the paper are the following.
+\begin{enumerate}
+\item A formula-first chain from the non-ideal converter equations to the
+  exact output-feedback realization of any LQI law as a 2-DOF PIDF, with every
+  analytical quantity (equilibria, transfer functions, Riccati gain, LQR
+  margins, a common D-region certificate over the operating polytope)
+  instantiated and independently recomputed.
+\item A structural equivalence theorem (Proposition~\ref{prop:struct}): the
+  PIDF filter state equals the capacitor voltage along every trajectory. Its
+  domain of validity is stated, the gap to the full-state law is given in
+  closed form, and a first-order-hold discretization reduces the sampled gap
+  from \EqSampZOH{} to \EqSampFOH{}.
+\item A constrained multi-criteria formulation (CMO--LQI) in the space of LQI
+  weights, with 33 inequalities in engineering units, three of which are
+  measured on the switched model during the search, together with the evidence
+  from two pilots of why an analytical ripple bound or a steady switched screen
+  is not sufficient.
+\item A matched, equal-budget comparison of seven algorithms (six global
+  operators followed by refineBO) across six controller families. It shows that
+  the LQI coordinates do not speed up the search but confine it, at no cost in
+  optimality, to the LQ-optimal set on which the gain-space optimum also lies.
+\item A switched-model validation on the \SI{24}{}$\to$\SI{1}{}$\to$\SI{46}{V}
+  mission against PI, PID, PIDF, LQR, LQG and LQI, reported specification by
+  specification.
+\end{enumerate}
+
+\subsection{Paper organization}\label{sec:org}
+Section~\ref{sec:model} derives the non-ideal model and describes the switched
+replica of the reference Simulink model. Section~\ref{sec:theory} states the
+LQI synthesis and proves the nominal and structural equivalences.
+Section~\ref{sec:problem} defines the CMO--LQI problem and the seven algorithms.
+Section~\ref{sec:results} reports the verification of the equivalence, the
+algorithm and family comparisons, and the switched validation, and discusses
+the limitations. Section~\ref{sec:concl} concludes. The code, including a MATLAB
+S-function that runs the same control layer inside the reference Simulink
+model, is released with the paper.

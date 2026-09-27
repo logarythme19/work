@@ -1,0 +1,1172 @@
+TY  - JOUR
+AU  - Abdelmalek, S.
+AU  - Dali, A.
+AU  - Bakdi, A.
+AU  - Bettayeb, M.
+TI  - Design and experimental implementation of a new robust observer-based nonlinear controller for DC–DC buck converters
+T2  - Energy
+JO  - Energy
+PY  - 2020
+DA  - 2020
+VL  - 213
+SP  - 118816
+DO  - 10.1016/j.energy.2020.118816
+UR  - https://doi.org/10.1016/j.energy.2020.118816
+ID  - Abdelmalek2020
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Alsamia, S.
+AU  - Koch, E.
+AU  - Albedran, H.
+AU  - Ray, R.
+TI  - Adaptive exploration artificial bee colony for mathematical optimization
+T2  - AI
+JO  - AI
+PY  - 2024
+DA  - 2024
+VL  - 5
+SP  - 2218
+EP  - 2236
+DO  - 10.3390/ai5040109
+UR  - https://doi.org/10.3390/ai5040109
+ID  - Alsamia2024
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Anderson, B. D. O.
+AU  - Moore, J. B.
+TI  - Optimal Control: Linear Quadratic Methods
+PY  - 1990
+DA  - 1990
+PB  - Prentice Hall
+CY  - Englewood Cliffs, NJ
+ID  - Anderson1990
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Åström, K. J.
+AU  - Rundqwist, L.
+TI  - Integrator windup and how to avoid it
+T2  - 1989 American Control Conference
+PY  - 1989
+DA  - 1989
+SP  - 1693
+EP  - 1698
+DO  - 10.23919/ACC.1989.4790464
+UR  - https://doi.org/10.23919/ACC.1989.4790464
+ID  - Astrom1989
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Åström, K. J.
+AU  - Hägglund, T.
+TI  - Advanced PID Control
+PY  - 2006
+DA  - 2006
+PB  - ISA – The Instrumentation, Systems, and Automation Society
+CY  - Research Triangle Park, NC
+ID  - Astrom2006
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Bianchi, F. D.
+AU  - Mantz, R. J.
+AU  - Christiansen, C. F.
+TI  - Multivariable PID control with set-point weighting via BMI optimisation
+T2  - Automatica
+JO  - Automatica
+PY  - 2008
+DA  - 2008
+VL  - 44
+SP  - 472
+EP  - 478
+DO  - 10.1016/j.automatica.2007.05.021
+UR  - https://doi.org/10.1016/j.automatica.2007.05.021
+ID  - Bianchi2008
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Bouchama, Z.
+AU  - Khatir, A.
+AU  - Benaggoune, S.
+AU  - Harmas, M. N.
+TI  - Design and experimental validation of an intelligent controller for DC–DC buck converters
+T2  - Journal of the Franklin Institute
+JO  - Journal of the Franklin Institute
+PY  - 2020
+DA  - 2020
+VL  - 357
+SP  - 10353
+EP  - 10366
+DO  - 10.1016/j.jfranklin.2020.08.011
+UR  - https://doi.org/10.1016/j.jfranklin.2020.08.011
+ID  - Bouchama2020
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Bryson, A. E.
+AU  - Ho, Y.-C.
+TI  - Applied Optimal Control: Optimization, Estimation, and Control
+PY  - 1975
+DA  - 1975
+PB  - Hemisphere
+CY  - Washington, DC
+ID  - Bryson1975
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Chilali, M.
+AU  - Gahinet, P.
+TI  - H∞ design with pole placement constraints: An LMI approach
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1996
+DA  - 1996
+VL  - 41
+SP  - 358
+EP  - 367
+DO  - 10.1109/9.486637
+UR  - https://doi.org/10.1109/9.486637
+ID  - Chilali1996
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Coutinho, J. P. L.
+AU  - Santos, L. O.
+AU  - Reis, M. S.
+TI  - Bayesian optimization for automatic tuning of digital multi-loop PID controllers
+T2  - Computers & Chemical Engineering
+JO  - Computers & Chemical Engineering
+PY  - 2023
+DA  - 2023
+VL  - 173
+SP  - 108211
+DO  - 10.1016/j.compchemeng.2023.108211
+UR  - https://doi.org/10.1016/j.compchemeng.2023.108211
+ID  - Coutinho2023
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Deb, K.
+TI  - An efficient constraint handling method for genetic algorithms
+T2  - Computer Methods in Applied Mechanics and Engineering
+JO  - Computer Methods in Applied Mechanics and Engineering
+PY  - 2000
+DA  - 2000
+VL  - 186
+SP  - 311
+EP  - 338
+DO  - 10.1016/S0045-7825(99)00389-8
+UR  - https://doi.org/10.1016/S0045-7825(99)00389-8
+ID  - Deb2000
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Demšar, J.
+TI  - Statistical comparisons of classifiers over multiple data sets
+T2  - Journal of Machine Learning Research
+JO  - Journal of Machine Learning Research
+PY  - 2006
+DA  - 2006
+VL  - 7
+SP  - 1
+EP  - 30
+UR  - https://www.jmlr.org/papers/v7/demsar06a.html
+ID  - Demsar2006
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Doyle, J. C.
+TI  - Guaranteed margins for LQG regulators
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1978
+DA  - 1978
+VL  - 23
+SP  - 756
+EP  - 757
+DO  - 10.1109/TAC.1978.1101812
+UR  - https://doi.org/10.1109/TAC.1978.1101812
+ID  - Doyle1978
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Doyle, J. C.
+AU  - Stein, G.
+TI  - Robustness with observers
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1979
+DA  - 1979
+VL  - 24
+SP  - 607
+EP  - 611
+DO  - 10.1109/TAC.1979.1102095
+UR  - https://doi.org/10.1109/TAC.1979.1102095
+ID  - Doyle1979
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Erickson, R. W.
+AU  - Maksimović, D.
+TI  - Fundamentals of Power Electronics
+PY  - 2020
+DA  - 2020
+PB  - Springer
+ET  - 3
+DO  - 10.1007/978-3-030-43881-4
+UR  - https://doi.org/10.1007/978-3-030-43881-4
+ID  - Erickson2020
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Hou, Y.
+AU  - Gao, H.
+AU  - Wang, Z.
+AU  - Du, C.
+TI  - Improved grey wolf optimization algorithm and application
+T2  - Sensors
+JO  - Sensors
+PY  - 2022
+DA  - 2022
+VL  - 22
+SP  - 3810
+DO  - 10.3390/s22103810
+UR  - https://doi.org/10.3390/s22103810
+ID  - Hou2022
+LA  - en
+ER  - 
+
+TY  - ELEC
+AU  - Infineon Technologies AG,
+TI  - IRF540NPbF data sheet
+PY  - 2026
+DA  - 2026
+UR  - https://www.infineon.com/assets/row/public/documents/24/49/infineon-irf540n-datasheet-en.pdf
+N1  - Revision 2.1
+M3  - Data sheet
+ID  - Infineon2026
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Izci, D.
+AU  - Ekinci, S.
+AU  - Hekimoğlu, B.
+TI  - A new artificial ecosystem-based optimization integrated with Nelder–Mead method for PID controller design of buck converter
+T2  - Alexandria Engineering Journal
+JO  - Alexandria Engineering Journal
+PY  - 2022
+DA  - 2022
+VL  - 61
+SP  - 2030
+EP  - 2044
+DO  - 10.1016/j.aej.2021.07.037
+UR  - https://doi.org/10.1016/j.aej.2021.07.037
+ID  - Izci2022
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Kalman, R. E.
+TI  - When is a linear control system optimal?
+T2  - Journal of Basic Engineering
+JO  - Journal of Basic Engineering
+PY  - 1964
+DA  - 1964
+VL  - 86
+SP  - 51
+EP  - 60
+DO  - 10.1115/1.3653115
+UR  - https://doi.org/10.1115/1.3653115
+ID  - Kalman1964
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Karaboga, D.
+AU  - Basturk, B.
+TI  - On the performance of artificial bee colony (ABC) algorithm
+T2  - Applied Soft Computing
+JO  - Applied Soft Computing
+PY  - 2008
+DA  - 2008
+VL  - 8
+SP  - 687
+EP  - 697
+DO  - 10.1016/j.asoc.2007.05.007
+UR  - https://doi.org/10.1016/j.asoc.2007.05.007
+ID  - Karaboga2008
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Kennedy, J.
+AU  - Eberhart, R.
+TI  - Particle swarm optimization
+T2  - Proceedings of ICNN'95 – International Conference on Neural Networks
+PY  - 1995
+DA  - 1995
+SP  - 1942
+EP  - 1948
+DO  - 10.1109/ICNN.1995.488968
+UR  - https://doi.org/10.1109/ICNN.1995.488968
+ID  - Kennedy1995
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Liu, Z.
+AU  - Xie, L.
+AU  - Bemporad, A.
+AU  - Lu, S.
+TI  - Fast linear parameter varying model predictive control of buck DC–DC converters based on FPGA
+T2  - IEEE Access
+JO  - IEEE Access
+PY  - 2018
+DA  - 2018
+VL  - 6
+SP  - 52434
+EP  - 52446
+DO  - 10.1109/ACCESS.2018.2869043
+UR  - https://doi.org/10.1109/ACCESS.2018.2869043
+ID  - Liu2018
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Middlebrook, R. D.
+AU  - Ćuk, S.
+TI  - A general unified approach to modelling switching-converter power stages
+T2  - 1976 IEEE Power Electronics Specialists Conference
+PY  - 1976
+DA  - 1976
+SP  - 18
+EP  - 34
+DO  - 10.1109/PESC.1976.7072895
+UR  - https://doi.org/10.1109/PESC.1976.7072895
+ID  - Middlebrook1976
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Mirjalili, S.
+AU  - Mirjalili, S. M.
+AU  - Lewis, A.
+TI  - Grey wolf optimizer
+T2  - Advances in Engineering Software
+JO  - Advances in Engineering Software
+PY  - 2014
+DA  - 2014
+VL  - 69
+SP  - 46
+EP  - 61
+DO  - 10.1016/j.advengsoft.2013.12.007
+UR  - https://doi.org/10.1016/j.advengsoft.2013.12.007
+ID  - Mirjalili2014
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Nadimi-Shahraki, M. H.
+AU  - Taghian, S.
+AU  - Mirjalili, S.
+TI  - An improved grey wolf optimizer for solving engineering problems
+T2  - Expert Systems with Applications
+JO  - Expert Systems with Applications
+PY  - 2021
+DA  - 2021
+VL  - 166
+SP  - 113917
+DO  - 10.1016/j.eswa.2020.113917
+UR  - https://doi.org/10.1016/j.eswa.2020.113917
+ID  - NadimiShahraki2021
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Nanyan, N. F.
+AU  - Ahmad, M. A.
+AU  - Hekimoğlu, B.
+TI  - Optimal PID controller for the DC–DC buck converter using the improved sine cosine algorithm
+T2  - Results in Control and Optimization
+JO  - Results in Control and Optimization
+PY  - 2024
+DA  - 2024
+VL  - 14
+SP  - 100352
+DO  - 10.1016/j.rico.2023.100352
+UR  - https://doi.org/10.1016/j.rico.2023.100352
+ID  - Nanyan2024
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Peterchev, A. V.
+AU  - Sanders, S. R.
+TI  - Quantization resolution and limit cycling in digitally controlled PWM converters
+T2  - IEEE Transactions on Power Electronics
+JO  - IEEE Transactions on Power Electronics
+PY  - 2003
+DA  - 2003
+VL  - 18
+IS  - 1
+SP  - 301
+EP  - 308
+DO  - 10.1109/TPEL.2002.807092
+UR  - https://doi.org/10.1109/TPEL.2002.807092
+ID  - Peterchev2003
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Rodríguez-Molina, A.
+AU  - Mezura-Montes, E.
+AU  - Villarreal-Cervantes, M. G.
+AU  - Aldape-Pérez, M.
+TI  - Multi-objective meta-heuristic optimization in intelligent control: A survey on the controller tuning problem
+T2  - Applied Soft Computing
+JO  - Applied Soft Computing
+PY  - 2020
+DA  - 2020
+VL  - 93
+SP  - 106342
+DO  - 10.1016/j.asoc.2020.106342
+UR  - https://doi.org/10.1016/j.asoc.2020.106342
+ID  - RodriguezMolina2020
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Safonov, M. G.
+AU  - Athans, M.
+TI  - Gain and phase margin for multiloop LQG regulators
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1977
+DA  - 1977
+VL  - 22
+SP  - 173
+EP  - 179
+DO  - 10.1109/TAC.1977.1101470
+UR  - https://doi.org/10.1109/TAC.1977.1101470
+ID  - Safonov1977
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Siano, P.
+AU  - Citro, C.
+TI  - Designing fuzzy logic controllers for DC–DC converters using multi-objective particle swarm optimization
+T2  - Electric Power Systems Research
+JO  - Electric Power Systems Research
+PY  - 2014
+DA  - 2014
+VL  - 112
+SP  - 74
+EP  - 83
+DO  - 10.1016/j.epsr.2014.03.010
+UR  - https://doi.org/10.1016/j.epsr.2014.03.010
+ID  - Siano2014
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Siddhartha, V.
+AU  - Hote, Y. V.
+AU  - Saxena, S.
+TI  - Non-ideal modelling and IMC based PID controller design of PWM DC–DC buck converter
+T2  - IFAC-PapersOnLine
+JO  - IFAC-PapersOnLine
+PY  - 2018
+DA  - 2018
+VL  - 51
+SP  - 639
+EP  - 644
+DO  - 10.1016/j.ifacol.2018.06.168
+UR  - https://doi.org/10.1016/j.ifacol.2018.06.168
+ID  - Siddhartha2018
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Sitbon, M.
+AU  - Aharon, I.
+AU  - Averbukh, M.
+AU  - Baimel, D.
+AU  - Sassonker, M.
+TI  - Disturbance observer based robust voltage control of photovoltaic generator interfaced by current mode buck converter
+T2  - Energy Conversion and Management
+JO  - Energy Conversion and Management
+PY  - 2020
+DA  - 2020
+VL  - 209
+SP  - 112622
+DO  - 10.1016/j.enconman.2020.112622
+UR  - https://doi.org/10.1016/j.enconman.2020.112622
+ID  - Sitbon2020
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Snoek, J.
+AU  - Larochelle, H.
+AU  - Adams, R. P.
+TI  - Practical Bayesian optimization of machine learning algorithms
+T2  - Advances in Neural Information Processing Systems
+PY  - 2012
+DA  - 2012
+VL  - 25
+UR  - https://proceedings.neurips.cc/paper_files/paper/2012/hash/05311655a15b75fab86956663e1819cd-Abstract.html
+ID  - Snoek2012
+LA  - en
+ER  - 
+
+TY  - ELEC
+AU  - STMicroelectronics,
+TI  - STPST10H100: 100 V–10 A power Schottky trench diode, data sheet
+PY  - 2023
+DA  - 2023
+UR  - https://www.st.com/resource/en/datasheet/stpst10h100.pdf
+M3  - Data sheet
+ID  - ST2023
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Valencia-Rivera, G. H.
+AU  - Benavides-Robles, M. T.
+AU  - Vela Morales, A.
+AU  - Amaya, I.
+AU  - Cruz-Duarte, J. M.
+AU  - Ortiz-Bayliss, J. C.
+AU  - Aviña-Cervantes, J. G.
+TI  - A systematic review of metaheuristic algorithms in electric power systems optimization
+T2  - Applied Soft Computing
+JO  - Applied Soft Computing
+PY  - 2024
+DA  - 2024
+VL  - 150
+SP  - 111047
+DO  - 10.1016/j.asoc.2023.111047
+UR  - https://doi.org/10.1016/j.asoc.2023.111047
+ID  - ValenciaRivera2024
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Minorsky, N.
+TI  - Directional stability of automatically steered bodies
+T2  - Journal of the American Society for Naval Engineers
+JO  - Journal of the American Society for Naval Engineers
+PY  - 1922
+DA  - 1922
+VL  - 34
+IS  - 2
+SP  - 280
+EP  - 309
+DO  - 10.1111/j.1559-3584.1922.tb04958.x
+UR  - https://doi.org/10.1111/j.1559-3584.1922.tb04958.x
+ID  - Minorsky1922
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Ziegler, J. G.
+AU  - Nichols, N. B.
+TI  - Optimum settings for automatic controllers
+T2  - Transactions of the ASME
+JO  - Transactions of the ASME
+PY  - 1942
+DA  - 1942
+VL  - 64
+SP  - 759
+EP  - 768
+DO  - 10.1115/1.4019264
+UR  - https://doi.org/10.1115/1.4019264
+ID  - Ziegler1942
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Åström, K. J.
+AU  - Hägglund, T.
+TI  - The future of PID control
+T2  - Control Engineering Practice
+JO  - Control Engineering Practice
+PY  - 2001
+DA  - 2001
+VL  - 9
+IS  - 11
+SP  - 1163
+EP  - 1175
+DO  - 10.1016/S0967-0661(01)00062-4
+UR  - https://doi.org/10.1016/S0967-0661(01)00062-4
+ID  - Astrom2001
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Ang, K. H.
+AU  - Chong, G.
+AU  - Li, Y.
+TI  - PID control system analysis, design, and technology
+T2  - IEEE Transactions on Control Systems Technology
+JO  - IEEE Transactions on Control Systems Technology
+PY  - 2005
+DA  - 2005
+VL  - 13
+IS  - 4
+SP  - 559
+EP  - 576
+DO  - 10.1109/TCST.2005.847331
+UR  - https://doi.org/10.1109/TCST.2005.847331
+ID  - Ang2005
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Horowitz, I. M.
+TI  - Synthesis of Feedback Systems
+PY  - 1963
+DA  - 1963
+PB  - Academic Press
+CY  - New York
+ID  - Horowitz1963
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Kalman, R. E.
+TI  - Contributions to the theory of optimal control
+T2  - Boletín de la Sociedad Matemática Mexicana
+JO  - Boletín de la Sociedad Matemática Mexicana
+PY  - 1960
+DA  - 1960
+VL  - 5
+IS  - 2
+SP  - 102
+EP  - 119
+ID  - Kalman1960
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Athans, M.
+TI  - The role and use of the stochastic linear-quadratic-Gaussian problem in control system design
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1971
+DA  - 1971
+VL  - 16
+IS  - 6
+SP  - 529
+EP  - 552
+DO  - 10.1109/TAC.1971.1099818
+UR  - https://doi.org/10.1109/TAC.1971.1099818
+ID  - Athans1971
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Young, P. C.
+AU  - Willems, J. C.
+TI  - An approach to the linear multivariable servomechanism problem
+T2  - International Journal of Control
+JO  - International Journal of Control
+PY  - 1972
+DA  - 1972
+VL  - 15
+IS  - 5
+SP  - 961
+EP  - 979
+DO  - 10.1080/00207177208932211
+UR  - https://doi.org/10.1080/00207177208932211
+ID  - Young1972
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Davison, E. J.
+TI  - The robust control of a servomechanism problem for linear time-invariant multivariable systems
+T2  - IEEE Transactions on Automatic Control
+JO  - IEEE Transactions on Automatic Control
+PY  - 1976
+DA  - 1976
+VL  - 21
+IS  - 1
+SP  - 25
+EP  - 34
+ID  - Davison1976
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Francis, B. A.
+AU  - Wonham, W. M.
+TI  - The internal model principle of control theory
+T2  - Automatica
+JO  - Automatica
+PY  - 1976
+DA  - 1976
+VL  - 12
+IS  - 5
+SP  - 457
+EP  - 465
+DO  - 10.1016/0005-1098(76)90006-6
+UR  - https://doi.org/10.1016/0005-1098(76)90006-6
+ID  - Francis1976
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Kothare, M. V.
+AU  - Campo, P. J.
+AU  - Morari, M.
+AU  - Nett, C. N.
+TI  - A unified framework for the study of anti-windup designs
+T2  - Automatica
+JO  - Automatica
+PY  - 1994
+DA  - 1994
+VL  - 30
+IS  - 12
+SP  - 1869
+EP  - 1883
+DO  - 10.1016/0005-1098(94)90048-5
+UR  - https://doi.org/10.1016/0005-1098(94)90048-5
+ID  - Kothare1994
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Leung, F. H. F.
+AU  - Tam, P. K. S.
+AU  - Li, C. K.
+TI  - The control of switching DC–DC converters—A general LQR problem
+T2  - IEEE Transactions on Industrial Electronics
+JO  - IEEE Transactions on Industrial Electronics
+PY  - 1991
+DA  - 1991
+VL  - 38
+IS  - 1
+SP  - 65
+EP  - 71
+ID  - Leung1991
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Olalla, C.
+AU  - Leyva, R.
+AU  - El Aroudi, A.
+AU  - Queinnec, I.
+TI  - Robust LQR control for PWM converters: An LMI approach
+T2  - IEEE Transactions on Industrial Electronics
+JO  - IEEE Transactions on Industrial Electronics
+PY  - 2009
+DA  - 2009
+VL  - 56
+IS  - 7
+SP  - 2548
+EP  - 2558
+DO  - 10.1109/TIE.2009.2017556
+UR  - https://doi.org/10.1109/TIE.2009.2017556
+ID  - Olalla2009
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Krein, P. T.
+AU  - Bentsman, J.
+AU  - Bass, R. M.
+AU  - Lesieutre, B. L.
+TI  - On the use of averaging for the analysis of power electronic systems
+T2  - IEEE Transactions on Power Electronics
+JO  - IEEE Transactions on Power Electronics
+PY  - 1990
+DA  - 1990
+VL  - 5
+IS  - 2
+SP  - 182
+EP  - 190
+ID  - Krein1990
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Sun, J.
+AU  - Mitchell, D. M.
+AU  - Greuel, M. F.
+AU  - Krein, P. T.
+AU  - Bass, R. M.
+TI  - Averaged modeling of PWM converters operating in discontinuous conduction mode
+T2  - IEEE Transactions on Power Electronics
+JO  - IEEE Transactions on Power Electronics
+PY  - 2001
+DA  - 2001
+VL  - 16
+IS  - 4
+SP  - 482
+EP  - 492
+DO  - 10.1109/63.931052
+UR  - https://doi.org/10.1109/63.931052
+ID  - Sun2001
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Maksimović, D.
+AU  - Stanković, A. M.
+AU  - Thottuvelil, V. J.
+AU  - Verghese, G. C.
+TI  - Modeling and simulation of power electronic converters
+T2  - Proceedings of the IEEE
+JO  - Proceedings of the IEEE
+PY  - 2001
+DA  - 2001
+VL  - 89
+IS  - 6
+SP  - 898
+EP  - 912
+ID  - Maksimovic2001
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Peng, H.
+AU  - Prodić, A.
+AU  - Alarcón, E.
+AU  - Maksimović, D.
+TI  - Modeling of quantization effects in digitally controlled DC–DC converters
+T2  - IEEE Transactions on Power Electronics
+JO  - IEEE Transactions on Power Electronics
+PY  - 2007
+DA  - 2007
+VL  - 22
+IS  - 1
+SP  - 208
+EP  - 215
+ID  - Peng2007
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Geyer, T.
+AU  - Papafotiou, G.
+AU  - Morari, M.
+TI  - Hybrid model predictive control of the step-down DC–DC converter
+T2  - IEEE Transactions on Control Systems Technology
+JO  - IEEE Transactions on Control Systems Technology
+PY  - 2008
+DA  - 2008
+VL  - 16
+IS  - 6
+SP  - 1112
+EP  - 1124
+ID  - Geyer2008
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Tan, S.-C.
+AU  - Lai, Y. M.
+AU  - Tse, C. K.
+TI  - General design issues of sliding-mode controllers in DC–DC converters
+T2  - IEEE Transactions on Industrial Electronics
+JO  - IEEE Transactions on Industrial Electronics
+PY  - 2008
+DA  - 2008
+VL  - 55
+IS  - 3
+SP  - 1160
+EP  - 1174
+ID  - Tan2008
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Kazimierczuk, M. K.
+TI  - Pulse-Width Modulated DC–DC Power Converters
+PY  - 2015
+DA  - 2015
+PB  - Wiley
+CY  - Chichester
+ET  - 2
+DO  - 10.1002/9781119009597
+UR  - https://doi.org/10.1002/9781119009597
+ID  - Kazimierczuk2015
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Buso, S.
+AU  - Mattavelli, P.
+TI  - Digital Control in Power Electronics
+PY  - 2015
+DA  - 2015
+PB  - Morgan & Claypool
+CY  - San Rafael, CA
+ET  - 2
+ID  - Buso2015
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Holland, J. H.
+TI  - Adaptation in Natural and Artificial Systems
+PY  - 1975
+DA  - 1975
+PB  - University of Michigan Press
+CY  - Ann Arbor, MI
+ID  - Holland1975
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Wolpert, D. H.
+AU  - Macready, W. G.
+TI  - No free lunch theorems for optimization
+T2  - IEEE Transactions on Evolutionary Computation
+JO  - IEEE Transactions on Evolutionary Computation
+PY  - 1997
+DA  - 1997
+VL  - 1
+IS  - 1
+SP  - 67
+EP  - 82
+DO  - 10.1109/4235.585893
+UR  - https://doi.org/10.1109/4235.585893
+ID  - Wolpert1997
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Sörensen, K.
+TI  - Metaheuristics—the metaphor exposed
+T2  - International Transactions in Operational Research
+JO  - International Transactions in Operational Research
+PY  - 2015
+DA  - 2015
+VL  - 22
+IS  - 1
+SP  - 3
+EP  - 18
+DO  - 10.1111/itor.12001
+UR  - https://doi.org/10.1111/itor.12001
+ID  - Sorensen2015
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Poli, R.
+AU  - Kennedy, J.
+AU  - Blackwell, T.
+TI  - Particle swarm optimization: An overview
+T2  - Swarm Intelligence
+JO  - Swarm Intelligence
+PY  - 2007
+DA  - 2007
+VL  - 1
+SP  - 33
+EP  - 57
+DO  - 10.1007/s11721-007-0002-0
+UR  - https://doi.org/10.1007/s11721-007-0002-0
+ID  - Poli2007
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Karaboga, D.
+AU  - Basturk, B.
+TI  - A powerful and efficient algorithm for numerical function optimization: Artificial bee colony (ABC) algorithm
+T2  - Journal of Global Optimization
+JO  - Journal of Global Optimization
+PY  - 2007
+DA  - 2007
+VL  - 39
+SP  - 459
+EP  - 471
+DO  - 10.1007/s10898-007-9149-x
+UR  - https://doi.org/10.1007/s10898-007-9149-x
+ID  - Karaboga2007
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Neri, F.
+AU  - Cotta, C.
+TI  - Memetic algorithms and memetic computing optimization: A literature review
+T2  - Swarm and Evolutionary Computation
+JO  - Swarm and Evolutionary Computation
+PY  - 2012
+DA  - 2012
+VL  - 2
+SP  - 1
+EP  - 14
+DO  - 10.1016/j.swevo.2011.11.003
+UR  - https://doi.org/10.1016/j.swevo.2011.11.003
+ID  - Neri2012
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Mezura-Montes, E.
+AU  - Coello Coello, C. A.
+TI  - Constraint-handling in nature-inspired numerical optimization: Past, present and future
+T2  - Swarm and Evolutionary Computation
+JO  - Swarm and Evolutionary Computation
+PY  - 2011
+DA  - 2011
+VL  - 1
+IS  - 4
+SP  - 173
+EP  - 194
+DO  - 10.1016/j.swevo.2011.10.001
+UR  - https://doi.org/10.1016/j.swevo.2011.10.001
+ID  - MezuraMontes2011
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Derrac, J.
+AU  - García, S.
+AU  - Molina, D.
+AU  - Herrera, F.
+TI  - A practical tutorial on the use of nonparametric statistical tests as a methodology for comparing evolutionary and swarm intelligence algorithms
+T2  - Swarm and Evolutionary Computation
+JO  - Swarm and Evolutionary Computation
+PY  - 2011
+DA  - 2011
+VL  - 1
+IS  - 1
+SP  - 3
+EP  - 18
+DO  - 10.1016/j.swevo.2011.02.002
+UR  - https://doi.org/10.1016/j.swevo.2011.02.002
+ID  - Derrac2011
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Jones, D. R.
+AU  - Schonlau, M.
+AU  - Welch, W. J.
+TI  - Efficient global optimization of expensive black-box functions
+T2  - Journal of Global Optimization
+JO  - Journal of Global Optimization
+PY  - 1998
+DA  - 1998
+VL  - 13
+SP  - 455
+EP  - 492
+DO  - 10.1023/A:1008306431147
+UR  - https://doi.org/10.1023/A:1008306431147
+ID  - Jones1998
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Shahriari, B.
+AU  - Swersky, K.
+AU  - Wang, Z.
+AU  - Adams, R. P.
+AU  - de Freitas, N.
+TI  - Taking the human out of the loop: A review of Bayesian optimization
+T2  - Proceedings of the IEEE
+JO  - Proceedings of the IEEE
+PY  - 2016
+DA  - 2016
+VL  - 104
+IS  - 1
+SP  - 148
+EP  - 175
+DO  - 10.1109/JPROC.2015.2494218
+UR  - https://doi.org/10.1109/JPROC.2015.2494218
+ID  - Shahriari2016
+LA  - en
+ER  - 
+
+TY  - BOOK
+AU  - Rasmussen, C. E.
+AU  - Williams, C. K. I.
+TI  - Gaussian Processes for Machine Learning
+PY  - 2006
+DA  - 2006
+PB  - MIT Press
+CY  - Cambridge, MA
+ID  - Rasmussen2006
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Gardner, J. R.
+AU  - Kusner, M. J.
+AU  - Xu, Z.
+AU  - Weinberger, K. Q.
+AU  - Cunningham, J. P.
+TI  - Bayesian optimization with inequality constraints
+T2  - Proceedings of the 31st International Conference on Machine Learning
+PY  - 2014
+DA  - 2014
+VL  - 32
+SP  - 937
+EP  - 945
+UR  - https://proceedings.mlr.press/v32/gardner14.html
+ID  - Gardner2014
+LA  - en
+ER  - 
+
+TY  - CPAPER
+AU  - Eriksson, D.
+AU  - Pearce, M.
+AU  - Gardner, J. R.
+AU  - Turner, R.
+AU  - Poloczek, M.
+TI  - Scalable global optimization via local Bayesian optimization
+T2  - Advances in Neural Information Processing Systems
+PY  - 2019
+DA  - 2019
+VL  - 32
+SP  - 5496
+EP  - 5507
+ID  - Eriksson2019
+LA  - en
+ER  - 
+
+TY  - JOUR
+AU  - Neumann-Brosig, M.
+AU  - Marco, A.
+AU  - Schwarzmann, D.
+AU  - Trimpe, S.
+TI  - Data-efficient autotuning with Bayesian optimization: An industrial control study
+T2  - IEEE Transactions on Control Systems Technology
+JO  - IEEE Transactions on Control Systems Technology
+PY  - 2020
+DA  - 2020
+VL  - 28
+IS  - 3
+SP  - 730
+EP  - 740
+DO  - 10.1109/TCST.2018.2886159
+UR  - https://doi.org/10.1109/TCST.2018.2886159
+ID  - NeumannBrosig2020
+LA  - en
+ER  - 
+

@@ -1,0 +1,33 @@
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=9mm, text width=21mm, inner sep=2pt},
+  pid/.style={box, fill=blue!6},
+  lq/.style={box, fill=orange!8},
+  our/.style={box, fill=green!10, very thick},
+  arr/.style={-{Stealth[length=2mm]}, thick},
+  lab/.style={font=\scriptsize\itshape, align=center}]
+% PID branch
+\node[pid] (p)   {P\\ \scriptsize Minorsky 1922};
+\node[pid, right=5mm of p] (pi)  {PI\\ \scriptsize zero steady error};
+\node[pid, right=5mm of pi] (pidn) {PID\\ \scriptsize Ziegler--Nichols 1942};
+\node[pid, right=5mm of pidn] (pidf) {PIDF\\ \scriptsize filtered $D$, pole $N$};
+\node[pid, right=5mm of pidf] (pids) {PID + setpoint\\ \scriptsize weights $b,c$};
+\node[our, below=9mm of pids] (dof) {2-DOF PIDF\\ \scriptsize reads $v_o$ only};
+\draw[arr] (p) -- (pi);
+\draw[arr] (pi) -- (pidn);
+\draw[arr] (pidn) -- (pidf);
+\draw[arr] (pidf) -- (pids);
+\draw[arr] (pids) -- (dof);
+% LQ branch
+\node[lq, below=25mm of p] (lqr) {LQR\\ \scriptsize Kalman 1960};
+\node[lq, right=5mm of lqr] (lqg) {LQG\\ \scriptsize Athans 1971};
+\node[lq, right=5mm of lqg] (lqi) {LQI\\ \scriptsize integral augmentation};
+\node[our, right=5mm of lqi] (cmo) {CMO--LQI\\ \scriptsize constrained weights};
+\draw[arr] (lqr) -- (lqg);
+\draw[arr] (lqr.south) to[out=-20,in=-160,looseness=0.7] (lqi.south);
+\draw[arr] (lqi) -- (cmo);
+\draw[arr, very thick, green!40!black] (cmo.east) -| node[lab, pos=0.75, right, text=green!30!black] {exact map\\ Prop.~\ref*{prop:map}--\ref*{prop:struct}} (dof.south);
+% legends
+\node[lab, above=1mm of pidn] {output feedback, tuned by rules or search};
+\node[lab, below=9mm of lqg] {state feedback, tuned by weights $Q,R$};
+\end{tikzpicture}
